@@ -1,1 +1,2 @@
+#!/bin/bash
 git pull origin && node bot.js
