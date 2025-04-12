@@ -83,7 +83,7 @@ console.log("Имя: ", BOT_USERNAME)
 console.log("Пароль: ", PASSWORD)
 console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
-
+//ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     host: '212.80.7.178',
     port: 25565,
