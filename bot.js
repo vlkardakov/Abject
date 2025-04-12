@@ -539,13 +539,19 @@ bot.on('playerCollect', (player, item) => {
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
 })
 
+async function connectToServer() {
+    console.log('Пытаюсь зайти!');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    bot.chat('/server sleepcraft');
+}
+
+
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
 
     if (plainMessage === "Your login session has been continued." || plainMessage === "Your connection to sleepcraft encountered a problem." || plainMessage === "You have successfully logged.") {
-        console.log('Пытаюсь зайти!')
-        bot.chat('/server sleepcraft');
+        connectToServer()
     }
 
     if (plainMessage.includes(' › ') || plainMessage.startsWith('💬 [ДС] ')) {
