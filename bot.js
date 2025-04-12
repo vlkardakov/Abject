@@ -544,7 +544,22 @@ async function connectToServer() {
     await new Promise(resolve => setTimeout(resolve, 500));
     bot.chat('/server sleepcraft');
 }
+async function sendFeedback(text) {
+    for (const player of WATCHED_PLAYERS) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        bot.chat(`/msg ${player} ${text}`);
+    }
+}
+async function replyFeedback(username, text) {
+    bot.chat(`/msg ${username} ${text}`)
+}
 
+function equipItem(name) {
+    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
+    if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
+        bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
+    }
+}
 
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
@@ -587,8 +602,8 @@ bot.on('message', (jsonMsg, position) => {
         switch (command) {
             case "exec":
                 if (!WATCHED_PLAYERS.includes(username)) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я не буду этого делать!!!`)
-                    bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                    sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                    replyFeedback(username, `Я не буду этого делать!!!`)
                     return;
                 }
                 eval(message.split('exec ')[1]);
@@ -596,9 +611,9 @@ bot.on('message', (jsonMsg, position) => {
                 return;
 
             case "say":
-                // if (!WATCHED_PLAYERS.includes(username)) {
-                //     bot.chat('Я не буду этого делать!!!')
-                //     return;}
+                if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет ${plainMessage}`)
+                }
                 bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
                 return;
 
@@ -610,7 +625,7 @@ bot.on('message', (jsonMsg, position) => {
                 }
                 let targetname = args[0];
 
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ищу цель: ${targetname}`);
+                sendFeedback(`Ищу цель для пкм: ${targetname}`);
                 bot.chat(`/msg ${username} Ищу цель: ${targetname}`);
 
                 const entityToActivate = findEntityWithName(bot, targetname);
@@ -670,10 +685,9 @@ bot.on('message', (jsonMsg, position) => {
                 return;
             case "drop":
                 if (!WATCHED_PLAYERS.includes(username)) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я не буду этого делать!!!`)
+                    sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                     bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                     return;
-
                 }
 
                 ;(async () => {
@@ -1056,6 +1070,8 @@ bot.on('message', (jsonMsg, position) => {
                     return;
                 }
                 bot.pathfinder.setGoal(null);
+                equipItem('axe')
+                equipItem('sword')
                 bot.pvp.attack(targetEntity);
                 break;
             case "remember":
@@ -1482,9 +1498,7 @@ bot.on('message', (jsonMsg, position) => {
                 break;
 
             case "mode":
-                if (!WATCHED_PLAYERS.includes(username)) {
-                    bot.chat(`/msg ${username} Я тебя не слушаюсь 🥲`)
-                    return;}
+
                 if (MODE === 'мирный') {
                     MODE = 'злой'
                 } else {
@@ -1496,12 +1510,11 @@ bot.on('message', (jsonMsg, position) => {
 
             case "stop":
                 if (!WATCHED_PLAYERS.includes(username)) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я не буду этого делать, я занят ${task}!!!`)
-                    bot.chat(`/msg ${username} Я не буду этого делать, я занят ${task}!!!`)
+                    sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                    bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                     return;
                 }
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Останавливаюсь.`);
-                bot.chat(`/msg ${username} Останавливаюсь.`);
+                sendFeedback(`Останавливаюсь.`)
                 bot.pvp.stop();
                 followingProtectedPlayer = false;
                 miningSand = false;
@@ -1510,9 +1523,6 @@ bot.on('message', (jsonMsg, position) => {
                 bot.pathfinder.stop();
                 bot.clearControlStates();
                 collecting = false;
-                if (bot.collectBlock && bot.collectBlock.isCollecting) {
-                    console.log("Прекращаю текущую задачу разрушения (если была активна).")
-                }
                 task = null;
                 break;
 
@@ -1522,11 +1532,9 @@ bot.on('message', (jsonMsg, position) => {
                 break;
 
             case "status":
-                bot.chat(`/msg ${username} task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
-                console.log(readStates())
-
+                replyFeedback(`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
+                // console.log(readStates())
                 break;
-
             default:
                 break;
         }
