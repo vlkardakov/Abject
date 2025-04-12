@@ -286,6 +286,26 @@ async function breakBlockManually(block) {
         console.log('Шо-то пошло не так при ручном уничтожении: ', err.message);
     }
 }
+async function connectToServer() {
+    console.log('Пытаюсь зайти!');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    bot.chat('/server sleepcraft');
+}
+async function sendFeedback(text) {
+    for (const player of WATCHED_PLAYERS) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        bot.chat(`/msg ${player} ${text}`);
+    }
+}
+async function replyFeedback(username, text) {
+    bot.chat(`/msg ${username} ${text}`)
+}
+function equipItem(name) {
+    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
+    if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
+        bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
+    }
+}
 function selectIdsWithName(substring) {
     if (!itemProtocolIdMap || typeof itemProtocolIdMap !== 'object' || typeof substring !== 'string') {
         return [];
@@ -490,7 +510,7 @@ bot.on('resourcePack', (url, hash) => {
 });
 
 bot.on('spawn', () => {
-    bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
+    sendFeedback(`плюх!`);
     // console.log("Событие 'spawn' получено.");
     initializeBotState();
 
@@ -538,28 +558,6 @@ bot.on('playerCollect', (player, item) => {
     // console.log(JSON.stringify(item?.metadata, null, 2));
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
 })
-
-async function connectToServer() {
-    console.log('Пытаюсь зайти!');
-    await new Promise(resolve => setTimeout(resolve, 500));
-    bot.chat('/server sleepcraft');
-}
-async function sendFeedback(text) {
-    for (const player of WATCHED_PLAYERS) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-        bot.chat(`/msg ${player} ${text}`);
-    }
-}
-async function replyFeedback(username, text) {
-    bot.chat(`/msg ${username} ${text}`)
-}
-
-function equipItem(name) {
-    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
-    if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
-        bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
-    }
-}
 
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
