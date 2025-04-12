@@ -293,8 +293,10 @@ async function connectToServer() {
 }
 async function sendFeedback(text) {
     for (const player of WATCHED_PLAYERS) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-        bot.chat(`/msg ${player} ${text}`);
+        if (bot.players[player]) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+            bot.chat(`/msg ${player} ${text}`);
+        }
     }
 }
 async function replyFeedback(username, text) {
