@@ -1659,7 +1659,7 @@ bot.on("plasmovoice_audio_end", () => {
 })
 
 bot.on('entitySpawn', (entity) => {
-    if (entity.objectType !== 2) return // только дропнутые предметы
+    if (entity.displayName !== 2) return // только дропнутые предметы
     const { x, y, z } = entity.position
     const rx = Math.round(x)
     const ry = Math.round(y)
