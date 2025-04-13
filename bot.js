@@ -282,6 +282,38 @@ function initializeBotState() {
         console.error("Ошибка во время инициализации состояния бота:", error);
     }
 }
+
+async function openBlockNoLook(block) {
+    return new Promise((resolve, reject) => {
+        if (!block || !block.position) return reject(new Error("invalid block"))
+
+        const pos = block.position
+
+        bot._client.write('block_place', {
+            location: pos,
+            direction: 1,
+            hand: 0,
+            cursorX: 0.5,
+            cursorY: 1.0,
+            cursorZ: 0.5,
+            insideBlock: false
+        })
+
+        const listener = (window) => {
+            bot.removeListener('windowOpen', listener)
+            resolve(window)
+        }
+
+        bot.on('windowOpen', listener)
+
+        setTimeout(() => {
+            bot.removeListener('windowOpen', listener)
+            reject(new Error("timeout"))
+        }, 5000)
+    })
+}
+
+
 async function breakBlockManually(block) {
     if (!block || !bot.canDigBlock(block)) {
         console.log('Ну тип... не могу сломать этот блок :|');
@@ -887,22 +919,22 @@ bot.on('message', (jsonMsg, position) => {
 
                 await unequipArmorAndMainHand()
 
-                // const blockToLookAt_rich = bot.findBlock({
-                //     matching: block => {
-                //         const nameMatches = block.name.toLowerCase().includes('calcite');
-                //         const isVisible = bot.canSeeBlock(block);
-                //         return nameMatches && isVisible;
-                //     },
-                //     maxDistance: 5,
-                //     useExtraInfo: true
-                // });
-                //
-                // if (blockToLookAt_rich) {
-                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                //     await bot.lookAt(center_rich, true);
-                // }
+                const blockToLookAt_rich = bot.findBlock({
+                    matching: block => {
+                        const nameMatches = block.name.toLowerCase().includes('calcite');
+                        const isVisible = bot.canSeeBlock(block);
+                        return nameMatches && isVisible;
+                    },
+                    maxDistance: 5,
+                    useExtraInfo: true
+                });
 
-                const chest_rich = await bot.openBlock(chestBlock_rich, null);
+                if (blockToLookAt_rich) {
+                    const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                    await bot.lookAt(center_rich, true);
+                }
+
+                const chest_rich = await openBlockNoLook(chestBlock_rich, null);
 
                 for (let item of bot.inventory.items()) {
                     if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
