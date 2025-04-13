@@ -9,7 +9,7 @@ const { GoalNear, GoalFollow } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
 const { plugin: pvp } = require('mineflayer-pvp');
-const armorManager = require('mineflayer-armor-manager'); 
+const armorManager = require('mineflayer-armor-manager');
 const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
@@ -35,7 +35,7 @@ const EAT_THRESHOLD = 16;
 let MODE = 'мирный';
 let SOUND = null;
 let defaultMove
-let playing = false;
+let playing = false; 
 
 const SPAWN_POSITIONS = [
     new vec3(-8, 87, -2),
@@ -76,15 +76,14 @@ const SPAWN_POSITIONS = [
     new vec3(18, 90, -6)
 ];
 
-
 const BOT_USERNAME = process.env.BOT_USERNAME
 const PASSWORD = process.env.PASSWORD
 const NUMBER = parseInt(process.env.NUMBER)
 
 console.log('----------------')
-console.log('Сведения о боте:')
-console.log("Имя: ", BOT_USERNAME)
-console.log("Пароль: ", PASSWORD)
+console.log('Сведения о боте :')
+console.log("Имя             :", BOT_USERNAME)
+console.log("Пароль          :", PASSWORD)
 console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
