@@ -1598,8 +1598,9 @@ bot.on("plasmovoice_audio_end", () => {
 
 bot.on('entityDrop', (entity) => {
     if (entity && entity.item) {
+        console.log('кто-то что-то бросил лол')
         const { x, y, z } = entity.position;
-        const distanceThreshold = 3; // Радиус в 3 блока
+        const distanceThreshold = 3;
 
         const nearbyPlayers = bot.players
             .filter(player => player.entity && player.entity.position.distanceTo(entity.position) <= distanceThreshold);
