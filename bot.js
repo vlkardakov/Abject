@@ -33,6 +33,9 @@ let SOUND = null;
 let defaultMove
 let playing = false;
 
+//УБРАТЬ!!!! ЭТА ШТУКА ДЛЯ МЯЧИКА!!!
+let bounced = false
+
 const SPAWN_POSITIONS = [
     new vec3(-8, 87, -2),
     new vec3(16, 87, -15),
@@ -380,7 +383,6 @@ function readFileWithRetry(filePath, maxAttempts = 40, delay = 200) {
         return 'err'
     }
 }
-
 function readStates() {
     const directory = path.join('/rusvan-bots', 'states');
     const filesList = [];
@@ -493,7 +495,6 @@ function isEntityVisibleFromPos(fromPos, entity) {
         return false;
     }
 }
-
 function isItemOnSpawn(itemEntity) {
     if (!itemEntity || !itemEntity.position) return false;
     // console.log("Тестим на видимость!")
@@ -518,6 +519,26 @@ bot.on('spawn', () => {
     initializeBotState();
 
 });
+
+
+//МЯЧИК!
+bot.on('knockback', (entity, vec) => {
+    if (entity !== bot.entity || bounced) return
+
+    bounced = true
+
+    const bouncePower = 3 // можно менять
+    const direction = vec.normalize().scale(bouncePower)
+
+    bot.entity.velocity.x += direction.x
+    bot.entity.velocity.y += direction.y
+    bot.entity.velocity.z += direction.z
+
+    // сбрасываем bounce через 1 сек, чтоб не прыгал бесконечно
+    setTimeout(() => {
+        bounced = false
+    }, 1000)
+})
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
