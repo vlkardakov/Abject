@@ -853,18 +853,21 @@ bot.on('message', (jsonMsg, position) => {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
                     return;
                 } else {sendFeedback('Бочка найдена...')}
-                blockToLookAfterDeposit = bot.findBlock({
+                const blockToLookAt = bot.findBlock({
                     matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes('calcite')
-                        const isVisible = bot.canSeeBlock(block)
-                        return nameMatches && isVisible
+                        const nameMatches = block.name.toLowerCase().includes('calcite');
+                        const isVisible = bot.canSeeBlock(block);
+                        return nameMatches && isVisible;
                     },
                     maxDistance: 5,
-                    useExtraInfo: true 
-                })
-                if (blockToLookAfterDeposit) {
-                    bot.lookAt(blockToLookAfterDeposit.position);
+                    useExtraInfo: true
+                });
+
+                if (blockToLookAt) {
+                    const center = blockToLookAt.position.offset(0.5, 0.5, 0.5);
+                    await bot.lookAt(center, true);
                 }
+
                 const chest = await bot.openBlock(chestBlock, null);
 
                 for (let item of bot.inventory.items()) {
@@ -923,6 +926,18 @@ bot.on('message', (jsonMsg, position) => {
                         } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                             await depositItems();
                             bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
+                            // blockToLookAfterDeposit = bot.findBlock({
+                            //     matching: block => {
+                            //         const nameMatches = block.name.toLowerCase().includes('calcite')
+                            //         const isVisible = bot.canSeeBlock(block)
+                            //         return nameMatches && isVisible
+                            //     },
+                            //     maxDistance: 5,
+                            //     useExtraInfo: true
+                            // })
+                            // if (blockToLookAfterDeposit) {
+                            //     bot.lookAt(blockToLookAfterDeposit.position);
+                            // }
                             // bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 0 ));
                         }
                     }
