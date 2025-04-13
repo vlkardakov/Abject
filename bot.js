@@ -89,7 +89,7 @@ const bot = mineflayer.createBot({
     port: 25565,
     username: BOT_USERNAME,
     auth: 'offline',
-    version: '1.17'
+    version: '1.21.1'
 });
 
 console.log("Запуск бота...");
@@ -429,7 +429,7 @@ console.log(readStates())
 console.log(`-----`)
 
 
-function findEntityWithName(bot, query, command = 'kill') {
+function findEntityWithName(bot, query, visible=true) {
     let targetQuery = query.toLowerCase();
 
     return bot.nearestEntity(entity => {
@@ -439,7 +439,7 @@ function findEntityWithName(bot, query, command = 'kill') {
             (entity.name?.toLowerCase().includes(targetQuery)) ||
             (entity.displayName?.toLowerCase().includes(targetQuery))
         );
-        return command === 'kill' ? (matchesCriteria && isEntityVisible(entity)) : matchesCriteria;
+        return visible ? (matchesCriteria && isEntityVisible(entity)) : matchesCriteria;
     });
 }
 function isEntityVisible(entity) {
@@ -1051,7 +1051,7 @@ bot.on('message', (jsonMsg, position) => {
                 task = 'camp'
 
             function findNewTarget() {
-                return findEntityWithName(bot, camptargetUsername);
+                return findEntityWithName(bot, camptargetUsername, visible=false);
             }
 
             function startCampAttack(targetEntity) {
@@ -1605,7 +1605,7 @@ bot.on('message', (jsonMsg, position) => {
                 bot.chat(`/msg ${username} Задан режим '${MODE}'`)
                 return
 
-            case "stop":
+            case "stop":w
                 if (!WATCHED_PLAYERS.includes(username)) {
                     sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                     bot.chat(`/msg ${username} Я не буду этого делать!!!`)
