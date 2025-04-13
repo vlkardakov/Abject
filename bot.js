@@ -1,6 +1,6 @@
-console.warn = () => {}
-console.error = () => {}
-//не засоряя консоль
+// console.warn = () => {}
+// console.error = () => {}
+// //не засоряя консоль
 
 require('dotenv').config()
 const mineflayer = require('mineflayer');
