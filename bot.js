@@ -1630,6 +1630,10 @@ function processCommand(message, username, plainMessage) {
     }
 }
 
+function getRussianName(itemId) {
+    const item = mcData.itemsByName[itemId];
+    return item ? item.displayName : `Неизвестный предмет (${itemId})`;
+}
 
 let justSentLogin = false;
 
@@ -1673,7 +1677,7 @@ bot.on('entitySpawn', (entity) => {
         const meta = entity.metadata?.[8]
         const id = meta?.itemId
         const count = meta?.itemCount
-        const name = itemProtocolIdMap?.[id] || `id:${id}`
+        const name = getRussianName(itemProtocolIdMap?.[id]) || `id:${id}`
         let loreItem = 'нет';
         try {
             loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
