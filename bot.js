@@ -89,7 +89,7 @@ const bot = mineflayer.createBot({
     port: 25565,
     username: BOT_USERNAME,
     auth: 'offline',
-    version: '1.21.1'
+    version: '1.20.4'
 });
 
 console.log("Запуск бота...");
@@ -109,6 +109,14 @@ function findFood(botInstance) {
     }
     return botInstance.inventory.items().find(item => mcData.foods[item.type]);
 }
+
+function sleep(ms) {
+    const end = Date.now() + ms
+    while (Date.now() < end) {
+    }
+}
+
+
 async function stealItems(itemName, user_name) {
     const containers = containerMemory;
     if (containers.length === 0) {
