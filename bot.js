@@ -1725,10 +1725,13 @@ bot.on('blockUpdate', (oldBlock, newBlock) => {
     }
 
     const { x, y, z } = oldBlock.position
-    const { username } = Object.values(bot.players).find(p => p.entity.position.distanceTo(oldBlock.position) <= 2.5)?.entity || {}
+    const nearestPlayer = Object.values(bot.players)
+        .map(p => p.entity)
+        .find(e => e && e.position.distanceTo(oldBlock.position) <= 2.5)
 
-    if (!username) return
+    if (!nearestPlayer) return
 
+    const { username } = nearestPlayer
     const oldBlockName = oldBlock.name
     const newBlockName = newBlock.name
 
