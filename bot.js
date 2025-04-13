@@ -1529,7 +1529,8 @@ bot.on('message', (jsonMsg, position) => {
                         async function comePos() {
                             bot.pathfinder.setMovements(defaultMove);
                             console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
-                            await bot.pathfinder.setGoal(new GoalNear(vec3(block.position.x, block.position.y + 1, block.position.z), 0));
+                            //await bot.pathfinder.(new GoalNear(vec3(, , ), 0));
+                            await bot.pathfinder.goto(new GoalNear(Math.floor(block.position.x), Math.floor(block.position.y + 1), Math.floor(block.position.z), 2));
                             task = null;
                             console.log("Готово!");
                         }
