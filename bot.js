@@ -1676,7 +1676,7 @@ bot.on('entitySpawn', (entity) => {
         const name = itemProtocolIdMap?.[id] || `id:${id}`
         let loreItem = 'нет';
         try {
-            loreItem = item.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+            loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
                 .split('Подпись: #')[1]
                 .split('","bold"')[0];
         } catch (e) {
