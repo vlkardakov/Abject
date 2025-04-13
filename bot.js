@@ -1397,11 +1397,10 @@ bot.on('message', (jsonMsg, position) => {
                 equipItem()
                 // bot.chat(`/msg ${username} Привета!`);
                 break
-
             case "slot":
                 query = args[0] || null
                 if (!query) {return}
-                query = parceInt(query)
+                query = parseInt(query)
                 bot.setQuickBarSlot(query)
                 equipItem()
                 // bot.chat(`/msg ${username} Привета!`);
