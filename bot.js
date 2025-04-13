@@ -839,14 +839,18 @@ bot.on('message', (jsonMsg, position) => {
             }
 
             async function unequipArmorAndMainHand() {
-                await bot.removeArmor();
+                for (let i = 0; i < 4; i++) {
+                    const armorItem = bot.inventory.slots[i + 5];
+                    if (armorItem) {
+                        await bot.equip(armorItem, 'hand');
+                    }
+                }
 
                 const mainHandItem = bot.inventory.slots[36];
                 if (mainHandItem) {
                     await bot.equip(mainHandItem, 'hand');
                 }
             }
-
             async function depositItems() {
                 if (justCheckedBarrel) {return}
                 console.log('Запуск очистки...')
