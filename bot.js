@@ -547,7 +547,1010 @@ function isItemOnSpawn(itemEntity) {
     });
 }
 
+function processCommand(message, username) {
 
+    const parts = message.trim().toLowerCase().split(" ");
+    const command = parts[0];
+    const args = parts.slice(1);
+
+    // console.log(`username: '${username}', command: '${command}'`);
+
+    switch (command) {
+        case "exec":
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                replyFeedback(username, `Я не буду этого делать!!!`)
+                return;
+            }
+            eval(message.split('exec ')[1]);
+            // bot.chat("Ест!");
+            return;
+        case "say":
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет ${plainMessage}`)
+            }
+            bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
+            return;
+        case "activate":
+
+            if (args.length < 1) {
+                // bot.chat("Укажи цель: activate <ник_игрока | тип_моба>");
+                return;
+            }
+            let targetname = args[0];
+
+            sendFeedback(`Ищу цель для пкм: ${targetname}`);
+            bot.chat(`/msg ${username} Ищу цель: ${targetname}`);
+
+            const entityToActivate = findEntityWithName(bot, targetname);
+            if (entityToActivate) {
+                const headPosition = entityToActivate.position.offset(0, entityToActivate.height * 0.9, 0);
+                bot.lookAt(headPosition);
+                bot.activateEntity(entityToActivate);
+            }
+            return;
+        case "activateblock":
+            const blockToActivate = bot.findBlock({
+                matching: block => {
+                    const nameMatches = block.name.toLowerCase().includes(parts[1].toLowerCase())
+                    const isVisible = bot.canSeeBlock(block)
+                    return nameMatches && isVisible
+                },
+                maxDistance: 5,
+                useExtraInfo: true
+            })
+            if (blockToActivate) {
+                bot.lookAt(blockToActivate.position);
+                bot.activateBlock(blockToActivate);
+            }
+            return;
+        case "comeblock":
+            const blockToCome = bot.findBlock({
+                matching: block => {
+                    const nameMatches = block.name.toLowerCase().includes(parts[1].toLowerCase())
+                    // const isVisible = bot.canSeeBlock(block)
+                    return nameMatches //&& isVisible
+                },
+                maxDistance: 50,
+                useExtraInfo: true
+            })
+            if (blockToCome) {
+                bot.pathfinder.setMovements(defaultMove);
+                bot.pathfinder.setGoal(new goals.GoalBlock(blockToCome.position.x, blockToCome.position.y, blockToCome.position.z, 2))
+                console.log('Иду к блоку')
+            } else {
+                bot.chat(`/m ${WATCHED_PLAYERS[0]} Блок не найден 😢`)
+                bot.chat(`/m ${username} Блок не найден 😢`)
+            }
+            break;
+        case 'restart':
+            initializeBotState();
+
+            if (isInitialSpawn) {
+                // console.log("Первый спавн: Запуск процесса входа...");
+
+            } else {
+                bot.setControlState('sprint', true);
+            }
+            return;
+        case "drop":
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                return;
+            }
+
+            ;(async () => {
+
+            async function safeToss(item, amount) {
+                const slot = item.slot
+                if (slot < 9 || slot > 44) {
+                    try {
+                        await bot.equip(item, 'hand')
+                        await bot.unequip('hand')
+                    } catch (err) {
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
+                        return
+                    }
+                }
+
+                bot.toss(item.type, null, Math.min(item.count, amount), err => {
+                    if (!err) {
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
+                    } else {
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
+                    }
+                })
+            }
+
+            for (let i = 1; i < parts.length; i += 2) {
+                const itemName = parts[i].toLowerCase()
+                const amount = parts[i + 1] === "all" ? Infinity : parseInt(parts[i + 1])
+
+                const allItems = [
+                    ...bot.inventory.items(),
+                    bot.inventory.slots[45],
+                    bot.inventory.slots[5],
+                    bot.inventory.slots[6],
+                    bot.inventory.slots[7],
+                    bot.inventory.slots[8],
+                ].filter(it => it)
+
+                const matchingItems = allItems.filter(it => it.name.toLowerCase().includes(itemName))
+
+                if (matchingItems.length > 0) {
+                    for (const item of matchingItems) {
+                        await safeToss(item, amount)
+                    }
+                } else {
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
+                    bot.chat(`/msg ${username} у меня нет ничего типа '${itemName}'`)
+                }
+            }
+
+        })()
+            return;
+        case "collect":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
+                return;
+            }
+
+//                bot.on('entityHurt', async (entity) => {
+//
+//                    if (entity === bot.entity) {
+//                        // bot.chat('Получен урон :(')
+//                        console.log('Меня атакуют!');
+//
+//                        bot.pathfinder.setGoal(null);
+//
+//                        const nearestEntity = bot.nearestEntity(entity =>
+//                            entity !== bot.entity && isEntityVisible(entity) && !entity.name.includes('item') && !entity.name.includes('stand')
+//                        );
+//                        // bot.chat('Я знаю, кто ударил!')
+//                        if (nearestEntity) {
+//                            collecting_paused = true;
+//                            console.log(`Атакую сущность: ${nearestEntity.name}`);
+//                            bot.pathfinder.setMovements(defaultMove);
+//                            bot.pathfinder.setGoal(null)
+//                            bot.pathfinder.setGoal(new goals.GoalFollow(nearestEntity, 0));
+//                            bot.pvp.attack(nearestEntity);  // Атакуем сущность
+//
+//
+//
+//                            const healthChecker = setInterval(() => {
+//                                if (!isEntityVisible(nearestEntity)) {
+//                                    console.log(`${nearestEntity.name} убита!`);
+//                                    // bot.chat('Ха! я победил!')
+//                                    collecting_paused = false;
+//                                    collecting_paused = false;
+//                                    bot.pvp.stop()
+//                                    clearInterval(healthChecker);
+//
+//
+//                                } else {
+//                                    const campsword = bot.inventory.items().find(item => item.name.includes("sword"));
+//                                    if (campsword && (!bot.heldItem || bot.heldItem.type !== campsword.type)) {
+//                                        bot.equip(campsword, 'hand').catch(err => console.log(`Ошибка экипировки меча: ${err.message}`));
+//                                    }
+//
+//                                }
+//                            }, 500);
+//
+//                        const onEntityGone = (goneEntity) => {
+//                            if (goneEntity === nearestEntity) {
+//                                console.log(`${goneEntity.name} исчезла или убита!`);
+//                                collecting_paused = false;
+//                                bot.pvp.stop();
+//                                clearInterval(healthChecker);
+//                                bot.pathfinder.setMovements(defaultMove);
+//                                bot.pathfinder.setGoal(null);
+//                            }
+//                        };
+//
+//                        bot.once('entityGone', onEntityGone);
+//                        } else {
+//                            collecting_paused = false;
+//                            console.log('Нет подходящих сущностей для атаки');
+//                        }
+//                    }
+//                });
+        function findNearestItem(searchName = '') {
+            wanted_ids = []
+            if (searchName) {
+                wanted_ids = selectIdsWithName(searchName);
+            }
+            return bot.nearestEntity(entity => {
+                if (searchName) {
+                    if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {
+                        return true;
+                    }
+                } else {
+                    return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id);
+                }
+            });
+        }
+
+        function isFarFromCenter() {
+            const pos = bot.entity.position;
+            const dx = pos.x;
+            const dz = pos.z;
+            return Math.sqrt(dx * dx + dz * dz) > 15;
+        }
+
+        async function unequipArmorAndMainHand() {
+            for (let i = 0; i < 4; i++) {
+                const armorItem = bot.inventory.slots[i + 5];
+                if (armorItem) {
+                    await bot.equip(armorItem, 'hand');
+                }
+            }
+
+            const mainHandItem = bot.inventory.slots[36];
+            if (mainHandItem) {
+                await bot.equip(mainHandItem, 'hand');
+            }
+        }
+        async function depositItems() {
+            if (justCheckedBarrel) {return}
+            console.log('Запуск очистки...')
+
+
+
+            justCheckedBarrel = true
+            chestPos = vec3(6.5, 88, 6.5);
+            await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
+
+            const blocks = bot.findBlocks({
+                matching: block => block.name.includes('barrel'),
+                maxDistance: 4,
+                count: 999,
+            })
+
+            const chestBlock_rich = blocks
+                .map(pos => bot.blockAt(pos))
+                .find(block => block && block.position.y === 86 && block.position.z === 8)
+
+            console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
+            if (!chestBlock_rich) {
+                bot.chat(`/msg ${username} не нашел бочку :(`);
+                return;
+            }
+
+            await unequipArmorAndMainHand()
+
+            // const blockToLookAt_rich = bot.findBlock({
+            //     matching: block => {
+            //         const nameMatches = block.name.toLowerCase().includes('calcite');
+            //         const isVisible = bot.canSeeBlock(block);
+            //         return nameMatches && isVisible;
+            //     },
+            //     maxDistance: 5,
+            //     useExtraInfo: true
+            // });
+            //
+            // if (blockToLookAt_rich) {
+            //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+            //     await bot.lookAt(center_rich, true);
+            // }
+
+            const chest_rich = await bot.openBlock(chestBlock_rich, null);
+
+            for (let item of bot.inventory.items()) {
+                if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
+                    try {
+                        console.log(`Кладу ${item.name}`)
+                        await chest_rich.deposit(item.type, null, item.count);
+                    } catch (err) {
+                        console.log(`Не смог положить ${item.name}: ${err.message}`);
+                    }
+                }
+            }
+            chest_rich.close();
+
+
+
+
+            const chestBlock = blocks
+                .map(pos => bot.blockAt(pos))
+                .find(block => block && block.position.z === 6 && block.position.y === 86 )
+
+            console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
+            if (!chestBlock) {
+                bot.chat(`/msg ${username} не нашел бочку :(`);
+                return;
+            }
+            const blockToLookAt = bot.findBlock({
+                matching: block => {
+                    const nameMatches = block.name.toLowerCase().includes('calcite');
+                    const isVisible = bot.canSeeBlock(block);
+                    return nameMatches && isVisible;
+                },
+                maxDistance: 5,
+                useExtraInfo: true
+            });
+
+            if (blockToLookAt) {
+                const center = blockToLookAt.position.offset(0.5, 0.5, 0.5);
+                await bot.lookAt(center, true);
+            }
+
+            const chest = await bot.openBlock(chestBlock, null);
+
+            for (let item of bot.inventory.items()) {
+                if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
+                    try {
+                        console.log(`Кладу ${item.name}`)
+                        await chest.deposit(item.type, null, item.count);
+                    } catch (err) {
+                        console.log(`Не смог положить ${item.name}: ${err.message}`);
+                    }
+                }
+            }
+            chest.close();
+        }
+            justCheckedBarrel = true;
+            let collectInterval = null;
+
+        function startCollecting(searchName = '') {
+            if (collectInterval) clearInterval(collectInterval);
+
+            task = 'collecting';
+
+            collectInterval = setInterval(async () => {
+                if (collecting_paused) {
+                    console.log('Сбор приостановлен, жду 5 секунд...');
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                    return;
+                }
+                const targetItem = findNearestItem(searchName);
+                if (targetItem && collectingId !== targetItem.id) {
+                    collectingId = targetItem.id;
+                    setState(`collecting:${targetItem.id}`);
+                } else if (collectingId !== null) {
+                    // setState(`collecting:null`);
+                    collectingId = null
+                }
+
+                if (targetItem && !bot.pathfinder.goal) {
+                    bot.pathfinder.setMovements(defaultMove);
+                    id = targetItem?.metadata?.[8]?.itemId
+                    count = targetItem?.metadata?.[8]?.itemCount
+                    console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
+                    // console.log(JSON.stringify(targetItem.metadata, null, 2));
+                    justCheckedBarrel = false;
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
+                    bot.pathfinder.setMovements(defaultMove);
+                    bot.pathfinder.setGoal(null)
+                    bot.pathfinder.setGoal(new GoalFollow(targetItem, 0));
+                } else {
+                    if (isFarFromCenter() && !bot.pathfinder.goal) {
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
+                        chestPos = vec3(7, 87, 6);
+                        await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
+                    } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
+                        await depositItems();
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
+                        blockToLookAfterDeposit = bot.findBlock({
+                            matching: block => {
+                                const nameMatches = block.name.toLowerCase().includes('calcite')
+                                const isVisible = bot.canSeeBlock(block)
+                                return nameMatches && isVisible
+                            },
+                            maxDistance: 5,
+                            useExtraInfo: true
+                        })
+                        if (blockToLookAfterDeposit) {
+                            bot.lookAt(blockToLookAfterDeposit.position, true );
+                        }
+                        bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 0 ));
+                    }
+                }
+
+                if (!collecting) {
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} прекращаю!`);
+                    if (collectInterval) clearInterval(collectInterval);
+                    bot.pathfinder.setGoal(null);
+                    return;
+                }
+
+            }, 1000);
+        }
+
+            const searchName = parts[1]
+            console.log(searchName)
+            collecting = true;
+            startCollecting(searchName);
+            break;
+        case "camp":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+
+            if (args.length < 1) {
+                bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
+                return;
+            }
+            if (MODE === "мирный") {
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                return;
+            }
+            let camptargetUsername = args[0];
+            if (camptargetUsername === 'vlkardakov') {
+                // bot.chat(Нет идите нафиг')
+                return;
+            }
+            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ищу цель: ${camptargetUsername}`);
+            bot.chat(`/msg ${username} Ищу цель: ${camptargetUsername}`);
+            task = 'camp'
+
+        function findNewTarget() {
+            return findEntityWithName(bot, camptargetUsername, visible=false);
+        }
+
+        function startCampAttack(targetEntity) {
+            if (!targetEntity) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдена сущность: ${camptargetUsername}.`);
+                task = null
+                return;
+            }
+
+            const camptargetName = targetEntity.username || targetEntity.mobType || targetEntity.name || 'неизвестная сущность';
+
+            // bot.pathfinder.setGoal(null);
+            // bot.pvp.stop();
+            // bot.pathfinder.setMovements(defaultMove);
+            // bot.pathfinder.setGoal(new GoalFollow(targetEntity, RANGE_GOAL), true);
+
+            let campattackInterval = null;
+            const campMAX_ATTEMPTS = 250;
+            let campattackAttempts = 0;
+
+            function campattackLoop() {
+                if (!targetEntity || !targetEntity.isValid || campattackAttempts >= campMAX_ATTEMPTS) {
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Хахаха ничтожество /s`);
+                    bot.pathfinder.setGoal(null);
+                    bot.pvp.stop();
+                    if (campattackInterval) clearInterval(campattackInterval);
+
+
+                    const newTarget = findNewTarget();
+                    if (newTarget && newTarget !== targetEntity) {
+                        startCampAttack(newTarget);
+                    }
+                    task = null;
+                    return;
+                }
+                bot.on('message', (jsonMsg, position) => {
+                    if (jsonMsg.toString().includes('stop')) {
+                        bot.pathfinder.setGoal(null);
+                        bot.pvp.stop();
+                        if (campattackInterval) clearInterval(campattackInterval);
+                        task = null;
+                        return;
+                    }
+                })
+
+                const campsword = bot.inventory.items().find(item => item.name.includes("sword"));
+                if (campsword && (!bot.heldItem || bot.heldItem.type !== campsword.type)) {
+                    bot.equip(campsword, 'hand').catch(err => console.log(`Ошибка экипировки меча: ${err.message}`));
+                }
+
+                if (command === 'kill' && !isEntityVisible(targetEntity)) {
+                } else {
+                    bot.pvp.attack(targetEntity);
+                }
+
+                campattackAttempts++;
+            }
+
+            campattackInterval = setInterval(campattackLoop, 500);
+        }
+
+            const initialTarget = findNewTarget();
+            startCampAttack(initialTarget);
+            break;
+        case "kill":
+            if (task) {
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            if (MODE === "мирный") {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                return;
+            }
+            if (args.length < 1) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                return;
+            }
+            let targetUsername = args[0];
+            if (targetUsername === 'enemy') targetUsername = 'zombie';
+
+            if (targetUsername === 'vlkardakov') {
+                bot.chat(`/msg ${username} Нет идите нафиг`)
+                return;}
+
+            targetEntity = findEntityWithName(bot, targetUsername);
+
+            if (!targetEntity) {
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
+                return;
+            }
+            bot.pathfinder.setGoal(null);
+            equipItem('axe')
+            equipItem('sword')
+            bot.pvp.attack(targetEntity);
+            break;
+        case "remember":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            task = 'remembering'
+
+            const rememberContainers = async () => {
+                const radius = parseInt(parts[1]) || 15
+
+                let blocks = bot.findBlocks({
+                    matching: block => {
+                        return (
+                            block &&
+                            block.name.toLowerCase().includes("barrel")
+                        )
+                    },
+                    maxDistance: radius,
+                    count: 999
+                })
+
+                const getDistance = (block1, block2) => {
+                    if (!block1.position || !block2.position) return Infinity;
+
+                    return Math.sqrt(
+                        Math.pow(block1.position.x - block2.position.x, 2) +
+                        Math.pow(block1.position.y - block2.position.y, 2) +
+                        Math.pow(block1.position.z - block2.position.z, 2)
+                    )
+                }
+
+                let currentBlock = blocks[0]
+                let remainingBlocks = blocks.slice(1)
+
+                remainingBlocks.sort((a, b) => getDistance(bot.entity, a) - getDistance(bot.entity, b))
+
+                blocks = [currentBlock]
+                while (remainingBlocks.length > 0 && (task === 'remembering')) {
+                    let nearestBlock = remainingBlocks[0]
+                    remainingBlocks.forEach(block => {
+                        if (getDistance(currentBlock, block) < getDistance(currentBlock, nearestBlock)) {
+                            nearestBlock = block
+                        }
+                    })
+
+                    blocks.push(nearestBlock)
+
+                    currentBlock = nearestBlock
+
+                    remainingBlocks = remainingBlocks.filter(block => block !== nearestBlock)
+                }
+
+                const memoryData = []
+
+                for (let pos of blocks) {
+                    const block = bot.blockAt(pos)
+                    if (task !== 'remembering') {break}
+                    if (!block || !block.position) continue
+
+                    try {
+                        await bot.pathfinder.goto(new GoalNear(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), 4))
+
+                        const container = await bot.openContainer(block)
+                        const items = container.slots.filter(slot => slot && slot.name) // Получаем предметы из контейнера
+                        const itemsData = items.map(item => ({
+                            name: item.name,
+                            count: item.count
+                        }))
+
+                        memoryData.push({
+                            name: block.name,
+                            x: block.position.x,
+                            y: block.position.y,
+                            z: block.position.z,
+                            items: itemsData
+                        })
+
+                        container.close()
+                    } catch (err) {
+                        console.log(`Не удалось открыть контейнер в позиции ${block.position}: ${err.message}`)
+                    }
+                }
+
+                containerMemory = memoryData
+                console.table(memoryData)
+                memoryData.forEach(container => {
+                    console.log(`Контейнер: ${container.name} (x: ${container.x}, y: ${container.y}, z: ${container.z})`)
+
+                    if (container.items && container.items.length > 0) {
+                        console.log(`  Содержимое:`)
+                        container.items.forEach(item => {
+                            console.log(`    - ${item.name} x${item.count}`)
+                        })
+                    } else {
+                        console.log(`  Нет предметов в этом контейнере`)
+                    }
+                })
+
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Запомнил ${memoryData.length} контейнеров с предметами!`)
+                bot.chat(`/msg ${username} Запомнил ${memoryData.length} контейнеров с предметами!`)
+                task = null
+            }
+
+            rememberContainers()
+            break
+        case "steal":
+            const itemName = parts[1]
+            if (!itemName) {
+                bot.chat("че воровать-то? введи чёт типа: steal diamond")
+                return
+            }
+
+            stealItems(itemName, username)
+            break
+        case "addspawnpos":
+            const pos = bot.players[username].entity.position.floored();
+            SPAWN_POSITIONS.push(pos);
+            bot.chat(`/msg ${username} Добавил позицию: ${pos.x}, ${pos.y}, ${pos.z}`);
+            break;
+        case "logspawnpos":
+            console.log('Спавна позици щапрошены')
+            if (SPAWN_POSITIONS.length === 0) {
+                bot.chat(`/msg ${username} Спаунов нет 😢`);
+            } else {
+                console.log("const SPAWN_POSITIONS = [");
+                SPAWN_POSITIONS.forEach((pos) => {
+                    console.log(`    new vec3(${pos.x}, ${pos.y}, ${pos.z}),`);
+                });
+                console.log("];");
+
+                bot.chat(`/msg ${username} Смотри консоль`);
+            }
+            break;
+        case "play":
+            console.log('Произведение музыки запрошено');
+            if (SOUND || playing) {
+                bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
+                return;
+            }
+
+            SOUND = args[0] || "vivalavida";
+
+
+            const ffmpeg = require('fluent-ffmpeg');
+            const fs = require('fs');
+            const path = require('path');
+
+
+            let audioFile;
+            try {
+                audioFile = path.join('/rusvan-bots/music', `${SOUND}.mp3`);
+                if (!fs.existsSync(audioFile)) {
+                    console.error('Файл не найден:', audioFile);
+                    bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
+                    SOUND = null;
+                    playing = false;
+                    return;
+                }
+            } catch (err) {
+                console.error('Ошибка при проверке файла:', err);
+                SOUND = null;
+                playing = false;
+                return;
+            }
+
+            const tempDir = path.join('/rusvan-bots/music', `temp_audio${NUMBER}`);
+            playing = true;
+            ffmpeg.ffprobe(audioFile, (err, metadata) => {
+                if (err) {
+                    console.error('Ошибка при анализе аудиофайла:', err);
+                    return;
+                }
+
+                const duration = metadata.format.duration;
+                const segmentCount = Math.ceil(duration) / 4;
+
+                console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
+
+                ffmpeg(audioFile)
+                    .outputOptions([
+                        '-f segment',
+                        '-segment_time 4',
+                        '-c copy',
+                        '-map 0:a'
+                    ])
+                    .output(`${tempDir}/segment-%03d.mp3`)
+                    .on('end', () => {
+                        console.log('Аудио успешно разделено');
+
+                        sendSegmentsSequentially(0, segmentCount, tempDir);
+                    })
+                    .on('error', (err) => {
+                        console.error('Ошибка при разделении аудио:', err);
+                    })
+                    .run();
+            });
+
+        function sendSegmentsSequentially(index, total, tempDir) {
+            if (index >= total || !playing) {
+                console.log('Все сегменты отправлены');
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
+                SOUND = null;
+                playing = false;
+                fs.readdirSync(tempDir).forEach(file => {
+                    fs.unlinkSync(path.join(tempDir, file));
+                });
+                playing = false;
+                return;
+            }
+
+            const segmentFile = path.join(tempDir, `segment-${index.toString().padStart(3, '0')}.mp3`);
+
+            bot.plasmovoice.sendAudio(segmentFile)
+                .then(() => {
+                    // console.log(`Отправлен сегмент ${index + 1}/${total}`);
+                    setTimeout(() => {
+                        sendSegmentsSequentially(index + 1, total, tempDir);
+                    }, 4000);
+                })
+                .catch(err => {
+                    console.error(`Ошибка при отправке сегмента ${index + 1}:`, err);
+                    sendSegmentsSequentially(index + 1, total, tempDir);
+                });
+        }
+            break;
+        case "hi":
+            bot.chat(`/msg ${username} Привета!`);
+            break
+        case "equip":
+            query = args[0] || null
+            if (!query) {return}
+            equipItem(query)
+            // bot.chat(`/msg ${username} Привета!`);
+            break
+        case "slot":
+            query = args[0] || null
+            if (!query) {return}
+            query = parseInt(query)
+            bot.setQuickBarSlot(query)
+            equipItem()
+            // bot.chat(`/msg ${username} Привета!`);
+            break
+        case "speed":
+            speed = args[0] || 1
+
+            bot.on('physicsTick', () => {
+                if (bot.pathfinder.isMoving()) {
+                    bot.entity.velocity.x *= speed
+                    bot.entity.velocity.z *= speed
+                }
+            })
+            return;
+        case "сосал?":
+            if (args.length < 200) {
+                bot.chat(`!Да.`);
+                return;
+            }
+
+            if (task) {
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                return;
+            }
+        case "server":
+            if (args.length < 200) {
+                bot.chat("/server sleepcraft");
+                return;
+            }
+        case "break":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+            if (args.length < 2) {
+                console.log('Укажи блок и количество: break <тип_блока> <количество>')
+                return;
+            }
+            const blockType = args[0];
+            const amount = parseInt(args[1]);
+
+            if (isNaN(amount) || amount <= 0) {
+                return;
+            }
+
+            collectBlockType(blockType, amount);
+            break;
+        case "nearest":
+            if (args.length < 1) {
+                bot.chat(`/msg ${username} Укажи тип сущности: nearest <тип>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи тип сущности: nearest <тип>`);
+                return;
+            }
+            let entityType = args[0];
+            let nearestEntity = findEntityWithName(bot, entityType);
+
+            if (nearestEntity) {
+                const neName = nearestEntity.username || nearestEntity.mobType || nearestEntity.name || 'Неизвестная сущность';
+                const nePos = nearestEntity.position.floored();
+                const dist = bot.entity.position.distanceTo(nearestEntity.position).toFixed(1);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
+                bot.chat(`/msg ${username} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
+            } else {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдено сущностей типа ${entityType} поблизости.`);
+                bot.chat(`/msg ${username} Не найдено сущностей типа ${entityType} поблизости.`);
+            }
+            break;
+        case "come":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            let playerToCome;
+
+            if (args.length < 1) {
+                playerToCome = bot.players[username]?.entity;
+                console.log('Аргументов нет')
+            } else {
+                let targetname = args[0];
+                console.log('Аргументы ест')
+                playerToCome = findEntityWithName(bot, targetname);
+            }
+
+
+
+            if (playerToCome) {
+                async function comePlayer() {
+                    bot.pathfinder.setMovements(defaultMove);
+                    console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
+                    await bot.pathfinder.setGoal(new GoalFollow(playerToCome, 0));
+                    task = null;
+                    console.log("Готово!");
+                }
+
+                comePlayer();
+            } else {
+                bot.chat(`/m ${WATCHED_PLAYERS[0]} Я не вижу цель :(`)
+                bot.chat(`/m ${WATCHED_PLAYERS[0]} Я тебя не вижу :(`)
+            }
+            break;
+        case "teleport":
+            if (task) {
+                bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
+                return;
+            }
+
+            let playerToTeleport;
+
+            if (args.length < 1) {
+                playerToTeleport = bot.players[username]?.entity;
+                console.log('[TP DEBUG] Цель — вызывающий');
+            } else {
+                const targetTeleportName = args[0];
+                playerToTeleport = findEntityWithName(bot, targetTeleportName);
+                console.log('[TP DEBUG] Цель — по аргументу');
+            }
+
+            if (!playerToTeleport) {
+                bot.chat(`/msg ${username} Я не вижу цель для тп 😢`);
+                return;
+            }
+
+            const teleportTargetPosition = playerToTeleport.position;
+
+            const enderPearlItem = bot.inventory.items().find(item => item.name === 'ender_pearl');
+            if (!enderPearlItem) {
+                bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
+                return;
+            }
+
+        async function teleportToPlayer(targetPosition) {
+            try {
+                await bot.equip(enderPearlItem, 'hand');
+                await bot.lookAt(targetPosition);
+
+                bot.chat(`/msg ${username} Прицелился... Кидаю!`);
+
+                bot.activateItem();
+                await bot.waitForTicks(5);
+                bot.deactivateItem();
+
+            } catch (teleportError) {
+                console.log('[TP ERROR] Не смог ', teleportError);
+                bot.chat(`/msg ${username} Что-то пошло не так с телепортом..`);
+            }
+        }
+
+            teleportToPlayer(teleportTargetPosition);
+            break;
+        case "cometo":
+            const player = bot.players[username]?.entity
+
+            if (player) {
+                const block = bot.blockAtEntityCursor(player, 100) // 6 — макс. дистанция (можно больше)
+
+                if (block) {
+                    console.log(`юзер смотрит на блок: ${block.name} (${block.position})`)
+                    async function comePos() {
+                        bot.pathfinder.setMovements(defaultMove);
+                        console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
+                        //await bot.pathfinder.(new GoalNear(vec3(, , ), 0));
+                        await bot.pathfinder.goto(new GoalNear(Math.floor(block.position.x), Math.floor(block.position.y + 1), Math.floor(block.position.z), 2));
+                        task = null;
+                        console.log("Готово!");
+                    }
+
+                    comePos()
+
+                } else {
+                    console.log('Он смотрит в пустоту или слишком далеко...')
+                }
+            } else {
+                console.log('юзер не найден или оффлайн')
+            }
+
+
+
+            break;
+        case "mode":
+            if (!WATCHED_PLAYERS.includes(username)) {return}
+            if (MODE === 'мирный') {
+                MODE = 'злой'
+            } else {
+                MODE = 'мирный'
+            }
+            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
+            bot.chat(`/msg ${username} Задан режим '${MODE}'`)
+            return
+        case "stop":w
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                return;
+            }
+            sendFeedback(`Останавливаюсь.`)
+            bot.pvp.stop();
+            followingProtectedPlayer = false;
+            miningSand = false;
+            following = false;
+            bot.pathfinder.setGoal(null);
+            bot.pathfinder.stop();
+            bot.clearControlStates();
+            collecting = false;
+            task = null;
+            break;
+        case "stop-music":
+            SOUND = null;
+            playing = false;
+            break;
+        case "status":
+            replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
+            // console.log(readStates())
+            break;
+        default:
+            break;
+    }
+}
 
 
 let justSentLogin = false;
@@ -564,8 +1567,6 @@ bot.on('spawn', () => {
 
 });
 
-
-
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
     bot.chat(`/l ${PASSWORD}`);
@@ -578,8 +1579,6 @@ bot.once('login', () => {
 bot.on("plasmovoice_audio_end", () => {
     SOUND = null
 })
-
-
 
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
@@ -641,1043 +1640,8 @@ bot.on('message', (jsonMsg, position) => {
 
         }
 
-        const parts = message.trim().toLowerCase().split(" ");
-        const command = parts[0];
-        const args = parts.slice(1);
-
         // console.log(`username: '${username}', command: '${command}'`);
-
-
-
-        switch (command) {
-            case "exec":
-                if (!WATCHED_PLAYERS.includes(username)) {
-                    sendFeedback(`${username} хочет выполнить ${plainMessage}`)
-                    replyFeedback(username, `Я не буду этого делать!!!`)
-                    return;
-                }
-                eval(message.split('exec ')[1]);
-                // bot.chat("Ест!");
-                return;
-
-            case "say":
-                if (!WATCHED_PLAYERS.includes(username)) {
-                sendFeedback(`${username} хочет ${plainMessage}`)
-                }
-                bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
-                return;
-
-            case "activate":
-
-                if (args.length < 1) {
-                    // bot.chat("Укажи цель: activate <ник_игрока | тип_моба>");
-                    return;
-                }
-                let targetname = args[0];
-
-                sendFeedback(`Ищу цель для пкм: ${targetname}`);
-                bot.chat(`/msg ${username} Ищу цель: ${targetname}`);
-
-                const entityToActivate = findEntityWithName(bot, targetname);
-                if (entityToActivate) {
-                    const headPosition = entityToActivate.position.offset(0, entityToActivate.height * 0.9, 0);
-                    bot.lookAt(headPosition);
-                    bot.activateEntity(entityToActivate);
-                }
-                return;
-
-            case "activateblock":
-                const blockToActivate = bot.findBlock({
-                    matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes(parts[1].toLowerCase())
-                        const isVisible = bot.canSeeBlock(block)
-                        return nameMatches && isVisible
-                    },
-                    maxDistance: 5,
-                    useExtraInfo: true
-                })
-                if (blockToActivate) {
-                    bot.lookAt(blockToActivate.position);
-                    bot.activateBlock(blockToActivate);
-                }
-                return;
-
-            case "comeblock":
-                const blockToCome = bot.findBlock({
-                    matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes(parts[1].toLowerCase())
-                        // const isVisible = bot.canSeeBlock(block)
-                        return nameMatches //&& isVisible
-                    },
-                    maxDistance: 50,
-                    useExtraInfo: true
-                })
-                if (blockToCome) {
-                    bot.pathfinder.setMovements(defaultMove);
-                    bot.pathfinder.setGoal(new goals.GoalBlock(blockToCome.position.x, blockToCome.position.y, blockToCome.position.z, 2))
-                    console.log('Иду к блоку')
-                } else {
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Блок не найден 😢`)
-                    bot.chat(`/m ${username} Блок не найден 😢`)
-                }
-                break;
-
-
-            case 'restart':
-                initializeBotState();
-
-                if (isInitialSpawn) {
-                    // console.log("Первый спавн: Запуск процесса входа...");
-
-                } else {
-                    bot.setControlState('sprint', true);
-                }
-                return;
-            case "drop":
-                if (!WATCHED_PLAYERS.includes(username)) {
-                    sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                    bot.chat(`/msg ${username} Я не буду этого делать!!!`)
-                    return;
-                }
-
-                ;(async () => {
-
-                async function safeToss(item, amount) {
-                    const slot = item.slot
-                    if (slot < 9 || slot > 44) {
-                        try {
-                            await bot.equip(item, 'hand')
-                            await bot.unequip('hand')
-                        } catch (err) {
-                            bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
-                            return
-                        }
-                    }
-
-                    bot.toss(item.type, null, Math.min(item.count, amount), err => {
-                        if (!err) {
-                            // bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
-                        } else {
-                            // bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
-                        }
-                    })
-                }
-
-                for (let i = 1; i < parts.length; i += 2) {
-                    const itemName = parts[i].toLowerCase()
-                    const amount = parts[i + 1] === "all" ? Infinity : parseInt(parts[i + 1])
-
-                    const allItems = [
-                        ...bot.inventory.items(),
-                        bot.inventory.slots[45],
-                        bot.inventory.slots[5],
-                        bot.inventory.slots[6],
-                        bot.inventory.slots[7],
-                        bot.inventory.slots[8],
-                    ].filter(it => it)
-
-                    const matchingItems = allItems.filter(it => it.name.toLowerCase().includes(itemName))
-
-                    if (matchingItems.length > 0) {
-                        for (const item of matchingItems) {
-                            await safeToss(item, amount)
-                        }
-                    } else {
-                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
-                        bot.chat(`/msg ${username} у меня нет ничего типа '${itemName}'`)
-                    }
-                }
-
-            })()
-                return;
-
-
-            case "collect":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
-                    return;
-                }
-
-//                bot.on('entityHurt', async (entity) => {
-//
-//                    if (entity === bot.entity) {
-//                        // bot.chat('Получен урон :(')
-//                        console.log('Меня атакуют!');
-//
-//                        bot.pathfinder.setGoal(null);
-//
-//                        const nearestEntity = bot.nearestEntity(entity =>
-//                            entity !== bot.entity && isEntityVisible(entity) && !entity.name.includes('item') && !entity.name.includes('stand')
-//                        );
-//                        // bot.chat('Я знаю, кто ударил!')
-//                        if (nearestEntity) {
-//                            collecting_paused = true;
-//                            console.log(`Атакую сущность: ${nearestEntity.name}`);
-//                            bot.pathfinder.setMovements(defaultMove);
-//                            bot.pathfinder.setGoal(null)
-//                            bot.pathfinder.setGoal(new goals.GoalFollow(nearestEntity, 0));
-//                            bot.pvp.attack(nearestEntity);  // Атакуем сущность
-//
-//
-//
-//                            const healthChecker = setInterval(() => {
-//                                if (!isEntityVisible(nearestEntity)) {
-//                                    console.log(`${nearestEntity.name} убита!`);
-//                                    // bot.chat('Ха! я победил!')
-//                                    collecting_paused = false;
-//                                    collecting_paused = false;
-//                                    bot.pvp.stop()
-//                                    clearInterval(healthChecker);
-//
-//
-//                                } else {
-//                                    const campsword = bot.inventory.items().find(item => item.name.includes("sword"));
-//                                    if (campsword && (!bot.heldItem || bot.heldItem.type !== campsword.type)) {
-//                                        bot.equip(campsword, 'hand').catch(err => console.log(`Ошибка экипировки меча: ${err.message}`));
-//                                    }
-//
-//                                }
-//                            }, 500);
-//
-//                        const onEntityGone = (goneEntity) => {
-//                            if (goneEntity === nearestEntity) {
-//                                console.log(`${goneEntity.name} исчезла или убита!`);
-//                                collecting_paused = false;
-//                                bot.pvp.stop();
-//                                clearInterval(healthChecker);
-//                                bot.pathfinder.setMovements(defaultMove);
-//                                bot.pathfinder.setGoal(null);
-//                            }
-//                        };
-//
-//                        bot.once('entityGone', onEntityGone);
-//                        } else {
-//                            collecting_paused = false;
-//                            console.log('Нет подходящих сущностей для атаки');
-//                        }
-//                    }
-//                });
-            function findNearestItem(searchName = '') {
-                wanted_ids = []
-                if (searchName) {
-                    wanted_ids = selectIdsWithName(searchName);
-                }
-                return bot.nearestEntity(entity => {
-                    if (searchName) {
-                        if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {
-                            return true;
-                        }
-                    } else {
-                        return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id);
-                    }
-                });
-            }
-
-            function isFarFromCenter() {
-                const pos = bot.entity.position;
-                const dx = pos.x;
-                const dz = pos.z;
-                return Math.sqrt(dx * dx + dz * dz) > 15;
-            }
-
-            async function unequipArmorAndMainHand() {
-                for (let i = 0; i < 4; i++) {
-                    const armorItem = bot.inventory.slots[i + 5];
-                    if (armorItem) {
-                        await bot.equip(armorItem, 'hand');
-                    }
-                }
-
-                const mainHandItem = bot.inventory.slots[36];
-                if (mainHandItem) {
-                    await bot.equip(mainHandItem, 'hand');
-                }
-            }
-            async function depositItems() {
-                if (justCheckedBarrel) {return}
-                console.log('Запуск очистки...')
-
-
-
-                justCheckedBarrel = true
-                chestPos = vec3(6.5, 88, 6.5);
-                await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
-
-                const blocks = bot.findBlocks({
-                    matching: block => block.name.includes('barrel'),
-                    maxDistance: 4,
-                    count: 999,
-                })
-
-                const chestBlock_rich = blocks
-                    .map(pos => bot.blockAt(pos))
-                    .find(block => block && block.position.y === 86 && block.position.z === 8)
-
-                console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
-                if (!chestBlock_rich) {
-                    bot.chat(`/msg ${username} не нашел бочку :(`);
-                    return;
-                }
-
-                await unequipArmorAndMainHand()
-
-                // const blockToLookAt_rich = bot.findBlock({
-                //     matching: block => {
-                //         const nameMatches = block.name.toLowerCase().includes('calcite');
-                //         const isVisible = bot.canSeeBlock(block);
-                //         return nameMatches && isVisible;
-                //     },
-                //     maxDistance: 5,
-                //     useExtraInfo: true
-                // });
-                //
-                // if (blockToLookAt_rich) {
-                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                //     await bot.lookAt(center_rich, true);
-                // }
-
-                const chest_rich = await bot.openBlock(chestBlock_rich, null);
-
-                for (let item of bot.inventory.items()) {
-                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
-                        try {
-                            console.log(`Кладу ${item.name}`)
-                            await chest_rich.deposit(item.type, null, item.count);
-                        } catch (err) {
-                            console.log(`Не смог положить ${item.name}: ${err.message}`);
-                        }
-                    }
-                }
-                chest_rich.close();
-
-
-
-
-                const chestBlock = blocks
-                    .map(pos => bot.blockAt(pos))
-                    .find(block => block && block.position.z === 6 && block.position.y === 86 )
-
-                console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
-                if (!chestBlock) {
-                    bot.chat(`/msg ${username} не нашел бочку :(`);
-                    return;
-                }
-                const blockToLookAt = bot.findBlock({
-                    matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes('calcite');
-                        const isVisible = bot.canSeeBlock(block);
-                        return nameMatches && isVisible;
-                    },
-                    maxDistance: 5,
-                    useExtraInfo: true
-                });
-
-                if (blockToLookAt) {
-                    const center = blockToLookAt.position.offset(0.5, 0.5, 0.5);
-                    await bot.lookAt(center, true);
-                }
-
-                const chest = await bot.openBlock(chestBlock, null);
-
-                for (let item of bot.inventory.items()) {
-                    if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
-                        try {
-                            console.log(`Кладу ${item.name}`)
-                            await chest.deposit(item.type, null, item.count);
-                        } catch (err) {
-                            console.log(`Не смог положить ${item.name}: ${err.message}`);
-                        }
-                    }
-                }
-                chest.close();
-            }
-                justCheckedBarrel = true;
-                let collectInterval = null;
-
-            function startCollecting(searchName = '') {
-                if (collectInterval) clearInterval(collectInterval);
-
-                task = 'collecting';
-
-                collectInterval = setInterval(async () => {
-                    if (collecting_paused) {
-                        console.log('Сбор приостановлен, жду 5 секунд...');
-                        await new Promise(resolve => setTimeout(resolve, 5000));
-                        return;
-                    }
-                    const targetItem = findNearestItem(searchName);
-                    if (targetItem && collectingId !== targetItem.id) {
-                        collectingId = targetItem.id;
-                        setState(`collecting:${targetItem.id}`);
-                        console.log(`debug states:`)
-                        console.log(readStates())
-                    } else if (collectingId !== null) {
-                        // setState(`collecting:null`);
-                        collectingId = null
-                    }
-
-                    if (targetItem && !bot.pathfinder.goal) {
-                        bot.pathfinder.setMovements(defaultMove);
-                        id = targetItem?.metadata?.[8]?.itemId
-                        count = targetItem?.metadata?.[8]?.itemCount
-                        console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
-                        // console.log(JSON.stringify(targetItem.metadata, null, 2));
-                        justCheckedBarrel = false;
-                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
-                        bot.pathfinder.setMovements(defaultMove);
-                        bot.pathfinder.setGoal(null)
-                        bot.pathfinder.setGoal(new GoalFollow(targetItem, 0));
-                    } else {
-                        if (isFarFromCenter() && !bot.pathfinder.goal) {
-                            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
-                            chestPos = vec3(7, 87, 6);
-                            await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
-                        } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
-                            await depositItems();
-                            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
-                            blockToLookAfterDeposit = bot.findBlock({
-                                matching: block => {
-                                    const nameMatches = block.name.toLowerCase().includes('calcite')
-                                    const isVisible = bot.canSeeBlock(block)
-                                    return nameMatches && isVisible
-                                },
-                                maxDistance: 5,
-                                useExtraInfo: true
-                            })
-                            if (blockToLookAfterDeposit) {
-                                bot.lookAt(blockToLookAfterDeposit.position, true );
-                            }
-                            bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 0 ));
-                        }
-                    }
-
-                    if (!collecting) {
-                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} прекращаю!`);
-                        if (collectInterval) clearInterval(collectInterval);
-                        bot.pathfinder.setGoal(null);
-                        return;
-                    }
-
-                }, 1000);
-            }
-
-                const searchName = parts[1]
-                console.log(searchName)
-                collecting = true;
-                startCollecting(searchName);
-                break;
-
-            case "camp":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    return;
-                }
-
-
-                if (args.length < 1) {
-                    bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
-                    return;
-                }
-                if (MODE === "мирный") {
-                    bot.chat(`/msg ${username} Я сегодня добрый!`)
-                    return;
-                }
-                let camptargetUsername = args[0];
-                if (camptargetUsername === 'vlkardakov') {
-                    // bot.chat(Нет идите нафиг')
-                    return;
-                }
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ищу цель: ${camptargetUsername}`);
-                bot.chat(`/msg ${username} Ищу цель: ${camptargetUsername}`);
-                task = 'camp'
-
-            function findNewTarget() {
-                return findEntityWithName(bot, camptargetUsername, visible=false);
-            }
-
-            function startCampAttack(targetEntity) {
-                if (!targetEntity) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдена сущность: ${camptargetUsername}.`);
-                    task = null
-                    return;
-                }
-
-                const camptargetName = targetEntity.username || targetEntity.mobType || targetEntity.name || 'неизвестная сущность';
-
-                // bot.pathfinder.setGoal(null);
-                // bot.pvp.stop();
-                // bot.pathfinder.setMovements(defaultMove);
-                // bot.pathfinder.setGoal(new GoalFollow(targetEntity, RANGE_GOAL), true);
-
-                let campattackInterval = null;
-                const campMAX_ATTEMPTS = 250;
-                let campattackAttempts = 0;
-
-                function campattackLoop() {
-                    if (!targetEntity || !targetEntity.isValid || campattackAttempts >= campMAX_ATTEMPTS) {
-                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Хахаха ничтожество /s`);
-                        bot.pathfinder.setGoal(null);
-                        bot.pvp.stop();
-                        if (campattackInterval) clearInterval(campattackInterval);
-
-
-                        const newTarget = findNewTarget();
-                        if (newTarget && newTarget !== targetEntity) {
-                            startCampAttack(newTarget);
-                        }
-                        task = null;
-                        return;
-                    }
-                    bot.on('message', (jsonMsg, position) => {
-                        if (jsonMsg.toString().includes('stop')) {
-                            bot.pathfinder.setGoal(null);
-                            bot.pvp.stop();
-                            if (campattackInterval) clearInterval(campattackInterval);
-                            task = null;
-                            return;
-                        }
-                    })
-
-                    const campsword = bot.inventory.items().find(item => item.name.includes("sword"));
-                    if (campsword && (!bot.heldItem || bot.heldItem.type !== campsword.type)) {
-                        bot.equip(campsword, 'hand').catch(err => console.log(`Ошибка экипировки меча: ${err.message}`));
-                    }
-
-                    if (command === 'kill' && !isEntityVisible(targetEntity)) {
-                    } else {
-                        bot.pvp.attack(targetEntity);
-                    }
-
-                    campattackAttempts++;
-                }
-
-                campattackInterval = setInterval(campattackLoop, 500);
-            }
-
-                const initialTarget = findNewTarget();
-                startCampAttack(initialTarget);
-                break;
-
-
-
-            case "kill":
-                if (task) {
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    return;
-                }
-
-                if (MODE === "мирный") {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                    bot.chat(`/msg ${username} Я сегодня добрый!`)
-                    return;
-                }
-                if (args.length < 1) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                    bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                    return;
-                }
-                let targetUsername = args[0];
-                if (targetUsername === 'enemy') targetUsername = 'zombie';
-
-                if (targetUsername === 'vlkardakov') {
-                    bot.chat(`/msg ${username} Нет идите нафиг`)
-                    return;}
-
-                targetEntity = findEntityWithName(bot, targetUsername);
-
-                if (!targetEntity) {
-                    bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
-                    return;
-                }
-                bot.pathfinder.setGoal(null);
-                equipItem('axe')
-                equipItem('sword')
-                bot.pvp.attack(targetEntity);
-                break;
-            case "remember":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    return;
-                }
-
-                task = 'remembering'
-
-                const rememberContainers = async () => {
-                    const radius = parseInt(parts[1]) || 15
-
-                    let blocks = bot.findBlocks({
-                        matching: block => {
-                            return (
-                                block &&
-                                block.name.toLowerCase().includes("barrel")
-                            )
-                        },
-                        maxDistance: radius,
-                        count: 999
-                    })
-
-                    const getDistance = (block1, block2) => {
-                        if (!block1.position || !block2.position) return Infinity;
-
-                        return Math.sqrt(
-                            Math.pow(block1.position.x - block2.position.x, 2) +
-                            Math.pow(block1.position.y - block2.position.y, 2) +
-                            Math.pow(block1.position.z - block2.position.z, 2)
-                        )
-                    }
-
-                    let currentBlock = blocks[0]
-                    let remainingBlocks = blocks.slice(1)
-
-                    remainingBlocks.sort((a, b) => getDistance(bot.entity, a) - getDistance(bot.entity, b))
-
-                    blocks = [currentBlock]
-                    while (remainingBlocks.length > 0 && (task === 'remembering')) {
-                        let nearestBlock = remainingBlocks[0]
-                        remainingBlocks.forEach(block => {
-                            if (getDistance(currentBlock, block) < getDistance(currentBlock, nearestBlock)) {
-                                nearestBlock = block
-                            }
-                        })
-
-                        blocks.push(nearestBlock)
-
-                        currentBlock = nearestBlock
-
-                        remainingBlocks = remainingBlocks.filter(block => block !== nearestBlock)
-                    }
-
-                    const memoryData = []
-
-                    for (let pos of blocks) {
-                        const block = bot.blockAt(pos)
-                        if (task !== 'remembering') {break}
-                        if (!block || !block.position) continue
-
-                        try {
-                            await bot.pathfinder.goto(new GoalNear(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), 4))
-
-                            const container = await bot.openContainer(block)
-                            const items = container.slots.filter(slot => slot && slot.name) // Получаем предметы из контейнера
-                            const itemsData = items.map(item => ({
-                                name: item.name,
-                                count: item.count
-                            }))
-
-                            memoryData.push({
-                                name: block.name,
-                                x: block.position.x,
-                                y: block.position.y,
-                                z: block.position.z,
-                                items: itemsData
-                            })
-
-                            container.close()
-                        } catch (err) {
-                            console.log(`Не удалось открыть контейнер в позиции ${block.position}: ${err.message}`)
-                        }
-                    }
-
-                    containerMemory = memoryData
-                    console.table(memoryData)
-                    memoryData.forEach(container => {
-                        console.log(`Контейнер: ${container.name} (x: ${container.x}, y: ${container.y}, z: ${container.z})`)
-
-                        if (container.items && container.items.length > 0) {
-                            console.log(`  Содержимое:`)
-                            container.items.forEach(item => {
-                                console.log(`    - ${item.name} x${item.count}`)
-                            })
-                        } else {
-                            console.log(`  Нет предметов в этом контейнере`)
-                        }
-                    })
-
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Запомнил ${memoryData.length} контейнеров с предметами!`)
-                    bot.chat(`/msg ${username} Запомнил ${memoryData.length} контейнеров с предметами!`)
-                    task = null
-                }
-
-                rememberContainers()
-                break
-
-            case "steal":
-                const itemName = parts[1]
-                if (!itemName) {
-                    bot.chat("че воровать-то? введи чёт типа: steal diamond")
-                    return
-                }
-
-                stealItems(itemName, username)
-                break
-            case "addspawnpos":
-                const pos = bot.players[username].entity.position.floored();
-                SPAWN_POSITIONS.push(pos);
-                bot.chat(`/msg ${username} Добавил позицию: ${pos.x}, ${pos.y}, ${pos.z}`);
-                break;
-
-            case "logspawnpos":
-                console.log('Спавна позици щапрошены')
-                if (SPAWN_POSITIONS.length === 0) {
-                    bot.chat(`/msg ${username} Спаунов нет 😢`);
-                } else {
-                    console.log("const SPAWN_POSITIONS = [");
-                    SPAWN_POSITIONS.forEach((pos) => {
-                        console.log(`    new vec3(${pos.x}, ${pos.y}, ${pos.z}),`);
-                    });
-                    console.log("];");
-
-                    bot.chat(`/msg ${username} Смотри консоль`);
-                }
-                break;
-
-
-            case "play":
-                console.log('Произведение музыки запрошено');
-                if (SOUND || playing) {
-                    bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
-                    return;
-                }
-
-                SOUND = args[0] || "vivalavida";
-
-
-                const ffmpeg = require('fluent-ffmpeg');
-                const fs = require('fs');
-                const path = require('path');
-
-
-                let audioFile;
-                try {
-                    audioFile = path.join('/rusvan-bots/music', `${SOUND}.mp3`);
-                    if (!fs.existsSync(audioFile)) {
-                        console.error('Файл не найден:', audioFile);
-                        bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
-                        SOUND = null;
-                        playing = false;
-                        return;
-                    }
-                } catch (err) {
-                    console.error('Ошибка при проверке файла:', err);
-                    SOUND = null;
-                    playing = false;
-                    return;
-                }
-
-                const tempDir = path.join('/rusvan-bots/music', `temp_audio${NUMBER}`);
-                playing = true;
-                ffmpeg.ffprobe(audioFile, (err, metadata) => {
-                    if (err) {
-                        console.error('Ошибка при анализе аудиофайла:', err);
-                        return;
-                    }
-
-                    const duration = metadata.format.duration;
-                    const segmentCount = Math.ceil(duration) / 4;
-
-                    console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
-
-                    ffmpeg(audioFile)
-                        .outputOptions([
-                            '-f segment',
-                            '-segment_time 4',
-                            '-c copy',
-                            '-map 0:a'
-                        ])
-                        .output(`${tempDir}/segment-%03d.mp3`)
-                        .on('end', () => {
-                            console.log('Аудио успешно разделено');
-
-                            sendSegmentsSequentially(0, segmentCount, tempDir);
-                        })
-                        .on('error', (err) => {
-                            console.error('Ошибка при разделении аудио:', err);
-                        })
-                        .run();
-                });
-
-            function sendSegmentsSequentially(index, total, tempDir) {
-                if (index >= total || !playing) {
-                    console.log('Все сегменты отправлены');
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
-                    SOUND = null;
-                    playing = false;
-                    fs.readdirSync(tempDir).forEach(file => {
-                        fs.unlinkSync(path.join(tempDir, file));
-                    });
-                    playing = false;
-                    return;
-                }
-
-                const segmentFile = path.join(tempDir, `segment-${index.toString().padStart(3, '0')}.mp3`);
-
-                bot.plasmovoice.sendAudio(segmentFile)
-                    .then(() => {
-                        // console.log(`Отправлен сегмент ${index + 1}/${total}`);
-                        setTimeout(() => {
-                            sendSegmentsSequentially(index + 1, total, tempDir);
-                        }, 4000);
-                    })
-                    .catch(err => {
-                        console.error(`Ошибка при отправке сегмента ${index + 1}:`, err);
-                        sendSegmentsSequentially(index + 1, total, tempDir);
-                    });
-            }
-                break;
-
-            case "hi":
-                bot.chat(`/msg ${username} Привета!`);
-                break
-
-            case "equip":
-                query = args[0] || null
-                if (!query) {return}
-                equipItem(query)
-                // bot.chat(`/msg ${username} Привета!`);
-                break
-            case "slot":
-                query = args[0] || null
-                if (!query) {return}
-                query = parseInt(query)
-                bot.setQuickBarSlot(query)
-                equipItem()
-                // bot.chat(`/msg ${username} Привета!`);
-                break
-
-
-            case "speed":
-                speed = args[0] || 1
-
-                bot.on('physicsTick', () => {
-                    if (bot.pathfinder.isMoving()) {
-                        bot.entity.velocity.x *= speed
-                        bot.entity.velocity.z *= speed
-                    }
-                })
-                return;
-
-            case "сосал?":
-                if (args.length < 200) {
-                    bot.chat(`!Да.`);
-                    return;
-                }
-
-                if (task) {
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    return;
-                }
-
-            case "server":
-                if (args.length < 200) {
-                    bot.chat("/server sleepcraft");
-                    return;
-                }
-
-            case "break":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    return;
-                }
-                if (args.length < 2) {
-                    console.log('Укажи блок и количество: break <тип_блока> <количество>')
-                    return;
-                }
-                const blockType = args[0];
-                const amount = parseInt(args[1]);
-
-                if (isNaN(amount) || amount <= 0) {
-                    return;
-                }
-
-                collectBlockType(blockType, amount);
-                break;
-
-            case "nearest":
-                if (args.length < 1) {
-                    bot.chat(`/msg ${username} Укажи тип сущности: nearest <тип>`);
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи тип сущности: nearest <тип>`);
-                    return;
-                }
-                let entityType = args[0];
-                let nearestEntity = findEntityWithName(bot, entityType);
-
-                if (nearestEntity) {
-                    const neName = nearestEntity.username || nearestEntity.mobType || nearestEntity.name || 'Неизвестная сущность';
-                    const nePos = nearestEntity.position.floored();
-                    const dist = bot.entity.position.distanceTo(nearestEntity.position).toFixed(1);
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
-                    bot.chat(`/msg ${username} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
-                } else {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдено сущностей типа ${entityType} поблизости.`);
-                    bot.chat(`/msg ${username} Не найдено сущностей типа ${entityType} поблизости.`);
-                }
-                break;
-
-            case "come":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                    return;
-                }
-
-                let playerToCome;
-
-                if (args.length < 1) {
-                    playerToCome = bot.players[username]?.entity;
-                    console.log('Аргументов нет')
-                } else {
-                    let targetname = args[0];
-                    console.log('Аргументы ест')
-                    playerToCome = findEntityWithName(bot, targetname);
-                }
-
-
-
-                if (playerToCome) {
-                    async function comePlayer() {
-                        bot.pathfinder.setMovements(defaultMove);
-                        console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
-                        await bot.pathfinder.setGoal(new GoalFollow(playerToCome, 0));
-                        task = null;
-                        console.log("Готово!");
-                    }
-
-                    comePlayer();
-                } else {
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Я не вижу цель :(`)
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Я тебя не вижу :(`)
-                }
-                break;
-
-            case "teleport":
-                if (task) {
-                    bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
-                    return;
-                }
-
-                let playerToTeleport;
-
-                if (args.length < 1) {
-                    playerToTeleport = bot.players[username]?.entity;
-                    console.log('[TP DEBUG] Цель — вызывающий');
-                } else {
-                    const targetTeleportName = args[0];
-                    playerToTeleport = findEntityWithName(bot, targetTeleportName);
-                    console.log('[TP DEBUG] Цель — по аргументу');
-                }
-
-                if (!playerToTeleport) {
-                    bot.chat(`/msg ${username} Я не вижу цель для тп 😢`);
-                    return;
-                }
-
-                const teleportTargetPosition = playerToTeleport.position;
-
-                const enderPearlItem = bot.inventory.items().find(item => item.name === 'ender_pearl');
-                if (!enderPearlItem) {
-                    bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
-                    return;
-                }
-
-            async function teleportToPlayer(targetPosition) {
-                try {
-                    await bot.equip(enderPearlItem, 'hand');
-                    await bot.lookAt(targetPosition);
-
-                    bot.chat(`/msg ${username} Прицелился... Кидаю! 🎯`);
-
-                    bot.activateItem();
-                    await bot.waitForTicks(5);
-                    bot.deactivateItem();
-
-                } catch (teleportError) {
-                    console.log('[TP ERROR] Не смог ', teleportError);
-                    bot.chat(`/msg ${username} Что-то пошло не так с телепортом..`);
-                }
-            }
-
-                teleportToPlayer(teleportTargetPosition);
-                break;
-
-
-            case "cometo":
-                const player = bot.players[username]?.entity
-
-                if (player) {
-                    const block = bot.blockAtEntityCursor(player, 100) // 6 — макс. дистанция (можно больше)
-
-                    if (block) {
-                        console.log(`юзер смотрит на блок: ${block.name} (${block.position})`)
-                        async function comePos() {
-                            bot.pathfinder.setMovements(defaultMove);
-                            console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
-                            //await bot.pathfinder.(new GoalNear(vec3(, , ), 0));
-                            await bot.pathfinder.goto(new GoalNear(Math.floor(block.position.x), Math.floor(block.position.y + 1), Math.floor(block.position.z), 2));
-                            task = null;
-                            console.log("Готово!");
-                        }
-
-                        comePos()
-
-                    } else {
-                        console.log('Он смотрит в пустоту или слишком далеко...')
-                    }
-                } else {
-                    console.log('юзер не найден или оффлайн')
-                }
-
-
-
-                break;
-
-            case "mode":
-                if (!WATCHED_PLAYERS.includes(username)) {return}
-                if (MODE === 'мирный') {
-                    MODE = 'злой'
-                } else {
-                    MODE = 'мирный'
-                }
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
-                bot.chat(`/msg ${username} Задан режим '${MODE}'`)
-                return
-
-            case "stop":w
-                if (!WATCHED_PLAYERS.includes(username)) {
-                    sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                    bot.chat(`/msg ${username} Я не буду этого делать!!!`)
-                    return;
-                }
-                sendFeedback(`Останавливаюсь.`)
-                bot.pvp.stop();
-                followingProtectedPlayer = false;
-                miningSand = false;
-                following = false;
-                bot.pathfinder.setGoal(null);
-                bot.pathfinder.stop();
-                bot.clearControlStates();
-                collecting = false;
-                task = null;
-                break;
-
-            case "stop-music":
-                SOUND = null;
-                playing = false;
-                break;
-
-            case "status":
-                replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
-                // console.log(readStates())
-                break;
-            default:
-                break;
-        }
+        processCommand(username, message)
     }
 });
 
