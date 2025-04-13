@@ -872,7 +872,7 @@ bot.on('message', (jsonMsg, position) => {
                 const chest_rich = await bot.openBlock(chestBlock_rich, null);
 
                 for (let item of bot.inventory.items()) {
-                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow')) {
+                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
                         try {
                             console.log(`Кладу ${item.name}`)
                             await chest_rich.deposit(item.type, null, item.count);
@@ -887,7 +887,7 @@ bot.on('message', (jsonMsg, position) => {
 
 
                 const chestBlock = blocks
-                    .map(pos => bot.blockAt(pos)) 
+                    .map(pos => bot.blockAt(pos))
                     .find(block => block && block.position.z === 6 && block.position.y === 85 )
 
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
