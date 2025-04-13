@@ -1718,6 +1718,24 @@ bot.on('playerCollect', (player, item) => {
     // console.log(JSON.stringify(item?.metadata, null, 2));
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
 })
+
+bot.on('blockUpdate', (oldBlock, newBlock) => {
+    if (!oldBlock || !newBlock || oldBlock.type === newBlock.type) {
+        return
+    }
+
+    const { x, y, z } = oldBlock.position
+    const { username } = Object.values(bot.players).find(p => p.entity.position.distanceTo(oldBlock.position) <= 2.5)?.entity || {}
+
+    if (!username) return
+
+    const oldBlockName = oldBlock.name
+    const newBlockName = newBlock.name
+
+    console.log(`${username} сломал блок ${oldBlockName} в позиции ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}. Новый блок: ${newBlockName}`)
+})
+
+
 rl.on('line', (line) => {
     const input = line.trim();
     if (input.length === 0) {
