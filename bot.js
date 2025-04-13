@@ -16,6 +16,12 @@ const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: '> '
+});
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay'];// 'monoplan',
 const RANGE_GOAL = 0;
@@ -547,7 +553,7 @@ function isItemOnSpawn(itemEntity) {
     });
 }
 
-function processCommand(message, username) {
+function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
@@ -1610,6 +1616,18 @@ bot.on('playerCollect', (player, item) => {
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
 })
 
+rl.on('line', (line) => {
+    const input = line.trim();
+    if (input.length === 0) {
+        rl.prompt();
+        return;
+    }
+
+    const fakeUsername = 'console';
+    processCommand(input, fakeUsername, input);
+    rl.prompt();
+});
+
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
@@ -1641,7 +1659,7 @@ bot.on('message', (jsonMsg, position) => {
         }
 
         // console.log(`username: '${username}', command: '${command}'`);
-        processCommand(message, username)
+        processCommand(message, username, plainMessage)
     }
 });
 
