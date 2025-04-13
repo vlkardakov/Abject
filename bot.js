@@ -84,12 +84,12 @@ console.log("Пароль: ", PASSWORD)
 console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
-const bot = mineflayer.createBot({ 
+const bot = mineflayer.createBot({
     host: '212.80.7.178',
     port: 25565,
     username: BOT_USERNAME,
     auth: 'offline',
-    version: '1.17'
+    version: '1.20.4'
 });
 
 console.log("Запуск бота...");
