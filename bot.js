@@ -89,7 +89,7 @@ const bot = mineflayer.createBot({
     port: 25565,
     username: BOT_USERNAME,
     auth: 'offline',
-    version: '1.20.4'
+    version: '1.17'
 });
 
 console.log("Запуск бота...");
