@@ -1659,7 +1659,10 @@ bot.on("plasmovoice_audio_end", () => {
 })
 
 bot.on('entitySpawn', (entity) => {
-    if (entity.type !== 'item') return
+    if (entity.type !== 'item') {
+        console.log(entity.type)
+        return
+    }
     const { x, y, z } = entity.position
     const nearest = Object.values(bot.players)
         .map(p => p.entity)
