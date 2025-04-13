@@ -1692,7 +1692,7 @@ bot.on('entitySpawn', (entity) => {
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
     count = item?.metadata?.[8]?.itemCount
-    name = itemProtocolIdMap[id]
+    name = getRussianName(itemProtocolIdMap[id])
 
     const { x, y, z } = item.position
     const roundedX = Math.round(x)
