@@ -524,7 +524,7 @@ bot.on('spawn', () => {
 //МЯЧИК!
 bot.on('knockback', (entity, vec) => {
     if (entity !== bot.entity || bounced) return
-
+    console.log('knocked me!')
     bounced = true
 
     const bouncePower = 3 // можно менять
@@ -534,7 +534,6 @@ bot.on('knockback', (entity, vec) => {
     bot.entity.velocity.y += direction.y
     bot.entity.velocity.z += direction.z
 
-    // сбрасываем bounce через 1 сек, чтоб не прыгал бесконечно
     setTimeout(() => {
         bounced = false
     }, 1000)
