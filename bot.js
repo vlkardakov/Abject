@@ -838,9 +838,21 @@ bot.on('message', (jsonMsg, position) => {
                 return Math.sqrt(dx * dx + dz * dz) > 15;
             }
 
+            async function unequipArmorAndMainHand() {
+                await bot.removeArmor();
+
+                const mainHandItem = bot.inventory.slots[36];
+                if (mainHandItem) {
+                    await bot.equip(mainHandItem, 'hand');
+                }
+            }
+
             async function depositItems() {
                 if (justCheckedBarrel) {return}
                 console.log('Запуск очистки...')
+
+                await unequipArmorAndMainHand()
+
                 justCheckedBarrel = true
                 chestPos = vec3(6.5, 88, 6.5);
                 await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
@@ -1380,7 +1392,7 @@ bot.on('message', (jsonMsg, position) => {
                 bot.on('physicsTick', () => {
                     if (bot.pathfinder.isMoving()) {
                         bot.entity.velocity.x *= speed
-                        bot.entity.velocity.z *= speed 
+                        bot.entity.velocity.z *= speed
                     }
                 })
                 return;
