@@ -245,6 +245,8 @@ function initializeBotState() {
 
         defaultMove = new Movements(bot, mcData);
 
+
+        defaultMove.speed = 0.25
         defaultMove.allow1by1towers = false
         // defaultMove.allowParkour = false
         defaultMove.canPlaceBlocks = false
