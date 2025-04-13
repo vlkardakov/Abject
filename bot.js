@@ -1522,7 +1522,7 @@ bot.on('message', (jsonMsg, position) => {
                 const player = bot.players['vlkardakov']?.entity
 
                 if (player) {
-                    const block = bot.blockAtEntityCursor(player, 6) // 6 — макс. дистанция (можно больше)
+                    const block = bot.blockAtEntityCursor(player, 100) // 6 — макс. дистанция (можно больше)
 
                     if (block) {
                         console.log(`👉 vlkardakov смотрит на блок: ${block.name} (${block.position})`)
