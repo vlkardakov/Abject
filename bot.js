@@ -380,12 +380,6 @@ function readFileWithRetry(filePath, maxAttempts = 40, delay = 200) {
         return 'err'
     }
 }
-function sleep(ms) {
-    const end = Date.now() + ms
-    while (Date.now() < end) {
-        // делаем нифига
-    }
-}
 
 function readStates() {
     const directory = path.join('/rusvan-bots', 'states');
@@ -396,8 +390,6 @@ function readStates() {
         if (filename.endsWith('.txt')) {
             const filePath = path.join(directory, filename);
             const content = readFileWithRetry(filePath);
-
-            sleep(NUMBER*50 )
 
             filesList.push({
                 name: path.basename(filename, '.txt'),
