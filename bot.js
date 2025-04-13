@@ -827,6 +827,7 @@ function processCommand(message, username, plainMessage) {
             })
 
             if (hasRichItems()) {
+                console.log("у меня есть ценные вещи")
                 const chestBlock_rich = blocks
                     .map(pos => bot.blockAt(pos))
                     .find(block => block && block.position.y === 86 && block.position.z === 8)
@@ -866,8 +867,6 @@ function processCommand(message, username, plainMessage) {
                 }
                 chest_rich.close();
             }
-
-
 
             const chestBlock = blocks
                 .map(pos => bot.blockAt(pos))
