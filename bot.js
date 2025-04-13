@@ -1659,17 +1659,12 @@ bot.on("plasmovoice_audio_end", () => {
 })
 
 bot.on('entitySpawn', (entity) => {
-    if (entity.displayName !== 2) return // только дропнутые предметы
+    if (entity.type !== 'item') return
     const { x, y, z } = entity.position
-    const rx = Math.round(x)
-    const ry = Math.round(y)
-    const rz = Math.round(z)
-
     const nearest = Object.values(bot.players)
         .map(p => p.entity)
         .filter(e => e && e.position.distanceTo(entity.position) <= 3)
-        .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(b.position))[0]
-
+        .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(entity.position))[0]
     if (!nearest) return
 
     setTimeout(() => {
@@ -1677,7 +1672,7 @@ bot.on('entitySpawn', (entity) => {
         const id = meta?.itemId
         const count = meta?.itemCount
         const name = itemProtocolIdMap?.[id] || `id:${id}`
-        console.log(`${nearest.username} => ${name} x${count} в ${rx} ${ry} ${rz}`)
+        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
     }, 200)
 })
 
