@@ -1382,7 +1382,7 @@ bot.on('message', (jsonMsg, position) => {
                     const dy = vel.y - lastVel.y
                     const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
 
-                    if (deltaSpeed > 0.9) { // типа его откинуло резко
+                    if (deltaSpeed > 0.5) { // типа его откинуло резко
                         const bouncePower = 3
                         const dir = vel.clone().normalize().scale(bouncePower)
                         bot.entity.velocity.x += dir.x
