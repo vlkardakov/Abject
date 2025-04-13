@@ -1375,10 +1375,11 @@ bot.on('message', (jsonMsg, position) => {
                 }
 
             case "speed":
+                speed = args[0] || 1
                 bot.on('physicsTick', () => {
                     if (bot.pathfinder.isMoving()) {
-                        bot.entity.velocity.x *= 0.5
-                        bot.entity.velocity.z *= 0.5
+                        bot.entity.velocity.x *= 5
+                        bot.entity.velocity.z *= 5
                     }
                 })
                 return;
