@@ -23,7 +23,7 @@ const rl = readline.createInterface({
     prompt: '> '
 });
 
-const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay'];// 'monoplan',
+const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console'];// 'monoplan',
 const RANGE_GOAL = 0;
 let protectedPlayer = null;
 let following = false;
