@@ -282,6 +282,38 @@ function initializeBotState() {
         console.error("Ошибка во время инициализации состояния бота:", error);
     }
 }
+
+async function openBlockNoLook(block) {
+    return new Promise((resolve, reject) => {
+        if (!block || !block.position) return reject(new Error("invalid block"))
+
+        const pos = block.position
+
+        bot._client.write('block_place', {
+            location: pos,
+            direction: 1,
+            hand: 0,
+            cursorX: 0.5,
+            cursorY: 1.0,
+            cursorZ: 0.5,
+            insideBlock: false
+        })
+
+        const listener = (window) => {
+            bot.removeListener('windowOpen', listener)
+            resolve(window)
+        }
+
+        bot.on('windowOpen', listener)
+
+        setTimeout(() => {
+            bot.removeListener('windowOpen', listener)
+            reject(new Error("timeout"))
+        }, 5000)
+    })
+}
+
+
 async function breakBlockManually(block) {
     if (!block || !bot.canDigBlock(block)) {
         console.log('Ну тип... не могу сломать этот блок :|');
