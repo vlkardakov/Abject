@@ -1533,6 +1533,9 @@ bot.on('message', (jsonMsg, position) => {
                             task = null;
                             console.log("Готово!");
                         }
+
+                        comePos()
+
                     } else {
                         console.log('Он смотрит в пустоту или слишком далеко...')
                     }
