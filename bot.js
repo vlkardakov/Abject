@@ -845,6 +845,47 @@ bot.on('message', (jsonMsg, position) => {
                     count: 999,
                 })
 
+                const chestBlock_rich = blocks
+                    .map(pos => bot.blockAt(pos))
+                    .find(block => block && block.position.y === 86 && block.position.z === 8)
+
+                console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
+                if (!chestBlock_rich) {
+                    bot.chat(`/msg ${username} не нашел бочку :(`);
+                    return;
+                }
+                const blockToLookAt_rich = bot.findBlock({
+                    matching: block => {
+                        const nameMatches = block.name.toLowerCase().includes('calcite');
+                        const isVisible = bot.canSeeBlock(block);
+                        return nameMatches && isVisible;
+                    },
+                    maxDistance: 5,
+                    useExtraInfo: true
+                });
+
+                if (blockToLookAt_rich) {
+                    const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                    await bot.lookAt(center_rich, true);
+                }
+
+                const chest_rich = await bot.openBlock(chestBlock_rich, null);
+
+                for (let item of bot.inventory.items()) {
+                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow')) {
+                        try {
+                            console.log(`Кладу ${item.name}`)
+                            await chest_rich.deposit(item.type, null, item.count);
+                        } catch (err) {
+                            console.log(`Не смог положить ${item.name}: ${err.message}`);
+                        }
+                    }
+                }
+                chest_rich.close();
+
+
+
+
                 const chestBlock = blocks
                     .map(pos => bot.blockAt(pos))
                     .find(block => block && block.position.y === 86 && block.position.z === 8)
