@@ -305,7 +305,7 @@ async function replyFeedback(username, text) {
     bot.chat(`/msg ${username} ${text}`)
 }
 function equipItem(name) {
-    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
+    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name)); 
     if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
         bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
     }
@@ -1394,7 +1394,7 @@ bot.on('message', (jsonMsg, position) => {
             case "equip":
                 query = args[0] || null
                 if (!query) {return}
-                equipItem()
+                equipItem(query)
                 // bot.chat(`/msg ${username} Привета!`);
                 break
             case "slot":
