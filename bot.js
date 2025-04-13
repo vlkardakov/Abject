@@ -1588,7 +1588,7 @@ bot.on('message', (jsonMsg, position) => {
                 break;
 
             case "status":
-                replyFeedback(`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
+                replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
                 // console.log(readStates())
                 break;
             default:
