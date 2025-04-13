@@ -1674,7 +1674,14 @@ bot.on('entitySpawn', (entity) => {
         const id = meta?.itemId
         const count = meta?.itemCount
         const name = itemProtocolIdMap?.[id] || `id:${id}`
-        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
+        let loreItem = 'нет';
+        try {
+            loreItem = item.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+                .split('Подпись: #')[1]
+                .split('","bold"')[0];
+        } catch (e) {
+        }
+        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
     }, 200)
 })
 
