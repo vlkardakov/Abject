@@ -852,7 +852,7 @@ bot.on('message', (jsonMsg, position) => {
                 if (!chestBlock) {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
                     return;
-                }
+                } else {sendFeedback('Бочка найдена...')}
 
                 const chest = await bot.openContainer(chestBlock);
 
