@@ -33,9 +33,6 @@ let SOUND = null;
 let defaultMove
 let playing = false;
 
-//УБРАТЬ!!!! ЭТА ШТУКА ДЛЯ МЯЧИКА!!!
-let bounced = false
-
 const SPAWN_POSITIONS = [
     new vec3(-8, 87, -2),
     new vec3(16, 87, -15),
@@ -383,6 +380,7 @@ function readFileWithRetry(filePath, maxAttempts = 40, delay = 200) {
         return 'err'
     }
 }
+
 function readStates() {
     const directory = path.join('/rusvan-bots', 'states');
     const filesList = [];
@@ -495,6 +493,7 @@ function isEntityVisibleFromPos(fromPos, entity) {
         return false;
     }
 }
+
 function isItemOnSpawn(itemEntity) {
     if (!itemEntity || !itemEntity.position) return false;
     // console.log("Тестим на видимость!")
@@ -520,24 +519,27 @@ bot.on('spawn', () => {
 
 });
 
+let lastVel = bot.entity.velocity.clone()
 
-//МЯЧИК!
-bot.on('knockback', (entity, vec) => {
-    if (entity !== bot.entity || bounced) return
-    console.log('knocked me!')
-    bounced = true
+bot.on('physicsTick', () => {
+    const vel = bot.entity.velocity
+    const dx = vel.x - lastVel.x
+    const dz = vel.z - lastVel.z
+    const dy = vel.y - lastVel.y
+    const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
 
-    const bouncePower = 3 // можно менять
-    const direction = vec.normalize().scale(bouncePower)
+    if (deltaSpeed > 0.4) { // типа его откинуло резко
+        const bouncePower = 3
+        const dir = vel.clone().normalize().scale(bouncePower)
+        bot.entity.velocity.x += dir.x
+        bot.entity.velocity.y += dir.y
+        bot.entity.velocity.z += dir.z
+        console.log('🧨 БАХ! Бота ударили и он отлетел!')
+    }
 
-    bot.entity.velocity.x += direction.x
-    bot.entity.velocity.y += direction.y
-    bot.entity.velocity.z += direction.z
-
-    setTimeout(() => {
-        bounced = false
-    }, 1000)
+    lastVel = vel.clone()
 })
+
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
