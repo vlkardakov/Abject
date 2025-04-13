@@ -919,22 +919,22 @@ bot.on('message', (jsonMsg, position) => {
 
                 await unequipArmorAndMainHand()
 
-                // const blockToLookAt_rich = bot.findBlock({
-                //     matching: block => {
-                //         const nameMatches = block.name.toLowerCase().includes('calcite');
-                //         const isVisible = bot.canSeeBlock(block);
-                //         return nameMatches && isVisible;
-                //     },
-                //     maxDistance: 5,
-                //     useExtraInfo: true
-                // });
-                //
-                // if (blockToLookAt_rich) {
-                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                //     await bot.lookAt(center_rich, true);
-                // }
+                const blockToLookAt_rich = bot.findBlock({
+                    matching: block => {
+                        const nameMatches = block.name.toLowerCase().includes('calcite');
+                        const isVisible = bot.canSeeBlock(block);
+                        return nameMatches && isVisible;
+                    },
+                    maxDistance: 5,
+                    useExtraInfo: true
+                });
 
-                const chest_rich = await bot.openBlock(chestBlock_rich, null);
+                if (blockToLookAt_rich) {
+                    const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                    await bot.lookAt(center_rich, true);
+                }
+
+                const chest_rich = await openBlockNoLook(chestBlock_rich, null);
 
                 for (let item of bot.inventory.items()) {
                     if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
@@ -953,7 +953,7 @@ bot.on('message', (jsonMsg, position) => {
 
                 const chestBlock = blocks
                     .map(pos => bot.blockAt(pos))
-                    .find(block => block && block.position.z === 6 && block.position.y === 85 )
+                    .find(block => block && block.position.z === 6 && block.position.y === 86 )
 
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
                 if (!chestBlock) {
