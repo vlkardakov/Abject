@@ -1713,7 +1713,7 @@ bot.on('playerCollect', (player, item) => {
     // if (loreItem) {
     //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
     // } else {
-    console.log(`${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
+    console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
     // }
     // console.log(JSON.stringify(item?.metadata, null, 2));
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
