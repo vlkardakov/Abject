@@ -1665,7 +1665,7 @@ bot.on('entitySpawn', (entity) => {
     const { x, y, z } = entity.position
     const nearest = Object.values(bot.players)
         .map(p => p.entity)
-        .filter(e => e && e.position.distanceTo(entity.position) <= 1)
+        .filter(e => e && e.position.distanceTo(entity.position) <= 2.5)
         .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(entity.position))[0]
     if (!nearest) return
 
