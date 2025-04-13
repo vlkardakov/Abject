@@ -397,7 +397,7 @@ function readStates() {
             const filePath = path.join(directory, filename);
             const content = readFileWithRetry(filePath);
 
-            sleep(NUMBER*5)
+            sleep(NUMBER*50 )
 
             filesList.push({
                 name: path.basename(filename, '.txt'),
