@@ -1388,10 +1388,25 @@ bot.on('message', (jsonMsg, position) => {
                 break;
 
             case "hi":
-                if (args.length < 200) {
-                    bot.chat(`/msg ${username} Привета!`);
-                    return;
-                }
+                bot.chat(`/msg ${username} Привета!`);
+                break
+
+            case "equip":
+                query = args[0] || null
+                if (!query) {return}
+                equipItem()
+                // bot.chat(`/msg ${username} Привета!`);
+                break
+
+            case "slot":
+                query = args[0] || null
+                if (!query) {return}
+                query = parceInt(query)
+                bot.setQuickBarSlot(query)
+                equipItem()
+                // bot.chat(`/msg ${username} Привета!`);
+                break
+
 
             case "speed":
                 speed = args[0] || 1
