@@ -855,7 +855,7 @@ bot.on('message', (jsonMsg, position) => {
                 if (justCheckedBarrel) {return}
                 console.log('Запуск очистки...')
 
-                await unequipArmorAndMainHand()
+
 
                 justCheckedBarrel = true
                 chestPos = vec3(6.5, 88, 6.5);
@@ -876,6 +876,9 @@ bot.on('message', (jsonMsg, position) => {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
                     return;
                 }
+
+                await unequipArmorAndMainHand()
+
                 // const blockToLookAt_rich = bot.findBlock({
                 //     matching: block => {
                 //         const nameMatches = block.name.toLowerCase().includes('calcite');
