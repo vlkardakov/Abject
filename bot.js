@@ -534,27 +534,7 @@ bot.on("plasmovoice_audio_end", () => {
     SOUND = null
 })
 
-let lastVel = bot.entity.velocity.clone()
 
-bot.on('physicsTick', () => {
-    const vel = bot.entity.velocity
-    const dx = vel.x - lastVel.x
-    const dz = vel.z - lastVel.z
-    const dy = vel.y - lastVel.y
-    const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
-
-    if (deltaSpeed > 0.4) { // типа его откинуло резко
-        const bouncePower = 3
-        const dir = vel.clone().normalize().scale(bouncePower)
-        bot.entity.velocity.x += dir.x
-        bot.entity.velocity.y += dir.y
-        bot.entity.velocity.z += dir.z
-        console.log('🧨 БАХ! Бота ударили и он отлетел!')
-    }
-
-    lastVel = vel.clone()
-})
- 
 
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
@@ -1391,6 +1371,30 @@ bot.on('message', (jsonMsg, position) => {
                     bot.chat(`/msg ${username} Привета!`);
                     return;
                 }
+
+            case "bounce":
+                let lastVel = bot.entity.velocity.clone()
+
+                bot.on('physicsTick', () => {
+                    const vel = bot.entity.velocity
+                    const dx = vel.x - lastVel.x
+                    const dz = vel.z - lastVel.z
+                    const dy = vel.y - lastVel.y
+                    const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
+
+                    if (deltaSpeed > 0.4) { // типа его откинуло резко
+                        const bouncePower = 3
+                        const dir = vel.clone().normalize().scale(bouncePower)
+                        bot.entity.velocity.x += dir.x
+                        bot.entity.velocity.y += dir.y
+                        bot.entity.velocity.z += dir.z
+                        console.log('🧨 БАХ! Бота ударили и он отлетел!')
+                    }
+
+                    lastVel = vel.clone()
+                })
+
+                break
 
             case "сосал?":
                 if (args.length < 200) {
