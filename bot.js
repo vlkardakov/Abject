@@ -920,7 +920,7 @@ bot.on('message', (jsonMsg, position) => {
                     return;
                 }
 
-                await unequipArmorAndMainHand() 
+                await unequipArmorAndMainHand()
 
                 // const blockToLookAt_rich = bot.findBlock({
                 //     matching: block => {
@@ -937,7 +937,7 @@ bot.on('message', (jsonMsg, position) => {
                 //     await bot.lookAt(center_rich, true);
                 // }
 
-                const chest_rich = await openBlockNoLook(chestBlock_rich, null);
+                const chest_rich = await bot.openBlock(chestBlock_rich, null);
 
                 for (let item of bot.inventory.items()) {
                     if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
