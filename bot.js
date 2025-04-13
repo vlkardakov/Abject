@@ -246,7 +246,7 @@ function initializeBotState() {
         defaultMove = new Movements(bot, mcData);
 
 
-        defaultMove.speed = 0.25
+        defaultMove.speed = 10
         defaultMove.allow1by1towers = false
         // defaultMove.allowParkour = false
         defaultMove.canPlaceBlocks = false
@@ -521,13 +521,7 @@ bot.on('spawn', () => {
 
 });
 
-bot.on('physicTick', () => {
-    if (bot.entity.velocity.length() > 0.1) {
-        bot.entity.velocity.x *= 0.5; // Плавно замедляем по оси X
-        bot.entity.velocity.z *= 0.5; // Плавно замедляем по оси Z
-    }
-});
- 
+
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
