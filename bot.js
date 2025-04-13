@@ -519,6 +519,21 @@ bot.on('spawn', () => {
 
 });
 
+
+
+bot.once('login', () => {
+    // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
+    bot.chat(`/l ${PASSWORD}`);
+    // console.log("Событие 'spawn' получено.");
+    // initializeBotState();
+    bot.chat('/server sleepcraft');
+
+});
+
+bot.on("plasmovoice_audio_end", () => {
+    SOUND = null
+})
+
 let lastVel = bot.entity.velocity.clone()
 
 bot.on('physicsTick', () => {
@@ -539,20 +554,7 @@ bot.on('physicsTick', () => {
 
     lastVel = vel.clone()
 })
-
-
-bot.once('login', () => {
-    // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
-    bot.chat(`/l ${PASSWORD}`);
-    // console.log("Событие 'spawn' получено.");
-    // initializeBotState();
-    bot.chat('/server sleepcraft');
-
-});
-
-bot.on("plasmovoice_audio_end", () => {
-    SOUND = null
-})
+ 
 
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
