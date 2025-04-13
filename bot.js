@@ -919,20 +919,20 @@ bot.on('message', (jsonMsg, position) => {
 
                 await unequipArmorAndMainHand()
 
-                const blockToLookAt_rich = bot.findBlock({
-                    matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes('calcite');
-                        const isVisible = bot.canSeeBlock(block);
-                        return nameMatches && isVisible;
-                    },
-                    maxDistance: 5,
-                    useExtraInfo: true
-                });
-
-                if (blockToLookAt_rich) {
-                    const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                    await bot.lookAt(center_rich, true);
-                }
+                // const blockToLookAt_rich = bot.findBlock({
+                //     matching: block => { 
+                //         const nameMatches = block.name.toLowerCase().includes('calcite');
+                //         const isVisible = bot.canSeeBlock(block);
+                //         return nameMatches && isVisible;
+                //     },
+                //     maxDistance: 5,
+                //     useExtraInfo: true
+                // });
+                //
+                // if (blockToLookAt_rich) {
+                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                //     await bot.lookAt(center_rich, true);
+                // }
 
                 const chest_rich = await openBlockNoLook(chestBlock_rich, null);
 
