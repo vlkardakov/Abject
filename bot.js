@@ -1641,7 +1641,7 @@ bot.on('message', (jsonMsg, position) => {
         }
 
         // console.log(`username: '${username}', command: '${command}'`);
-        processCommand(username, message)
+        processCommand(message, username)
     }
 });
 
