@@ -1659,8 +1659,7 @@ bot.on("plasmovoice_audio_end", () => {
 })
 
 bot.on('entitySpawn', (entity) => {
-    if (entity.type !== 'item') {
-        console.log(entity.type)
+    if (entity.name !== 'item') {
         return
     }
     const { x, y, z } = entity.position
