@@ -13,7 +13,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
 
-const WATCHED_PLAYERS = ['vlkardakov', 'monoplan', 'Rusvanplay'];
+const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay'];// 'monoplan',
 const RANGE_GOAL = 0;
 let protectedPlayer = null;
 let following = false;
