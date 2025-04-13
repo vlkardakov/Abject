@@ -866,7 +866,7 @@ bot.on('message', (jsonMsg, position) => {
                 if (blockToLookAt) {
                     const center = blockToLookAt.position.offset(0.5, 0.5, 0.5);
                     await bot.lookAt(center, true);
-                }
+                }  
 
                 const chest = await bot.openBlock(chestBlock, null);
 
