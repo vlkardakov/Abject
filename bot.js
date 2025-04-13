@@ -888,8 +888,8 @@ bot.on('message', (jsonMsg, position) => {
 
                 const chestBlock = blocks
                     .map(pos => bot.blockAt(pos))
-                    .find(block => block && block.position.y === 86 && block.position.z === 8)
-
+                    .find(block => block && block.position.y === 86)
+ 
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
                 if (!chestBlock) {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
