@@ -1,3 +1,7 @@
+console.warn = () => {}
+console.error = () => {}
+//не засоряя консоль
+
 require('dotenv').config()
 const mineflayer = require('mineflayer');
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
@@ -5,7 +9,7 @@ const { GoalNear, GoalFollow } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
 const { plugin: pvp } = require('mineflayer-pvp');
-const armorManager = require('mineflayer-armor-manager');
+const armorManager = require('mineflayer-armor-manager'); 
 const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
