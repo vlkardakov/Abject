@@ -845,7 +845,7 @@ bot.on('message', (jsonMsg, position) => {
                 })
 
                 const chestBlock = blocks
-                    .map(pos => bot.blockAt(pos)) 
+                    .map(pos => bot.blockAt(pos))
                     .find(block => block && block.position.y === 86 && block.position.z === 8)
 
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
@@ -854,7 +854,7 @@ bot.on('message', (jsonMsg, position) => {
                     return;
                 } else {sendFeedback('Бочка найдена...')}
 
-                const chest = await bot.openContainer(chestBlock);
+                const chest = await bot.openBlock(chestBlock, null);
 
                 for (let item of bot.inventory.items()) {
                     if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
