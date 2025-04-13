@@ -1372,33 +1372,6 @@ bot.on('message', (jsonMsg, position) => {
                     return;
                 }
 
-            case "bounce":
-                let lastVel = bot.entity.velocity.clone()
-
-                bot.on('physicsTick', () => {
-                    const vel = bot.entity.velocity
-                    const dx = vel.x - lastVel.x
-                    const dz = vel.z - lastVel.z
-                    const dy = vel.y - lastVel.y
-                    const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
-
-                    lastVel = vel
-
-                    if (deltaSpeed > 0.5) { // типа его откинуло резко
-                        const bouncePower = 3
-                        const dir = vel.clone().normalize().scale(bouncePower)
-                        bot.entity.velocity.x += dir.x
-                        bot.entity.velocity.y += dir.y
-                        bot.entity.velocity.z += dir.z
-                        console.log('🧨 БАХ! Бота ударили и он отлетел!')
-                        console.log('t')
-                    }
-
-                    lastVel = vel.clone()
-                })
-
-                break
-
             case "сосал?":
                 if (args.length < 200) {
                     bot.chat(`!Да.`);
@@ -1546,42 +1519,20 @@ bot.on('message', (jsonMsg, position) => {
 
 
             case "cometo":
-                if (task) {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                    bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
-                    return;
-                }
+                const player = bot.players['vlkardakov']?.entity
 
-                let distanceToMove = 0;
+                if (player) {
+                    const block = bot.blockAtEntityCursor(player, 6) // 6 — макс. дистанция (можно больше)
 
-                if (args.length < 1 || isNaN(args[0])) {
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Нужно указать расстояние в блоках.`);
-                    bot.chat(`/m ${username} Нужно указать расстояние в блоках.`);
-                    return;
-                } else {
-                    distanceToMove = parseInt(args[0], 10);
-                }
-
-                const playerLooking = bot.players[username]?.entity;
-
-                if (playerLooking) {
-                    async function moveToDirection() {
-                        bot.pathfinder.setMovements(defaultMove);
-                        console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
-
-                        const direction = playerLooking?.entity.position.clone().add(playerLooking.entity.rotation);
-                        const targetPosition = direction.multiplyScalar(distanceToMove);
-
-                        await bot.pathfinder.setGoal(new goals.GoalBlock(targetPosition.x, targetPosition.y, targetPosition.z));
-                        task = null;
-                        console.log("Готово!");
+                    if (block) {
+                        console.log(`👉 vlkardakov смотрит на блок: ${block.name} (${block.position})`)
+                    } else {
+                        console.log('🫥 Он смотрит в пустоту или слишком далеко...')
                     }
-
-                    moveToDirection();
                 } else {
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Я не вижу игрока, куда мне двигаться :(`);
-                    bot.chat(`/m ${WATCHED_PLAYERS[0]} Я тебя не вижу, не могу двигаться :(`);
+                    console.log('🤷 Игрок vlkardakov не найден или оффлайн')
                 }
+
                 break;
 
             case "mode":
