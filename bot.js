@@ -24,6 +24,7 @@ const rl = readline.createInterface({
 });
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console'];// 'monoplan',
+const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore"];
 const RANGE_GOAL = 0;
 let protectedPlayer = null;
 let following = false;
@@ -125,7 +126,18 @@ function sleep(ms) {
     }
 }
 
+function hasRichItems() {
+    const items = [
+        ...bot.inventory.items(),
+        bot.entity.heldItem,
+        bot.inventory.slots[45],
+        ...bot.inventory.slots.slice(5, 9)
+    ].filter(item => item);
 
+    return items.some(item =>
+        RICH_ITEMS.some(keyword => item.name.toLowerCase().includes(keyword))
+    );
+}
 async function stealItems(itemName, user_name) {
     const containers = containerMemory;
     if (containers.length === 0) {
@@ -814,45 +826,46 @@ function processCommand(message, username, plainMessage) {
                 count: 999,
             })
 
-            const chestBlock_rich = blocks
-                .map(pos => bot.blockAt(pos))
-                .find(block => block && block.position.y === 86 && block.position.z === 8)
-            if (!chestBlock_rich) {
-                bot.chat(`/msg ${username} не нашел бочку :(`);
-                return;
-            }
+            if (hasRichItems()) {
+                const chestBlock_rich = blocks
+                    .map(pos => bot.blockAt(pos))
+                    .find(block => block && block.position.y === 86 && block.position.z === 8)
+                if (!chestBlock_rich) {
+                    bot.chat(`/msg ${username} не нашел бочку :(`);
+                    return;
+                }
 
-            await unequipArmorAndMainHand()
+                await unequipArmorAndMainHand()
 
-            // const blockToLookAt_rich = bot.findBlock({
-            //     matching: block => {
-            //         const nameMatches = block.name.toLowerCase().includes('calcite');
-            //         const isVisible = bot.canSeeBlock(block);
-            //         return nameMatches && isVisible;
-            //     },
-            //     maxDistance: 5,
-            //     useExtraInfo: true
-            // });
-            //
-            // if (blockToLookAt_rich) {
-            //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-            //     await bot.lookAt(center_rich, true);
-            // }
+                // const blockToLookAt_rich = bot.findBlock({
+                //     matching: block => {
+                //         const nameMatches = block.name.toLowerCase().includes('calcite');
+                //         const isVisible = bot.canSeeBlock(block);
+                //         return nameMatches && isVisible;
+                //     },
+                //     maxDistance: 5,
+                //     useExtraInfo: true
+                // });
+                //
+                // if (blockToLookAt_rich) {
+                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                //     await bot.lookAt(center_rich, true);
+                // }
 
-            const chest_rich = await bot.openBlock(chestBlock_rich, null);
+                const chest_rich = await bot.openBlock(chestBlock_rich, null);
 
-            for (let item of bot.inventory.items()) {
-                if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
-                    try {
-                        console.log(`Кладу ${item.name}`)
-                        await chest_rich.deposit(item.type, null, item.count);
-                    } catch (err) {
-                        console.log(`Не смог положить ${item.name}: ${err.message}`);
+                for (let item of bot.inventory.items()) {
+                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
+                        try {
+                            console.log(`Кладу ${item.name}`)
+                            await chest_rich.deposit(item.type, null, item.count);
+                        } catch (err) {
+                            console.log(`Не смог положить ${item.name}: ${err.message}`);
+                        }
                     }
                 }
+                chest_rich.close();
             }
-            chest_rich.close();
-
 
 
 
@@ -860,7 +873,7 @@ function processCommand(message, username, plainMessage) {
                 .map(pos => bot.blockAt(pos))
                 .find(block => block && block.position.z === 6 && block.position.y === 86 )
 
-            console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
+            // console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
             if (!chestBlock) {
                 bot.chat(`/msg ${username} не нашел бочку :(`);
                 return;
@@ -1584,6 +1597,28 @@ bot.on("plasmovoice_audio_end", () => {
     SOUND = null
 })
 
+bot.on('entityDrop', (entity) => {
+    if (entity && entity.item) {
+        const { x, y, z } = entity.position;
+        const distanceThreshold = 3; // Радиус в 3 блока
+
+        const nearbyPlayers = bot.players
+            .filter(player => player.entity && player.entity.position.distanceTo(entity.position) <= distanceThreshold);
+
+        if (nearbyPlayers.length > 0) {
+            const closestPlayer = nearbyPlayers.reduce((closest, player) => {
+                const distanceToItem = player.entity.position.distanceTo(entity.position);
+                return distanceToItem < closest.distance ? { player, distance: distanceToItem } : closest;
+            }, { player: null, distance: Infinity });
+
+            const { player: closest } = closestPlayer;
+
+            if (closest) {
+                console.log(`${closest.username} is the closest player to the item "${entity.item.name}" dropped at (${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)})`);
+            }
+        }
+    }
+});
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
     count = item?.metadata?.[8]?.itemCount
