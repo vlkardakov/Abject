@@ -1519,19 +1519,28 @@ bot.on('message', (jsonMsg, position) => {
 
 
             case "cometo":
-                const player = bot.players['vlkardakov']?.entity
+                const player = bot.players[username]?.entity
 
                 if (player) {
                     const block = bot.blockAtEntityCursor(player, 100) // 6 — макс. дистанция (можно больше)
 
                     if (block) {
-                        console.log(`👉 vlkardakov смотрит на блок: ${block.name} (${block.position})`)
+                        console.log(`юзер смотрит на блок: ${block.name} (${block.position})`)
+                        async function comePos() {
+                            bot.pathfinder.setMovements(defaultMove);
+                            console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
+                            await bot.pathfinder.setGoal(new GoalNear(vec3(block.position.x, block.position.y + 1, block.position.z), 0));
+                            task = null;
+                            console.log("Готово!");
+                        }
                     } else {
-                        console.log('🫥 Он смотрит в пустоту или слишком далеко...')
+                        console.log('Он смотрит в пустоту или слишком далеко...')
                     }
                 } else {
-                    console.log('🤷 Игрок vlkardakov не найден или оффлайн')
+                    console.log('юзер не найден или оффлайн')
                 }
+
+
 
                 break;
 
