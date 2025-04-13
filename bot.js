@@ -887,8 +887,8 @@ bot.on('message', (jsonMsg, position) => {
 
 
                 const chestBlock = blocks
-                    .map(pos => bot.blockAt(pos))
-                    .find(block => block && block.position.z === 6 )
+                    .map(pos => bot.blockAt(pos)) 
+                    .find(block => block && block.position.z === 6 && block.position.y === 85 )
 
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
                 if (!chestBlock) {
