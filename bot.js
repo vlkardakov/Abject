@@ -979,6 +979,68 @@ function processCommand(message, username, plainMessage) {
             collecting = true;
             startCollecting(searchName);
             break;
+
+        case "piglins":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            if (MODE === "мирный") {
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                return;
+            }
+
+            bot.chat(`/msg ${username} начинаю раздражать пиглинов :)))`);
+
+            task = "piglins";
+
+            const PIGLIN_ATTACK_INTERVAL = 400;
+            const MAX_PIGLIN_ATTEMPTS = 100;
+            let piglinAttempts = 0;
+            let piglinInterval = null;
+
+        function findNearestPiglin() {
+            const mobs = Object.values(bot.entities).filter(e =>
+                e.name?.includes("piglin") && e.type === "mob" && e.isValid
+            );
+
+            if (mobs.length === 0) return null;
+
+            mobs.sort((a, b) =>
+                bot.entity.position.distanceTo(a.position) - bot.entity.position.distanceTo(b.position)
+            );
+
+            return mobs[0];
+        }
+
+        function stopPiglinTask() {
+            if (piglinInterval) clearInterval(piglinInterval);
+            bot.chat(`/msg ${username} Пиглины отмучились`);
+            task = null;
+        }
+
+            piglinInterval = setInterval(() => {
+                const target = findNearestPiglin();
+
+                if (!target || piglinAttempts >= MAX_PIGLIN_ATTEMPTS) {
+                    stopPiglinTask();
+                    return;
+                }
+
+                if (bot.entity.position.distanceTo(target.position) <= 4 && target.isValid) {
+                    bot.lookAt(target.position.offset(0, 1.5, 0), true).then(() => {
+                        bot.attack(target);
+                    }).catch(() => {});
+                }
+
+                piglinAttempts++;
+            }, PIGLIN_ATTACK_INTERVAL);
+
+            break;
+
+
         case "camp":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
@@ -1596,29 +1658,29 @@ bot.on("plasmovoice_audio_end", () => {
     SOUND = null
 })
 
-bot.on('entityDrop', (entity) => {
-    if (entity && entity.item) {
-        console.log('кто-то что-то бросил лол')
-        const { x, y, z } = entity.position;
-        const distanceThreshold = 3;
+bot.on('entitySpawn', (entity) => {
+    if (entity.objectType !== 2) return // только дропнутые предметы
+    const { x, y, z } = entity.position
+    const rx = Math.round(x)
+    const ry = Math.round(y)
+    const rz = Math.round(z)
 
-        const nearbyPlayers = bot.players
-            .filter(player => player.entity && player.entity.position.distanceTo(entity.position) <= distanceThreshold);
+    const nearest = Object.values(bot.players)
+        .map(p => p.entity)
+        .filter(e => e && e.position.distanceTo(entity.position) <= 3)
+        .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(b.position))[0]
 
-        if (nearbyPlayers.length > 0) {
-            const closestPlayer = nearbyPlayers.reduce((closest, player) => {
-                const distanceToItem = player.entity.position.distanceTo(entity.position);
-                return distanceToItem < closest.distance ? { player, distance: distanceToItem } : closest;
-            }, { player: null, distance: Infinity });
+    if (!nearest) return
 
-            const { player: closest } = closestPlayer;
+    setTimeout(() => {
+        const meta = entity.metadata?.[8]
+        const id = meta?.itemId
+        const count = meta?.itemCount
+        const name = itemProtocolIdMap?.[id] || `id:${id}`
+        console.log(`${nearest.username} => ${name} x${count} в ${rx} ${ry} ${rz}`)
+    }, 200)
+})
 
-            if (closest) {
-                console.log(`${closest.username} is the closest player to the item "${entity.item.name}" dropped at (${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)})`);
-            }
-        }
-    }
-});
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
     count = item?.metadata?.[8]?.itemCount
@@ -1643,12 +1705,11 @@ bot.on('playerCollect', (player, item) => {
     // if (loreItem) {
     //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
     // } else {
-    console.log(`${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}`)
+    console.log(`${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
     // }
     // console.log(JSON.stringify(item?.metadata, null, 2));
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
 })
-
 rl.on('line', (line) => {
     const input = line.trim();
     if (input.length === 0) {
