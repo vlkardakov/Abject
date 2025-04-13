@@ -852,22 +852,22 @@ bot.on('message', (jsonMsg, position) => {
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
                 if (!chestBlock_rich) {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
-                    return;
+                    return; 
                 }
-                const blockToLookAt_rich = bot.findBlock({
-                    matching: block => {
-                        const nameMatches = block.name.toLowerCase().includes('calcite');
-                        const isVisible = bot.canSeeBlock(block);
-                        return nameMatches && isVisible;
-                    },
-                    maxDistance: 5,
-                    useExtraInfo: true
-                });
-
-                if (blockToLookAt_rich) {
-                    const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                    await bot.lookAt(center_rich, true);
-                }
+                // const blockToLookAt_rich = bot.findBlock({
+                //     matching: block => {
+                //         const nameMatches = block.name.toLowerCase().includes('calcite');
+                //         const isVisible = bot.canSeeBlock(block);
+                //         return nameMatches && isVisible;
+                //     },
+                //     maxDistance: 5,
+                //     useExtraInfo: true
+                // });
+                //
+                // if (blockToLookAt_rich) {
+                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+                //     await bot.lookAt(center_rich, true);
+                // }
 
                 const chest_rich = await bot.openBlock(chestBlock_rich, null);
 
@@ -889,7 +889,7 @@ bot.on('message', (jsonMsg, position) => {
                 const chestBlock = blocks
                     .map(pos => bot.blockAt(pos))
                     .find(block => block && block.position.y === 86)
- 
+
                 console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
                 if (!chestBlock) {
                     bot.chat(`/msg ${username} не нашел бочку :(`);
