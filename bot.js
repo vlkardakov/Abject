@@ -458,7 +458,7 @@ function getUsedIds() {
         .map(obj => obj.text.split(':')[1])
         .filter(id => id !== 'null')
         .map(id => Number(id))
-    console.log(sorted)
+    // console.log(sorted)
     return sorted
 }
 function setState(text) {
@@ -470,7 +470,7 @@ function setState(text) {
 
     const filePath = path.join('/rusvan-bots/states', `${botUsername}.txt`);
     fs.writeFileSync(filePath, text, 'utf8')
-    console.log('Файл обновлен!!!')
+    // console.log('Файл обновлен!!!')
 }
 setState(`null`)
 console.log(`-----`)
@@ -484,7 +484,7 @@ function findEntityWithName(bot, query, visible=true) {
     return bot.nearestEntity(entity => {
         const matchesCriteria = (
             (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
-            (entity.type === 'mob' && entity.mobType?.toLowerCase().includes(targetQuery)) ||
+            (entity.type === 'mob' && entity.displayName?.toLowerCase().includes(targetQuery)) ||
             (entity.name?.toLowerCase().includes(targetQuery)) ||
             (entity.displayName?.toLowerCase().includes(targetQuery))
         );
@@ -514,7 +514,7 @@ function isEntityVisible(entity) {
         return blockHit === null;
 
     } catch (e) {
-        console.error(`Ошибка Raycast при проверке видимости ${entity.username || entity.name || entity.mobType}:`, e);
+        console.error(`Ошибка Raycast при проверке видимости ${entity.username || entity.name || entity.displayName}:`, e);
         return false;
     }
 }
@@ -540,7 +540,7 @@ function isEntityVisibleFromPos(fromPos, entity) {
         return blockHit === null;
 
     } catch (e) {
-        console.error(`⚠️ Ошибка Raycast при проверке видимости ${entity.username || entity.name || entity.mobType}:`, e);
+        console.error(`⚠️ Ошибка Raycast при проверке видимости ${entity.username || entity.name || entity.displayName}:`, e);
         return false;
     }
 }
@@ -817,8 +817,6 @@ function processCommand(message, username, plainMessage) {
             const chestBlock_rich = blocks
                 .map(pos => bot.blockAt(pos))
                 .find(block => block && block.position.y === 86 && block.position.z === 8)
-
-            console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
             if (!chestBlock_rich) {
                 bot.chat(`/msg ${username} не нашел бочку :(`);
                 return;
@@ -1005,7 +1003,7 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
 
-            const camptargetName = targetEntity.username || targetEntity.mobType || targetEntity.name || 'неизвестная сущность';
+            const camptargetName = targetEntity.username || targetEntity.displayName || targetEntity.name || 'неизвестная сущность';
 
             // bot.pathfinder.setGoal(null);
             // bot.pvp.stop();
@@ -1395,7 +1393,7 @@ function processCommand(message, username, plainMessage) {
             let nearestEntity = findEntityWithName(bot, entityType);
 
             if (nearestEntity) {
-                const neName = nearestEntity.username || nearestEntity.mobType || nearestEntity.name || 'Неизвестная сущность';
+                const neName = nearestEntity.username || nearestEntity.displayName || nearestEntity.name || 'Неизвестная сущность';
                 const nePos = nearestEntity.position.floored();
                 const dist = bot.entity.position.distanceTo(nearestEntity.position).toFixed(1);
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
