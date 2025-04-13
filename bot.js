@@ -1374,6 +1374,15 @@ bot.on('message', (jsonMsg, position) => {
                     return;
                 }
 
+            case "speed":
+                bot.on('physicsTick', () => {
+                    if (bot.pathfinder.isMoving()) {
+                        bot.entity.velocity.x *= 0.5
+                        bot.entity.velocity.z *= 0.5
+                    }
+                })
+                return;
+
             case "сосал?":
                 if (args.length < 200) {
                     bot.chat(`!Да.`);
