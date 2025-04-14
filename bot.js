@@ -931,6 +931,9 @@ function processCommand(message, username, plainMessage) {
                 // }
                 const targetItem = findNearestItem(searchName);
 
+                console.log('targetItem ', targetItem);
+                console.log(bot.pathfinder.goal);
+
                 if (targetItem && !bot.pathfinder.goal) {
                     console.log('Нормальный предмет detetcted!')
                     bot.pathfinder.setMovements(defaultMove);
