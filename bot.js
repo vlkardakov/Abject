@@ -1685,7 +1685,7 @@ bot.on('entitySpawn', (entity) => {
                 .split('","bold"')[0];
         } catch (e) {
         }
-        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        console.log(`${nearest.username} (${nearest.position.distanceTo(entity.position).toFixed(1)}) => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
     }, 200)
 })
 
