@@ -823,7 +823,7 @@ function processCommand(message, username, plainMessage) {
             const blocks = bot.findBlocks({
                 matching: block => block.name.includes('barrel'),
                 maxDistance: 4,
-                count: 999,
+                count: 5,
             })
 
             if (hasRichItems()) {
@@ -877,6 +877,21 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} не нашел бочку :(`);
                 return;
             }
+
+
+            const chest = await bot.openBlock(chestBlock, null);
+
+            for (let item of bot.inventory.items()) {
+                if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
+                    try {
+                        console.log(`Кладу ${item.name}`)
+                        await chest.deposit(item.type, null, item.count);
+                    } catch (err) {
+                        console.log(`Не смог положить ${item.name}: ${err.message}`);
+                    }
+                }
+            }
+
             const blockToLookAt = bot.findBlock({
                 matching: block => {
                     const nameMatches = block.name.toLowerCase().includes('calcite');
@@ -892,18 +907,6 @@ function processCommand(message, username, plainMessage) {
                 await bot.lookAt(center, true);
             }
 
-            const chest = await bot.openBlock(chestBlock, null);
-
-            for (let item of bot.inventory.items()) {
-                if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
-                    try {
-                        console.log(`Кладу ${item.name}`)
-                        await chest.deposit(item.type, null, item.count);
-                    } catch (err) {
-                        console.log(`Не смог положить ${item.name}: ${err.message}`);
-                    }
-                }
-            }
             chest.close();
         }
             justCheckedBarrel = true;
