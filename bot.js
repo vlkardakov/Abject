@@ -932,6 +932,7 @@ function processCommand(message, username, plainMessage) {
                 const targetItem = findNearestItem(searchName);
 
                 console.log('targetItem ', targetItem);
+                console.log(pathfinder.goal);
 
                 if (targetItem && !bot.pathfinder.goal) {
                     bot.pathfinder.setMovements(defaultMove);
