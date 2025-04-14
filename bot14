@@ -1,0 +1,2 @@
+#!/bin/bash
+git pull origin && node bot.js Abject14 22132213 14
