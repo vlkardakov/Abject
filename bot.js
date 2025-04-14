@@ -84,6 +84,8 @@ const SPAWN_POSITIONS = [
     new vec3(18, 90, -6)
 ];
 
+console.log(process.argv)
+
 const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
 const PASSWORD = process.argv[3] || process.env.PASSWORD
 const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
