@@ -1451,7 +1451,8 @@ function processCommand(message, username, plainMessage) {
             })
             break
         case "drawto":
-        async function drawLoop() {
+        console.log(`Буду искать все кроме ${args[0]}`)
+            async function drawLoop() {
             const block = bot.findBlock({
                 matching: (b) => b?.name?.includes('wool') && !b.name.includes(args[0]),
                 maxDistance: 32
