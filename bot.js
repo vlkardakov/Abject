@@ -1448,6 +1448,30 @@ function processCommand(message, username, plainMessage) {
                 bot.setControlState('sneak', false)
             })
             break
+        case "drawto":
+        async function drawLoop() {
+            const block = bot.findBlock({
+                matching: (b) => b?.name?.includes('wool') && !b.name.includes(args[0]),
+                maxDistance: 32
+            })
+
+            if (!block) {
+                bot.chat(`/msg ${username} блок не найден`)
+                return
+            }
+
+            try {
+                await bot.pathfinder.goto(new GoalBlock(block.position.x, block.position.y, block.position.z))
+                bot.activateBlock(block)
+            } catch (e) {
+                console.log("ошибка при пути или активации:", e)
+            }
+
+            setTimeout(drawLoop, 91000)
+        }
+
+            drawLoop()
+            break
 
         case "equip":
             query = args[0] || null
