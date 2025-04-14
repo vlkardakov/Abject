@@ -1735,8 +1735,13 @@ bot.on('blockUpdate', (oldBlock, newBlock) => {
     const oldBlockName = oldBlock.name
     const newBlockName = newBlock.name
 
-    console.log(`${username} сломал блок ${oldBlockName} в позиции ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}. Новый блок: ${newBlockName}`)
-})
+    if (!['air', 'water', 'lava'].includes(oldBlockName)) {
+        console.log(`${username} [-] ${oldBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}.`)
+    } else {
+        console.log(`${username} [+] ${newBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
+    }
+
+    })
 
 
 rl.on('line', (line) => {
