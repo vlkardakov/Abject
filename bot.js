@@ -931,10 +931,8 @@ function processCommand(message, username, plainMessage) {
                 // }
                 const targetItem = findNearestItem(searchName);
 
-                console.log('targetItem ', targetItem);
-                console.log(pathfinder.goal);
-
                 if (targetItem && !bot.pathfinder.goal) {
+                    console.log('Нормальный предмет detetcted!')
                     bot.pathfinder.setMovements(defaultMove);
                     id = targetItem?.metadata?.[8]?.itemId
                     count = targetItem?.metadata?.[8]?.itemCount
