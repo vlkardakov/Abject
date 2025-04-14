@@ -592,7 +592,7 @@ function processCommand(message, username, plainMessage) {
             // bot.chat("Ест!");
             return;
         case "say":
-            if (!WATCHED_PLAYERS.includes(username)) {
+            if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
                 sendFeedback(`${username} хочет ${plainMessage}`)
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
