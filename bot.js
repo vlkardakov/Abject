@@ -360,7 +360,7 @@ async function breakBlockManually(block) {
 async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
-    bot.chat('/server sleepcraft');
+    // bot.chat('/server sleepcraft');
 }
 async function sendFeedback(text) {
     for (const player of WATCHED_PLAYERS) {
