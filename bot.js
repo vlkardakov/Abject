@@ -1408,6 +1408,47 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "chosecolor":
+            const targetBlock = bot.findBlock({
+                matching: () => true,
+                maxDistance: 4
+            })
+
+            if (!targetBlock) {
+                bot.chat(`/msg ${username} Блок не найден`)
+                break
+            }
+
+            bot.setControlState('sneak', true)
+
+            bot.activateBlock(targetBlock)
+
+            bot.once('windowOpen', async (window) => {
+                const wanted = args[0]?.toLowerCase()
+                if (!wanted) {
+                    bot.chat(`/msg ${username} цвет не задан`)
+                    bot.closeWindow(window)
+                    bot.setControlState('sneak', false)
+                    return
+                }
+
+                for (let i = 0; i < window.slots.length; i++) {
+                    const item = window.slots[i]
+                    if (item && item.name.toLowerCase().includes(wanted)) {
+                        try {
+                            await bot.clickWindow(i, 0, 0)
+                            await bot.waitForTicks(2)
+                        } catch (err) {
+                            console.log("Ошибка при клике:", err)
+                        }
+                    }
+                }
+
+                bot.closeWindow(window)
+                bot.setControlState('sneak', false)
+            })
+            break
+
         case "equip":
             query = args[0] || null
             if (!query) {return}
