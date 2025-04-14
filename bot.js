@@ -1463,13 +1463,12 @@ function processCommand(message, username, plainMessage) {
             }
 
             try {
-                await bot.pathfinder.goto(new GoalNear(block.position.x, block.position.y+1, block.position.z, 0))
                 bot.activateBlock(block)
             } catch (e) {
                 console.log("ошибка при пути или активации:", e)
             }
-
-            setTimeout(drawLoop, 45200)
+            await bot.pathfinder.goto(new GoalNear(block.position.x, block.position.y+1, block.position.z, 0))
+            setTimeout(drawLoop, 10000)
         }
 
             drawLoop()
