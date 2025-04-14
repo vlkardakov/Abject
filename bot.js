@@ -950,18 +950,18 @@ function processCommand(message, username, plainMessage) {
                     } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                         await depositItems();
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
-                        blockToLookAfterDeposit = bot.findBlock({
-                            matching: block => {
-                                const nameMatches = block.name.toLowerCase().includes('calcite')
-                                const isVisible = bot.canSeeBlock(block)
-                                return nameMatches && isVisible
-                            },
-                            maxDistance: 5,
-                            useExtraInfo: true
-                        })
-                        if (blockToLookAfterDeposit) {
-                            bot.lookAt(blockToLookAfterDeposit.position, true );
-                        }
+                        // blockToLookAfterDeposit = bot.findBlock({
+                        //     matching: block => {
+                        //         const nameMatches = block.name.toLowerCase().includes('calcite')
+                        //         const isVisible = bot.canSeeBlock(block)
+                        //         return nameMatches && isVisible
+                        //     },
+                        //     maxDistance: 5,
+                        //     useExtraInfo: true
+                        // })
+                        // if (blockToLookAfterDeposit) {
+                        //     bot.lookAt(blockToLookAfterDeposit.position, true );
+                        // }
                         bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 0 ));
                     }
                 }
