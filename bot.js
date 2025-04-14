@@ -931,6 +931,8 @@ function processCommand(message, username, plainMessage) {
                 // }
                 const targetItem = findNearestItem(searchName);
 
+                console.log('targetItem ', targetItem);
+
                 if (targetItem && !bot.pathfinder.goal) {
                     bot.pathfinder.setMovements(defaultMove);
                     id = targetItem?.metadata?.[8]?.itemId
