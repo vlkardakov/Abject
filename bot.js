@@ -886,7 +886,7 @@ function processCommand(message, username, plainMessage) {
 
 
             const chest = await bot.openBlock(chestBlock, null);
-
+            console.log('Мусорка открыта')
             for (let item of bot.inventory.items()) {
                 if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
                     try {
@@ -924,19 +924,12 @@ function processCommand(message, username, plainMessage) {
             task = 'collecting';
 
             collectInterval = setInterval(async () => {
-                if (collecting_paused) {
-                    console.log('Сбор приостановлен, жду 5 секунд...');
-                    await new Promise(resolve => setTimeout(resolve, 5000));
-                    return;
-                }
+                // if (collecting_paused) {
+                //     console.log('Сбор приостановлен, жду 5 секунд...');
+                //     await new Promise(resolve => setTimeout(resolve, 5000));
+                //     return;
+                // }
                 const targetItem = findNearestItem(searchName);
-                if (targetItem && collectingId !== targetItem.id) {
-                    collectingId = targetItem.id;
-                    // setState(`collecting:${targetItem.id}`);
-                } else if (collectingId !== null) {
-                    // setState(`collecting:null`);
-                    collectingId = null
-                }
 
                 if (targetItem && !bot.pathfinder.goal) {
                     bot.pathfinder.setMovements(defaultMove);
