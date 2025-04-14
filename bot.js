@@ -1686,7 +1686,7 @@ bot.on('entitySpawn', (entity) => {
         } catch (e) {
         }
         console.log(`${nearest.username} (${nearest.position.distanceTo(entity.position).toFixed(1)}) => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
-    }, 20)
+    }, 200)
 })
 
 bot.on('playerCollect', (player, item) => {
