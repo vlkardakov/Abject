@@ -5,7 +5,7 @@
 require('dotenv').config()
 const mineflayer = require('mineflayer');
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
-const { GoalNear, GoalFollow } = goals;
+const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
 const { plugin: pvp } = require('mineflayer-pvp');
