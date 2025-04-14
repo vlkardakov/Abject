@@ -1685,21 +1685,26 @@ bot.on('entitySpawn', (entity) => {
                 .split('","bold"')[0];
         } catch (e) {
         }
-        console.log(`${nearest.username} (${nearest.position.distanceTo(entity.position).toFixed(1)}) => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
     }, 200)
 })
 
 bot.on('playerCollect', (player, item) => {
     id = item?.metadata?.[8]?.itemId
     count = item?.metadata?.[8]?.itemCount
-    name = getRussianName(itemProtocolIdMap[id])
+
+    if (id) {
+        name = getRussianName(itemProtocolIdMap[id])
+    } else {
+        name = item.name
+    }
+
+
 
     const { x, y, z } = item.position
     const roundedX = Math.round(x)
     const roundedY = Math.round(y)
     const roundedZ = Math.round(z)
-
-    // console.log(`ID: ${id}, тип: ${name}, количество ${count}`);
 
     let loreItem = 'нет';
     try {
