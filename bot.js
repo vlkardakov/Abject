@@ -1695,7 +1695,11 @@ bot.on('entitySpawn', (entity) => {
                 .split('","bold"')[0];
         } catch (e) {
         }
-        if (latestBrokenBlock !== [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]) console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        maybe_latest_block = [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]
+        if (latestBrokenBlock !== maybe_latest_block) {
+            console.log(maybe_latest_block)
+            console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        }
     }, 200)
 })
 
