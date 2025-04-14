@@ -343,8 +343,6 @@ async function openBlockNoLook(block) {
         }, 5000)
     })
 }
-
-
 async function breakBlockManually(block) {
     if (!block || !bot.canDigBlock(block)) {
         console.log('Ну тип... не могу сломать этот блок :|');
@@ -444,60 +442,59 @@ async function collectBlockType(blockName, count) {
 
     mineNext();
 }
-function readFileWithRetry(filePath, maxAttempts = 40, delay = 200) {
-    try {
-        const content = fs.readFileSync(filePath, 'utf-8');
-        if (content !== '') return content;
-    } catch (err) {
-        console.error(`Ошибка: ${err}`)
-        return 'err'
-    }
-}
-
-function readStates() {
-    const directory = path.join('/rusvan-bots', 'states');
-    const filesList = [];
-    const files = fs.readdirSync(directory);
-
-    files.forEach(filename => {
-        if (filename.endsWith('.txt')) {
-            const filePath = path.join(directory, filename);
-            const content = readFileWithRetry(filePath);
-
-            filesList.push({
-                name: path.basename(filename, '.txt'),
-                text: content
-            });
-        }
-    });
-
-    return filesList;
-}
-function getUsedIds() {
-    const data = readStates();
-    sorted = data
-        .filter(obj => obj.name !== BOT_USERNAME)
-        .map(obj => obj.text.split(':')[1])
-        .filter(id => id !== 'null')
-        .map(id => Number(id))
-    // console.log(sorted)
-    return sorted
-}
-function setState(text) {
-    const botUsername = BOT_USERNAME;
-    if (!botUsername) {
-        console.error("BOT_USERNAME не задан.");
-        return;
-    }
-
-    const filePath = path.join('/rusvan-bots/states', `${botUsername}.txt`);
-    fs.writeFileSync(filePath, text, 'utf8')
-    // console.log('Файл обновлен!!!')
-}
-setState(`null`)
-console.log(`-----`)
-console.log(readStates())
-console.log(`-----`)
+// function readFileWithRetry(filePath, maxAttempts = 40, delay = 200) {
+//     try {
+//         const content = fs.readFileSync(filePath, 'utf-8');
+//         if (content !== '') return content;
+//     } catch (err) {
+//         console.error(`Ошибка: ${err}`)
+//         return 'err'
+//     }
+// }
+// function readStates() {
+//     const directory = path.join('/rusvan-bots', 'states');
+//     const filesList = [];
+//     const files = fs.readdirSync(directory);
+//
+//     files.forEach(filename => {
+//         if (filename.endsWith('.txt')) {
+//             const filePath = path.join(directory, filename);
+//             const content = readFileWithRetry(filePath);
+//
+//             filesList.push({
+//                 name: path.basename(filename, '.txt'),
+//                 text: content
+//             });
+//         }
+//     });
+//
+//     return filesList;
+// }
+// function getUsedIds() {
+//     const data = readStates();
+//     sorted = data
+//         .filter(obj => obj.name !== BOT_USERNAME)
+//         .map(obj => obj.text.split(':')[1])
+//         .filter(id => id !== 'null')
+//         .map(id => Number(id))
+//     // console.log(sorted)
+//     return sorted
+// }
+// function setState(text) {
+//     const botUsername = BOT_USERNAME;
+//     if (!botUsername) {
+//         console.error("BOT_USERNAME не задан.");
+//         return;
+//     }
+//
+//     const filePath = path.join('/rusvan-bots/states', `${botUsername}.txt`);
+//     fs.writeFileSync(filePath, text, 'utf8')
+//     // console.log('Файл обновлен!!!')
+// }
+// setState(`null`)
+// console.log(`-----`)
+// console.log(readStates())
+// console.log(`-----`)
 
 
 function findEntityWithName(bot, query, visible=true) {
@@ -935,7 +932,7 @@ function processCommand(message, username, plainMessage) {
                 const targetItem = findNearestItem(searchName);
                 if (targetItem && collectingId !== targetItem.id) {
                     collectingId = targetItem.id;
-                    setState(`collecting:${targetItem.id}`);
+                    // setState(`collecting:${targetItem.id}`);
                 } else if (collectingId !== null) {
                     // setState(`collecting:null`);
                     collectingId = null
@@ -1699,8 +1696,7 @@ function processCommand(message, username, plainMessage) {
             playing = false;
             break;
         case "status":
-            replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
-            // console.log(readStates())
+            replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}`)
             break;
         default:
             break;
