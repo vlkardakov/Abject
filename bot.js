@@ -43,6 +43,7 @@ let MODE = 'мирный';
 let SOUND = null;
 let defaultMove
 let playing = false;
+let latestBrokenBlock = [new vec3(0, 0, 0), 'air']
 
 const SPAWN_POSITIONS = [
     new vec3(-8, 87, -2),
@@ -124,6 +125,13 @@ function sleep(ms) {
     const end = Date.now() + ms
     while (Date.now() < end) {
     }
+}
+
+function setLatestBrokenBlock(block) {
+    if (!block) return;
+    bpos = block.position
+    latestBrokenBlock = [new vec3(bpos.x, bpos.y, bpos.z), block.name]
+    console.log(latestBrokenBlock)
 }
 
 function hasRichItems() {
@@ -856,8 +864,7 @@ function processCommand(message, username, plainMessage) {
                 const chest_rich = await bot.openBlock(chestBlock_rich, null);
 
                 for (let item of bot.inventory.items()) {
-                    if (item.name.includes('diamond') || item.name.includes('netherite') || item.name.includes('enchant') || item.name.includes('elytr') || item.name.includes('_block') || item.name.includes('sword') || item.name.includes('fire') || item.name.includes('totem') || item.name.includes('bow') || item.name.includes('golden_') || item.name.includes('trid') || item.name.includes('mace') || item.name.includes('ore')) {
-                        try {
+                    if (RICH_ITEMS.some(keyword => item.name.includes(keyword))) {                        try {
                             console.log(`Кладу ${item.name}`)
                             await chest_rich.deposit(item.type, null, item.count);
                         } catch (err) {
@@ -1688,7 +1695,7 @@ bot.on('entitySpawn', (entity) => {
                 .split('","bold"')[0];
         } catch (e) {
         }
-        console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        if (latestBrokenBlock !== [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]) console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
     }, 200)
 })
 
@@ -1721,7 +1728,8 @@ bot.on('playerCollect', (player, item) => {
     // if (loreItem) {
     //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
     // } else {
-    console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
+    if (id) console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
+    else console.log(`${player.username} <= ${name} в ${roundedX} ${roundedY} ${roundedZ}`)
     // }
     // console.log(JSON.stringify(item?.metadata, null, 2));
     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
@@ -1745,6 +1753,7 @@ bot.on('blockUpdate', (oldBlock, newBlock) => {
 
     if (!['air', 'water', 'lava'].includes(oldBlockName)) {
         console.log(`${username} [-] ${oldBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}.`)
+        setLatestBrokenBlock(oldBlock)
     } else {
         console.log(`${username} [+] ${newBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
     }
