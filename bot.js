@@ -825,7 +825,7 @@ function processCommand(message, username, plainMessage) {
 
             justCheckedBarrel = true
             chestPos = vec3(6.5, 88, 6.5);
-            await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
+            await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
 
             const blocks = bot.findBlocks({
                 matching: block => block.name.includes('barrel'),
