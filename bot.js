@@ -23,7 +23,7 @@ const rl = readline.createInterface({
     prompt: '> '
 });
 
-const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console'];// 'monoplan',
+const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__'];// 'monoplan',
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore"];
 const RANGE_GOAL = 0;
 let protectedPlayer = null;
