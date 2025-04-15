@@ -950,7 +950,7 @@ function processCommand(message, username, plainMessage) {
                     if (isFarFromCenter() && !bot.pathfinder.goal) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
                         chestPos = vec3(7, 87, 6);
-                        await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 0));
+                        await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
                     } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                         await depositItems();
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
