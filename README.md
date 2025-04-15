@@ -6,7 +6,7 @@
 
 `apt install git nodejs npm`
 
-`npm install mineflayer mineflayer-pathfinder mineflayer-collectblock mineflayer-tool mineflayer-pvp mineflayer-armor-manager mineflayer-plasmovoice mineflayer-movement`
+`npm install mineflayer mineflayer-pathfinder mineflayer-collectblock mineflayer-tool mineflayer-pvp mineflayer-armor-manager mineflayer-plasmovoice mineflayer-movement yt-search ytdl-core`
 
 
 
