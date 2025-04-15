@@ -966,7 +966,7 @@ function processCommand(message, username, plainMessage) {
                         // if (blockToLookAfterDeposit) {
                         //     bot.lookAt(blockToLookAfterDeposit.position, true );
                         // }
-                        bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 0 ));
+                        bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
                     }
                 }
 
