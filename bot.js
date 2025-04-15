@@ -788,11 +788,11 @@ function processCommand(message, username, plainMessage) {
             }
             return bot.nearestEntity(entity => {
                 if (searchName) {
-                    if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity))) {
+                    if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {
                         return true;
                     }
                 } else {
-                    return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity));
+                    return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id);
                 }
             });
         }
