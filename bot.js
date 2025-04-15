@@ -804,7 +804,6 @@ function processCommand(message, username, plainMessage) {
             const dz = pos.z;
             return Math.sqrt(dx * dx + dz * dz) > 15;
         }
-
         async function unequipArmorAndMainHand() {
             for (let i = 0; i < 4; i++) {
                 const armorItem = bot.inventory.slots[i + 5];
@@ -924,6 +923,9 @@ function processCommand(message, username, plainMessage) {
 
             task = 'collecting';
 
+
+            let oldTargetItem = null
+
             collectInterval = setInterval(async () => {
                 // if (collecting_paused) {
                 //     console.log('Сбор приостановлен, жду 5 секунд...');
@@ -935,7 +937,8 @@ function processCommand(message, username, plainMessage) {
                 console.log('targetItem ', targetItem);
                 console.log(bot.pathfinder.goal);
 
-                if (targetItem && !bot.pathfinder.goal) {
+                if (targetItem && targetItem !== oldTargetItem) {
+                    oldTargetItem = targetItem;
                     setState(`collecting:${targetItem.id}`);
                     console.log('Нормальный предмет detetcted!')
                     bot.pathfinder.setMovements(defaultMove);
@@ -1475,7 +1478,6 @@ function processCommand(message, username, plainMessage) {
             query = args[0] || null
             if (!query) {return}
             equipItem(query)
-            // bot.chat(`/msg ${username} Привета!`);
             break
         case "slot":
             query = args[0] || null
