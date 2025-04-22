@@ -25,7 +25,7 @@ rl.question('Введи название трека: ', async (input) => {
     console.log(`Нашёл: ${video.title}`)
     console.log('Качаю..')
 
-    const command = `yt-dlp -x --audio-format mp3 -o "${fileName}" "${video.url}"`
+    const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}" "${video.url}"`
 
     exec(command, (error, stdout, stderr) => {
         if (error) {

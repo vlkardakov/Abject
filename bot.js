@@ -18,11 +18,14 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const yts = require("yt-search");
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: '> '
 });
+const { exec } = require('child_process')
+
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__'];// 'monoplan',
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore"];
@@ -573,6 +576,38 @@ function isItemOnSpawn(itemEntity) {
     });
 }
 
+async function downloadMusic(username, songName, fileName) {
+    if (!fileName) {
+        filename = songName.toLowerCase().replace(/ /g, '_') + '.mp3'
+    }
+    console.log('ищем на ютубчике...')
+    const res = await yts(songName)
+
+    if (!res.videos.length) {
+        console.log('ничего не найдено')
+        rl.close()
+        return
+    }
+
+    const video = res.videos[0]
+    console.log(`Нашёл: ${video.title}`)
+    replyFeedback(username, `Нашел ${video.title}, сохраняю как ${filename}`)
+    console.log('Качаю..')
+
+    const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}" "${video.url}"`
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`ошибка: ${error.message}`)
+        } else {
+            console.log(`сохранено как ${fileName}`)
+            replyFeedback(username, 'Закончил скачивать.')
+        }
+        rl.close()
+    })
+
+}
+
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
@@ -658,6 +693,12 @@ function processCommand(message, username, plainMessage) {
             } else {
                 bot.setControlState('sprint', true);
             }
+            return;
+        case 'load-music':
+            if (!args.length < 1 ) {return;}
+            const songName = args[0];
+            const fileName = args[1] || songName.toLowerCase().replace(/ /g, '_') + '.mp3';
+            downloadMusic(username, songName, fileName);
             return;
         case "drop":
             if (!WATCHED_PLAYERS.includes(username)) {
