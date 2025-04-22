@@ -695,7 +695,6 @@ function processCommand(message, username, plainMessage) {
             }
             return;
         case 'load-music':
-            console.log('Начали')
             if (args.length < 1 ) {return;}
             console.log('Начали')
             const songName = args[0];
