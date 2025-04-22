@@ -952,7 +952,7 @@ function processCommand(message, username, plainMessage) {
                     bot.pathfinder.setGoal(null)
                     bot.pathfinder.setGoal(new GoalFollow(targetItem, 0));
                 } else {
-                    if (isFarFromCenter() && !bot.pathfinder.goal) {
+                    if (isFarFromCenter() && !targetItem) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
                         chestPos = vec3(7, 87, 6);
                         await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
