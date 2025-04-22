@@ -591,7 +591,7 @@ async function downloadMusic(username, songName, fileName) {
 
     const video = res.videos[0]
     console.log(`Нашёл: ${video.title}`)
-    replyFeedback(username, `Нашел ${video.title}, сохраняю как ${filename}`)
+    replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
     console.log('Качаю..')
 
     const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}" "${video.url}"`
