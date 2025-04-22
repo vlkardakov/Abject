@@ -696,6 +696,7 @@ function processCommand(message, username, plainMessage) {
             return;
         case 'load-music':
             if (!args.length < 1 ) {return;}
+            console.log('Начали')
             const songName = args[0];
             const fileName = args[1] || songName.toLowerCase().replace(/ /g, '_') + '.mp3';
             downloadMusic(username, songName, fileName);
