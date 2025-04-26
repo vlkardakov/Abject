@@ -102,10 +102,10 @@ console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
-    // host: '212.80.7.178',
-    host: 'f1.play2go.cloud', //or f1.play2go.cloud:22034
-    // port: 25565,
-    port: 22034,
+    host: '212.80.7.178', //or f1.play2go.cloud:22034
+    // host: 'f1.play2go.cloud',
+    port: 25565,
+    // port: 22034,
     username: BOT_USERNAME,
     auth: 'offline',
     version: '1.20.4'
