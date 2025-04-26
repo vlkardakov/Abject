@@ -1727,7 +1727,7 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Задан режим '${MODE}'`)
             return
         case "stop":
-            if (!WATCHED_PLAYERS.includes(username)) {
+            if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
                 sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
