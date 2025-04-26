@@ -1886,6 +1886,7 @@ rl.on('line', (line) => {
     rl.prompt();
 });
 bot.on('chat', (message, username) => {
+    console.log(`I have got a message from ${username}: ${message}`);
     processCommand(message, username, message)
 })
 
