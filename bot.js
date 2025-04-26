@@ -1454,6 +1454,12 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "health":
+            bot.chat(`/msg ${username} ${bot.health}`);
+            break
+        case "quit":
+            bot.chat(`/msg ${username} Самоуничтожение...`);
+            break
         case "chosecolor":
             const targetBlock = bot.findBlock({
                 matching: () => true,
