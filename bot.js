@@ -701,29 +701,6 @@ function processCommand(message, username, plainMessage) {
             const fileName = args[1] || songName.toLowerCase().replace(/ /g, '_') + '.mp3';
             downloadMusic(username, songName, fileName);
             return;
-                    case "bounce":
-                        let lastVel = bot.entity.velocity.clone()
-            
-                            bot.on('physicsTick', () => {
-                                    const vel = bot.entity.velocity
-                                        const dx = vel.x - lastVel.x
-                                        const dz = vel.z - lastVel.z
-                                        const dy = vel.y - lastVel.y
-                                        const deltaSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz)
-                    
-                                        if (deltaSpeed > 0.4) { // типа его откинуло резко
-                                            const bouncePower = 3
-                                                const dir = vel.clone().normalize().scale(bouncePower)
-                                            bot.entity.velocity.x += dir.x
-                                            bot.entity.velocity.y += dir.y
-                                            bot.entity.velocity.z += dir.z
-                                                console.log('🧨 БАХ! Бота ударили и он отлетел!')
-                                            }
-                
-                                        lastVel = vel.clone()
-                                    })
-            
-                            break
 
         case "drop":
             if (!WATCHED_PLAYERS.includes(username)) {
@@ -1906,6 +1883,9 @@ rl.on('line', (line) => {
     processCommand(input, fakeUsername, input);
     rl.prompt();
 });
+bot.on('chat', (message, username) => {
+    processCommand(message, username, message)
+})
 
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
