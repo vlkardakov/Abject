@@ -1,7 +1,7 @@
 //Это коментарий
-// console.warn = () => {}
-// console.error = () => {}
-// //не засоряя консоль
+console.warn = () => {}
+console.error = () => {}
+//не засоряя консоль
 
 require('dotenv').config()
 const mineflayer = require('mineflayer');
@@ -979,13 +979,13 @@ function processCommand(message, username, plainMessage) {
                 // }
                 const targetItem = findNearestItem(searchName);
 
-                console.log('targetItem ', targetItem);
+                // console.log('targetItem ', targetItem);
                 console.log(bot.pathfinder.goal);
 
                 if (targetItem && targetItem !== oldTargetItem) {
                     oldTargetItem = targetItem;
                     setState(`collecting:${targetItem.id}`);
-                    console.log('Нормальный предмет detetcted!')
+                    // console.log('Нормальный предмет detetcted!')
                     bot.pathfinder.setMovements(defaultMove);
                     id = targetItem?.metadata?.[8]?.itemId
                     count = targetItem?.metadata?.[8]?.itemCount
@@ -1031,7 +1031,7 @@ function processCommand(message, username, plainMessage) {
         }
 
             const searchName = parts[1]
-            console.log(searchName)
+            // console.log(searchName)
             collecting = true;
             startCollecting(searchName);
             break;
@@ -1360,7 +1360,7 @@ function processCommand(message, username, plainMessage) {
             }
             break;
         case "play":
-            console.log('Произведение музыки запрошено');
+            // console.log('Произведение музыки запрошено');
             if (SOUND || playing) {
                 bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
                 return;
@@ -1402,7 +1402,7 @@ function processCommand(message, username, plainMessage) {
                 const duration = metadata.format.duration;
                 const segmentCount = Math.ceil(duration) / 4;
 
-                console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
+                // console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
 
                 ffmpeg(audioFile)
                     .outputOptions([
@@ -1425,8 +1425,9 @@ function processCommand(message, username, plainMessage) {
 
         function sendSegmentsSequentially(index, total, tempDir) {
             if (index >= total || !playing) {
-                console.log('Все сегменты отправлены');
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
+                // console.log('Все сегменты отправлены');
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
+                sendFeedback('Я закончил играть!')
                 SOUND = null;
                 playing = false;
                 fs.readdirSync(tempDir).forEach(file => {
@@ -1626,16 +1627,15 @@ function processCommand(message, username, plainMessage) {
             if (playerToCome) {
                 async function comePlayer() {
                     bot.pathfinder.setMovements(defaultMove);
-                    console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
+                    // console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
                     await bot.pathfinder.setGoal(new GoalFollow(playerToCome, 0));
                     task = null;
-                    console.log("Готово!");
+                    // console.log("Готово!");
                 }
 
                 comePlayer();
             } else {
-                bot.chat(`/m ${WATCHED_PLAYERS[0]} Я не вижу цель :(`)
-                bot.chat(`/m ${WATCHED_PLAYERS[0]} Я тебя не вижу :(`)
+                sendFeedback('Не вижу цель.')
             }
             break;
         case "teleport":
