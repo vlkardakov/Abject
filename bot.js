@@ -351,9 +351,9 @@ async function openContainerWithoutLooking(block) {
         insideBlock: false
     };
 
-    if (bot.supportFeature('useItemWithSequence')) {
-        packetData.sequence = bot.player.sequence ?? 0;
-    }
+    // if (bot.supportFeature('useItemWithSequence')) {
+    packetData.sequence = bot.player.sequence ?? 0;
+    // }
 
     bot._client.write('use_item_on', packetData);
 
