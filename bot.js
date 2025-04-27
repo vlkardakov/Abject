@@ -48,6 +48,7 @@ const musorMemory = [
     { name: '2', x: 7, y: 86, z: -6 },
     { name: '3', x: -26, y: 85, z: -14 },
     { name: '4', x: 30, y: 86, z: 18 },
+    { name: '5', x: 16, y: 86, z: -14 },
     // { name: '', x: , y: , z:  },
 ]
 const EAT_THRESHOLD = 16;
@@ -452,7 +453,7 @@ async function collectBlockType(blockName, count) {
     miningSand = true;
     async function mineNext() {
         if (collected >= count) {
-            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Завершаю.`);
+            sendFeedback(`Завершаю.`);
             miningSand = false;
             task = null
             return;
@@ -481,12 +482,12 @@ async function collectBlockType(blockName, count) {
                 console.log(`Добыто ${collected}/${count} ${blockName}.`);
                 setTimeout(mineNext, 100);
             } catch (err) {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ошибка: ${err.message}`);
+                sendFeedback(`Ошибка: ${err.message}`);
                 console.error(`Ошибка collectBlock:`, err);
                 miningSand = false;
             }
         } else {
-            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Нет.`);
+            sendFeedback(`Нет.`);
             miningSand = false;
         }
     }
