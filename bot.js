@@ -210,7 +210,7 @@ async function stealItems(itemName, user_name) {
 
     const target = bot.players[user_name]?.entity;
     if (!target) {
-        bot.chat(`не вижу игрока ${user_name}, лут при мне 😏`);
+        replyFeedback(username,  `лут при мне 😏`);
         return;
     }
 
@@ -227,7 +227,7 @@ async function stealItems(itemName, user_name) {
         }
     }
 
-    bot.chat("всё скинул, чекни!");
+    replyFeedback(username, "всё скинул, чекни!");
 }
 async function autoEat() {
     if (isEating || !mcData) return;
