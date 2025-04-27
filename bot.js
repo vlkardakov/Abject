@@ -321,7 +321,7 @@ function initializeBotState() {
 }
 
 async function openContainerWithoutLooking(block) {
-    const reach = 4.5;
+    const reach = 10;
     if (!block || bot.entity.position.distanceTo(block.position.offset(0.5, 0.5, 0.5)) > reach) {
         throw new Error(`Блок ${block?.name} в ${block?.position} вне досягаемости.`);
     }
