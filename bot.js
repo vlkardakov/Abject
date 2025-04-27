@@ -157,12 +157,12 @@ function hasRichItems() {
 async function stealItems(itemName, user_name) {
     const containers = containerMemory;
     if (containers.length === 0) {
-        bot.chat("память пустая.");
+        replyFeedback(username, "память пустая.");
         return;
         return;
     }
 
-    bot.chat(`вижу ${containers.length} контейнеров, ща чекну чё в них`);
+    replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
 
     for (const container of containers) {
         const { name, x, y, z, items } = container;
