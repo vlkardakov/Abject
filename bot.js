@@ -50,42 +50,6 @@ let playing = false;
 let latestBrokenBlock = [new vec3(0, 0, 0), 'air']
 
 const SPAWN_POSITIONS = [
-    new vec3(-8, 87, -2),
-    new vec3(16, 87, -15),
-    new vec3(4, 87, -23),
-    new vec3(-9, 94, -25),
-    new vec3(0, 94, -17),
-    new vec3(3, 97, -6),
-    new vec3(1, 87, 12),
-    new vec3(-23, 86, -8),
-    new vec3(-32, 86, -16),
-    new vec3(-32, 86, 9),
-    new vec3(-32, 86, 15),
-    new vec3(-17, 86, 8),
-    new vec3(-17, 86, 18),
-    new vec3(11, 87, 6),
-    new vec3(26, 87, 23),
-    new vec3(41, 87, 24),
-    new vec3(30, 86, 11),
-    new vec3(-24, 89, 1),
-    new vec3(-16, 86, -14),
-    new vec3(-19, 91, -15),
-    new vec3(-7, 87, -18),
-    new vec3(3, 87, -17),
-    new vec3(2, 87, 4),
-    new vec3(-25, 91, 18),
-    new vec3(-19, 94, 18),
-    new vec3(-29, 100, 14),
-    new vec3(-39, 97, 3),
-    new vec3(-1, 92, 0),
-    new vec3(-9, 90, -2),
-    new vec3(-15, 88, 0),
-    new vec3(-24, 90, -8),
-    new vec3(-31, 89, 1),
-    new vec3(-38, 87, 0),
-    new vec3(-24, 89, 9),
-    new vec3(-4, 93, -14),
-    new vec3(18, 90, -6)
 ];
 
 console.log(process.argv)
