@@ -878,64 +878,64 @@ function processCommand(message, username, plainMessage) {
                 count: 10,
             })
 
-            if (hasRichItems()) {
-                console.log("у меня есть ценные вещи")
-                const chestBlock_rich = blocks
-                    .map(pos => bot.blockAt(pos))
-                    // .find(block => block && block.position.y === 86 && block.position.z === 8)
-                    .find(block => block && block.position.y > 89)
-                if (!chestBlock_rich) {
-                    bot.chat(`/msg ${username} не нашел бочку :(`);
-                    return;
-                }
-
-                await unequipArmorAndMainHand()
-
-                // const blockToLookAt_rich = bot.findBlock({
-                //     matching: block => {
-                //         const nameMatches = block.name.toLowerCase().includes('calcite');
-                //         const isVisible = bot.canSeeBlock(block);
-                //         return nameMatches && isVisible;
-                //     },
-                //     maxDistance: 5,
-                //     useExtraInfo: true
-                // });
-                //
-                // if (blockToLookAt_rich) {
-                //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-                //     await bot.lookAt(center_rich, true);
-                // }
-
-                // const chest_rich = await bot.openBlock(chestBlock_rich, null);
-                // типа открываем бочку без поворота
-                bot._client.write('block_place', {
-                    hand: 0, // 0 - main hand
-                    location: chestBlock_rich.position,
-                    direction: 1, // направление клика (1 = верх блока, норм)
-                    cursorX: 8, // 8/16 = 0.5, центр блока
-                    cursorY: 8,
-                    cursorZ: 8,
-                    insideBlock: false
-                })
-
-                // теперь надо самим замутить openContainer
-                const chest_rich = await bot.openContainer(chestBlock_rich)
-
-                for (let item of bot.inventory.items()) {
-                    if (RICH_ITEMS.some(keyword => item.name.includes(keyword))) {                        try {
-                            console.log(`Кладу ${item.name}`)
-                            await chest_rich.deposit(item.type, null, item.count);
-                        } catch (err) {
-                            console.log(`Не смог положить ${item.name}: ${err.message}`);
-                        }
-                    }
-                }
-                chest_rich.close();
-            }
+            // if (hasRichItems()) {
+            //     console.log("у меня есть ценные вещи")
+            //     const chestBlock_rich = blocks
+            //         .map(pos => bot.blockAt(pos))
+            //         // .find(block => block && block.position.y === 86 && block.position.z === 8)
+            //         .find(block => block && block.position.y > 89)
+            //     if (!chestBlock_rich) {
+            //         bot.chat(`/msg ${username} не нашел бочку :(`);
+            //         return;
+            //     }
+            //
+            //     await unequipArmorAndMainHand()
+            //
+            //     // const blockToLookAt_rich = bot.findBlock({
+            //     //     matching: block => {
+            //     //         const nameMatches = block.name.toLowerCase().includes('calcite');
+            //     //         const isVisible = bot.canSeeBlock(block);
+            //     //         return nameMatches && isVisible;
+            //     //     },
+            //     //     maxDistance: 5,
+            //     //     useExtraInfo: true
+            //     // });
+            //     //
+            //     // if (blockToLookAt_rich) {
+            //     //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
+            //     //     await bot.lookAt(center_rich, true);
+            //     // }
+            //
+            //     // const chest_rich = await bot.openBlock(chestBlock_rich, null);
+            //     // типа открываем бочку без поворота
+            //     bot._client.write('block_place', {
+            //         hand: 0, // 0 - main hand
+            //         location: chestBlock_rich.position,
+            //         direction: 1, // направление клика (1 = верх блока, норм)
+            //         cursorX: 8, // 8/16 = 0.5, центр блока
+            //         cursorY: 8,
+            //         cursorZ: 8,
+            //         insideBlock: false
+            //     })
+            //
+            //     // теперь надо самим замутить openContainer
+            //     const chest_rich = await bot.openContainer(chestBlock_rich)
+            //
+            //     for (let item of bot.inventory.items()) {
+            //         if (RICH_ITEMS.some(keyword => item.name.includes(keyword))) {                        try {
+            //                 console.log(`Кладу ${item.name}`)
+            //                 await chest_rich.deposit(item.type, null, item.count);
+            //             } catch (err) {
+            //                 console.log(`Не смог положить ${item.name}: ${err.message}`);
+            //             }
+            //         }
+            //     }
+            //     chest_rich.close();
+            // }
 
             const chestBlock = blocks
                 .map(pos => bot.blockAt(pos))
-                .find(block => block && block.position.z === 6 && block.position.y === 86 )
+                .find(block => block && block.position.x === 0 && block.position.z === -34 && block.position.y === 82 )
 
             // console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
             if (!chestBlock) {
@@ -959,7 +959,7 @@ function processCommand(message, username, plainMessage) {
 
             const blockToLookAt = bot.findBlock({
                 matching: block => {
-                    const nameMatches = block.name.toLowerCase().includes('calcite');
+                    const nameMatches = block.name.toLowerCase().includes('log');
                     const isVisible = bot.canSeeBlock(block);
                     return nameMatches && isVisible;
                 },
@@ -1013,7 +1013,7 @@ function processCommand(message, username, plainMessage) {
                 } else {
                     if (isFarFromCenter() && !targetItem) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
-                        chestPos = vec3(7, 87, 6);
+                        chestPos = vec3(2, 82, -33);
                         await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
                     } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                         await depositItems();
@@ -1030,7 +1030,7 @@ function processCommand(message, username, plainMessage) {
                         // if (blockToLookAfterDeposit) {
                         //     bot.lookAt(blockToLookAfterDeposit.position, true );
                         // }
-                        bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
+                        // bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
                     }
                 }
 
