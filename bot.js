@@ -1473,7 +1473,8 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} ${bot.health}`);
             break
         case "cords":
-            bot.chat(`/r ${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}`)            break
+            bot.chat(`/r ${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}`)
+            break
         case "quit":
             bot.chat(`/msg ${username} Самоуничтожение...`);
             bot.quit()
