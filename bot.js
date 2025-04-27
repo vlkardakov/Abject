@@ -997,7 +997,7 @@ function processCommand(message, username, plainMessage) {
                 // console.log('targetItem ', targetItem);
                 console.log(bot.pathfinder.goal);
 
-                if (targetItem && targetItem !== oldTargetItem && bot.pathfinder.goal !== GoalFollow(targetItem, 0)) {
+                if (targetItem && targetItem !== oldTargetItem) {
                     oldTargetItem = targetItem;
                     setState(`collecting:${targetItem.id}`);
                     // console.log('Нормальный предмет detetcted!')
@@ -1012,7 +1012,7 @@ function processCommand(message, username, plainMessage) {
                     bot.pathfinder.setGoal(null)
                     bot.pathfinder.setGoal(new GoalFollow(targetItem, 0));
                 } else {
-                    if (isFarFromCenter() && !targetItem && bot.pathfinder.goal !== goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2)) {
+                    if (isFarFromCenter() && !targetItem && !bot.pathfinder.goal) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
                         chestPos = vec3(2, 82, -33);
                         await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
