@@ -33,6 +33,7 @@ const RANGE_GOAL = 0;
 let protectedPlayer = null;
 let following = false;
 let miningSand = false;
+let justCheckedBarrel = false;
 let followingProtectedPlayer = false;
 let collecting = false;
 let collectingId = null
