@@ -947,7 +947,7 @@ function processCommand(message, username, plainMessage) {
             const chest = await bot.openContainer(chestBlock)
 
             console.log('Мусорка открыта')
-            for (let item of bot.inventory.items()) {
+            for (const item of bot.inventory.items()) {
                     try {
                         console.log(`Кладу ${item.name}`)
                         await chest.deposit(item.type, null, item.count);
