@@ -845,8 +845,8 @@ function processCommand(message, username, plainMessage) {
 
         function isFarFromCenter() {
             const pos = bot.entity.position;
-            const dx = pos.x;
-            const dz = pos.z;
+            const dx = pos.x - 2;
+            const dz = pos.z + 33;
             return Math.sqrt(dx * dx + dz * dz) > 15;
         }
         async function unequipArmorAndMainHand() {
