@@ -42,6 +42,13 @@ let collecting_paused = false
 let mcData;
 let isEating = false;
 let containerMemory = []
+const musorMemory = [
+    { name: '1', x: 7, y: 86, z: 6 },
+    { name: '2', x: 7, y: 86, z: -6 },
+    { name: '3', x: -26, y: 85, z: -14 },
+    { name: '4', x: 30, y: 86, z: 18 },
+    // { name: '', x: , y: , z:  },
+]
 const EAT_THRESHOLD = 16;
 let MODE = 'мирный';
 let SOUND = null;
@@ -194,6 +201,72 @@ async function stealItems(itemName, user_name) {
         } else {
             console.log(`В контейнере ${name} нет подходящих предметов.`);
         }
+    }
+
+    const target = bot.players[user_name]?.entity;
+    if (!target) {
+        replyFeedback(username,  `лут при мне 😏`);
+        return;
+    }
+
+//    bot.chat(`иду к ${username} с лутом`);
+    await bot.pathfinder.goto(new GoalNear(target.position.x, target.position.y, target.position.z, 2));
+
+    const items = bot.inventory.items();
+    for (const item of items) {
+        try {
+            await bot.toss(item.type, null, item.count);
+//            bot.chat(`выкинул ${item.name} x${item.count}`);
+        } catch (err) {
+            console.log(`не смог скинуть ${item.name}:`, err.message);
+        }
+    }
+
+    replyFeedback(username, "всё скинул, чекни!");
+}
+async function sborItems(user_name) {
+    const containers = musorMemory;
+    if (containers.length === 0) {
+        replyFeedback(username, "память пустая.");
+        return;
+        return;
+    }
+
+    replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
+
+    for (const container of containers) {
+        //пример: { name: 'barrel', x: 7, y: 92, z: 7 }
+        const { name, x, y, z} = container;
+//            bot.chat(`Нашел подходящие предметы в контейнере ${name} (${x}, ${y}, ${z}), иду забирать!`);
+
+            try {
+                await bot.pathfinder.goto(new GoalNear(Math.floor(x), Math.floor(y), Math.floor(z), 4));
+//                await new Promise(res => setTimeout(res, 50));
+
+                const block = bot.blockAt(new vec3(Math.floor(x), Math.floor(y), Math.floor(z)));
+                if (!block) continue;
+
+                const chest = await bot.openContainer(block);
+
+                const removedItems = [];
+
+                for (const item of chest.containerItems()) {
+                        try {
+                            await chest.withdraw(item.type, null, item.count);
+                            console.log(`украл ${item.name} x${item.count}`);
+                            removedItems.push(item);
+                        } catch (err) {
+                            console.log(`не смог забрать ${item.name}:`, err.message);
+                        }
+                }
+
+                chest.close();
+
+                container.items = container.items.filter(item => !removedItems.includes(item));
+//                bot.chat(`Удалил ${removedItems.length} предметов из контейнера ${name}`);
+            } catch (err) {
+                console.log(`ошибка у ${name} в позиции (${x}, ${y}, ${z}):`, err.message);
+            }
     }
 
     const target = bot.players[user_name]?.entity;
@@ -1347,11 +1420,18 @@ function processCommand(message, username, plainMessage) {
         case "steal":
             const itemName = parts[1]
             if (!itemName) {
-                bot.chat("че воровать-то? введи чёт типа: steal diamond")
+                replyFeedback(username, "че воровать-то? введи чёт типа: steal diamond")
                 return
             }
 
             stealItems(itemName, username)
+            break
+        case "sbor":
+            replyFeedback(
+                username,
+                "Начинаю собирать мусор из мусорок"
+            )
+            sborItems(username)
             break
         case "addspawnpos":
             const pos = bot.players[username].entity.position.floored();
