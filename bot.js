@@ -948,14 +948,12 @@ function processCommand(message, username, plainMessage) {
 
             console.log('Мусорка открыта')
             for (let item of bot.inventory.items()) {
-                if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
                     try {
                         console.log(`Кладу ${item.name}`)
                         await chest.deposit(item.type, null, item.count);
                     } catch (err) {
                         console.log(`Не смог положить ${item.name}: ${err.message}`);
                     }
-                }
             }
 
             const blockToLookAt = bot.findBlock({
