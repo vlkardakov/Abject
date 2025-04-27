@@ -874,8 +874,8 @@ function processCommand(message, username, plainMessage) {
 
             const blocks = bot.findBlocks({
                 matching: block => block.name.includes('barrel'),
-                maxDistance: 4,
-                count: 5,
+                maxDistance: 10,
+                count: 10,
             })
 
             if (hasRichItems()) {
