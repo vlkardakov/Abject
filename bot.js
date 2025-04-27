@@ -932,7 +932,20 @@ function processCommand(message, username, plainMessage) {
             }
 
 
-            const chest = await bot.openBlock(chestBlock, null);
+            // const chest = await bot.openBlock(chestBlock, null);
+
+                bot._client.write('block_place', {
+                    hand: 0,
+                    location: chestBlock.position,
+                    direction: 1,
+                    cursorX: 8,
+                    cursorY: 8,
+                    cursorZ: 8,
+                    insideBlock: false
+                })
+
+            const chest = await bot.openContainer(chestBlock)
+
             console.log('Мусорка открыта')
             for (let item of bot.inventory.items()) {
                 if (!item.name.includes('beef') && !item.name.includes('pork') && !item.name.includes('chicken') && !item.name.includes('bread') && !item.name.includes('mutt') && !item.name.includes('sword')) {
