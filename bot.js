@@ -320,35 +320,48 @@ function initializeBotState() {
     }
 }
 
-async function openBlockNoLook(block) {
-    return new Promise((resolve, reject) => {
-        if (!block || !block.position) return reject(new Error("invalid block"))
+async function openContainerWithoutLooking(block) {
+    const reach = 4.5;
+    if (!block || bot.entity.position.distanceTo(block.position.offset(0.5, 0.5, 0.5)) > reach) {
+        throw new Error(`Блок ${block?.name} в ${block?.position} вне досягаемости.`);
+    }
 
-        const pos = block.position
-
-        bot._client.write('block_place', {
-            location: pos,
-            direction: 1,
-            hand: 0,
-            cursorX: 0.5,
-            cursorY: 1.0,
-            cursorZ: 0.5,
-            insideBlock: false
-        })
-
+    const windowOpenPromise = new Promise((resolve, reject) => {
+        let timeoutId = null;
         const listener = (window) => {
-            bot.removeListener('windowOpen', listener)
-            resolve(window)
-        }
+            clearTimeout(timeoutId);
+            resolve(window);
+        };
 
-        bot.on('windowOpen', listener)
+        timeoutId = setTimeout(() => {
+            bot.removeListener('windowOpen', listener);
+            reject(new Error(`Таймаут ожидания открытия окна для блока в ${block.position}`));
+        }, 5000);
 
-        setTimeout(() => {
-            bot.removeListener('windowOpen', listener)
-            reject(new Error("timeout"))
-        }, 5000)
-    })
+        bot.once('windowOpen', listener);
+    });
+
+    const packetData = {
+        location: block.position,
+        hand: 0,
+        face: 1,
+        cursorX: 0.5,
+        cursorY: 0.5,
+        cursorZ: 0.5,
+        insideBlock: false
+    };
+
+    if (bot.supportFeature('useItemWithSequence')) {
+        packetData.sequence = bot.player.sequence ?? 0;
+    }
+
+    bot._client.write('use_item_on', packetData);
+
+    const window = await windowOpenPromise;
+    await bot.waitForTicks(1);
+    return window;
 }
+
 async function breakBlockManually(block) {
     if (!block || !bot.canDigBlock(block)) {
         console.log('Ну тип... не могу сломать этот блок :|');
@@ -906,8 +919,7 @@ function processCommand(message, username, plainMessage) {
                 //     await bot.lookAt(center_rich, true);
                 // }
 
-                const chest_rich = await bot.openBlock(chestBlock_rich, null);
-
+                const chest_rich = await openContainerWithoutLooking(chestBlock_rich);
                 for (let item of bot.inventory.items()) {
                     if (RICH_ITEMS.some(keyword => item.name.includes(keyword))) {                        try {
                             console.log(`Кладу ${item.name}`)
