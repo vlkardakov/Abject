@@ -1311,7 +1311,7 @@ function processCommand(message, username, plainMessage) {
                     matching: block => {
                         return (
                             block &&
-                            block.name.toLowerCase().includes("barrel")
+                            (block.name.toLowerCase().includes("barrel") || block.name.toLowerCase().includes("chest"))
                         )
                     },
                     maxDistance: radius,
@@ -1532,6 +1532,38 @@ function processCommand(message, username, plainMessage) {
             break;
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
+            break
+        case "scan":
+            blockName = parts[1]
+            if (!blockName) {
+                bot.chat("Больше слов!")
+                return
+            }
+
+            replyFeedback(username, 'ждать!')
+
+            blocks = bot.findBlocks({
+                matching: block => {
+                    const nameMatches = block.name.toLowerCase().includes(blockName.toLowerCase())
+                    // const isVisible = bot.canSeeBlock(block)
+                    return nameMatches// && isVisible
+                },
+                maxDistance: 150,
+                count: 999,
+
+            })
+
+            if (blocks.length === 0) {
+                replyFeedback(username, "не нашёл ничё :(")
+                return
+            }
+
+            replyFeedback(username, `готово.`)
+            console.log("НАЙДЕННЫЕ БЛОКИ:")
+            blocks.forEach((pos, i) => {
+                const block = bot.blockAt(pos)
+                console.log(`${i + 1}) ${block.name} на ${pos}`)
+            })
             break
         case "health":
             bot.chat(`/msg ${username} ${bot.health}`);
