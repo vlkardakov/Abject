@@ -930,16 +930,15 @@ function processCommand(message, username, plainMessage) {
         })()
             return;
         case "dropall":
-            console.log('дропаю все')
-            // if (!WATCHED_PLAYERS.includes(username)) {
-            //     sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-            //     bot.chat(`/msg ${username} Я не буду этого делать!!!`)
-            //     return;
-            // }
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                return;
+            }
 
             ;(async () => {
 
-            async function safeToss2(item, amount) {
+            async function safeToss(item, amount) {
                 const slot = item.slot
                 if (slot < 9 || slot > 44) {
                     try {
@@ -961,6 +960,10 @@ function processCommand(message, username, plainMessage) {
             }
 
             for (let i = 1; i < parts.length; i += 2) {
+                // const itemName = parts[i].toLowerCase()
+                // const amount = parts[i + 1] === "all" ? Infinity : parseInt(parts[i + 1])
+                const amount = 1000
+
                 const allItems = [
                     ...bot.inventory.items(),
                     bot.inventory.slots[45],
@@ -970,11 +973,11 @@ function processCommand(message, username, plainMessage) {
                     bot.inventory.slots[8],
                 ].filter(it => it)
 
-                const matchingItems = allItems
+                const matchingItems = allItems.filter(it => it)
 
                 if (matchingItems.length > 0) {
                     for (const item of matchingItems) {
-                        await safeToss2(item, 1000)
+                        await safeToss(item, amount)
                     }
                 } else {
                     bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
