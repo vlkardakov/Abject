@@ -961,9 +961,9 @@ function processCommand(message, username, plainMessage) {
 
             for (let i = 1; i < parts.length; i += 2) {
                 const itemName = parts[i].toLowerCase()
-                const amount = parts[i + 1] === "all" ? Infinity : parseInt(parts[i + 1])
+                const amount = Infinity
 
-                const allItems = [
+                const matchingItems = [
                     ...bot.inventory.items(),
                     bot.inventory.slots[45],
                     bot.inventory.slots[5],
@@ -971,9 +971,7 @@ function processCommand(message, username, plainMessage) {
                     bot.inventory.slots[7],
                     bot.inventory.slots[8],
                 ].filter(it => it)
-
-                const matchingItems = allItems.filter(it => it.name.toLowerCase().includes(itemName))
-
+                
                 if (matchingItems.length > 0) {
                     for (const item of matchingItems) {
                         await safeToss(item, amount)
