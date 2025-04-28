@@ -929,6 +929,60 @@ function processCommand(message, username, plainMessage) {
 
         })()
             return;
+        case "dropall":
+            if (!WATCHED_PLAYERS.includes(username)) {
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                return;
+            }
+
+            ;(async () => {
+
+            async function safeToss(item, amount) {
+                const slot = item.slot
+                if (slot < 9 || slot > 44) {
+                    try {
+                        await bot.equip(item, 'hand')
+                        await bot.unequip('hand')
+                    } catch (err) {
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
+                        return
+                    }
+                }
+
+                bot.toss(item.type, null, Math.min(item.count, amount), err => {
+                    if (!err) {
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
+                    } else {
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
+                    }
+                })
+            }
+
+            for (let i = 1; i < parts.length; i += 2) {
+                const allItems = [
+                    ...bot.inventory.items(),
+                    bot.inventory.slots[45],
+                    bot.inventory.slots[5],
+                    bot.inventory.slots[6],
+                    bot.inventory.slots[7],
+                    bot.inventory.slots[8],
+                ].filter(it => it)
+
+                const matchingItems = allItems
+
+                if (matchingItems.length > 0) {
+                    for (const item of matchingItems) {
+                        await safeToss(item, 1000)
+                    }
+                } else {
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
+                    bot.chat(`/msg ${username} у меня нет ничего типа '${itemName}'`)
+                }
+            }
+
+        })()
+            return;
         case "collect":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
