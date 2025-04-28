@@ -929,12 +929,12 @@ function processCommand(message, username, plainMessage) {
 
         })()
             return;
-        case "drop2":
-            if (!WATCHED_PLAYERS.includes(username)) {
-                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
-                return;
-            }
+        case "dropall":
+            // if (!WATCHED_PLAYERS.includes(username)) {
+            //     sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+            //     bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+            //     return;
+            // }
 
             ;(async () => {
 
