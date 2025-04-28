@@ -959,7 +959,7 @@ function processCommand(message, username, plainMessage) {
                 })
             }
 
-            for (let i = 1; i < parts.length; i += 2) {
+            for (let i = 1; i < 1; i += 2) {
                 const itemName = parts[i].toLowerCase()
                 const amount = Infinity
 
@@ -971,7 +971,7 @@ function processCommand(message, username, plainMessage) {
                     bot.inventory.slots[7],
                     bot.inventory.slots[8],
                 ].filter(it => it)
-                
+
                 if (matchingItems.length > 0) {
                     for (const item of matchingItems) {
                         await safeToss(item, amount)
