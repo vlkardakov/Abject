@@ -938,7 +938,7 @@ function processCommand(message, username, plainMessage) {
 
             ;(async () => {
 
-            async function safeToss(item, amount) {
+            async function safeToss2(item, amount) {
                 const slot = item.slot
                 if (slot < 9 || slot > 44) {
                     try {
@@ -973,7 +973,7 @@ function processCommand(message, username, plainMessage) {
 
                 if (matchingItems.length > 0) {
                     for (const item of matchingItems) {
-                        await safeToss(item, 1000)
+                        await safeToss2(item, 1000)
                     }
                 } else {
                     bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
