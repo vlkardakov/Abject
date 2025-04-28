@@ -959,7 +959,7 @@ function processCommand(message, username, plainMessage) {
                 })
             }
 
-            for (let i = 1; i < 1; i += 2) {
+            for (let i = 1; i < 2; i += 2) {
                 const itemName = parts[i].toLowerCase()
                 const amount = Infinity
 
