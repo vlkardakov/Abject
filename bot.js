@@ -963,14 +963,7 @@ function processCommand(message, username, plainMessage) {
                 const itemName = parts[i].toLowerCase()
                 const amount = Infinity
 
-                const matchingItems = [
-                    ...bot.inventory.items(),
-                    bot.inventory.slots[45],
-                    bot.inventory.slots[5],
-                    bot.inventory.slots[6],
-                    bot.inventory.slots[7],
-                    bot.inventory.slots[8],
-                ].filter(it => it)
+                const matchingItems = bot.inventory.items()
 
                 if (matchingItems.length > 0) {
                     for (const item of matchingItems) {
