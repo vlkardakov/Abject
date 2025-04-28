@@ -930,52 +930,19 @@ function processCommand(message, username, plainMessage) {
         })()
             return;
         case "dropall":
-            // if (!WATCHED_PLAYERS.includes(username)) {
-            //     sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-            //     bot.chat(`/msg ${username} Я не буду этого делать!!!`)
-            //     return;
-            // }
+            async function expunge() {
+                var inventoryItemCount = bot.inventory.items().length;
+                if (inventoryItemCount === 0) return;
 
-            ;(async () => {
-
-            async function safeToss(item, amount) {
-                const slot = item.slot
-                if (slot < 9 || slot > 44) {
-                    try {
-                        await bot.equip(item, 'hand')
-                        await bot.unequip('hand')
-                    } catch (err) {
-                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
-                        return
-                    }
-                }
-
-                bot.toss(item.type, null, Math.min(item.count, amount), err => {
-                    if (!err) {
-                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
-                    } else {
-                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
-                    }
-                })
-            }
-
-            for (let i = 1; i < 2; i += 2) {
-                const itemName = parts[i].toLowerCase()
-                const amount = Infinity
-
-                const matchingItems = bot.inventory.items()
-
-                if (matchingItems.length > 0) {
-                    for (const item of matchingItems) {
-                        await safeToss(item, amount)
-                    }
-                } else {
-                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
-                    bot.chat(`/msg ${username} у меня нет ничего типа '${itemName}'`)
+                while (inventoryItemCount > 0) {
+                    const item = bot.inventory.items()[0];
+                    bot.chat(`Throwed ${item.name}`);
+                    await bot.tossStack(item);
+                    inventoryItemCount--;
                 }
             }
 
-        })()
+            expunge();
             return;
 
         case "collect":
