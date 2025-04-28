@@ -936,7 +936,7 @@ function processCommand(message, username, plainMessage) {
 
                 while (inventoryItemCount > 0) {
                     const item = bot.inventory.items()[0];
-                    bot.chat(`Throwed ${item.name}`);
+                    // bot.chat(`Throwed ${item.name}`);
                     await bot.tossStack(item);
                     inventoryItemCount--;
                 }
