@@ -927,7 +927,7 @@ function processCommand(message, username, plainMessage) {
             return;
         case "dropall":
             async function expunge() {
-                unequipArmorAndMainHand()
+                await unequipArmorAndMainHand()
                 var inventoryItemCount = bot.inventory.items().length;
                 if (inventoryItemCount === 0) return;
 
