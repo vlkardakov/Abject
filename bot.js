@@ -1575,15 +1575,30 @@ function processCommand(message, username, plainMessage) {
             }
             bot.openChest(chestBlock).then(chest => {
                 if (namePart === "all") {
-                    chest.depositAll().then(() => {
+                    const items = bot.inventory.items()
+                    if (items.length === 0) {
+                        replyFeedback(username, 'У меня вообще пусто в инвентаре')
                         chest.close()
-                        replyFeedback(username, `Сложил ВСЁ в эндер-сундук 🧳`)
-                    }).catch(err => {
-                        replyFeedback(username, `Ошибка при складывании: ${err.message}`)
-                        chest.close()
-                    })
+                        return
+                    }
+
+                    const depositNext = () => {
+                        const item = items.shift()
+                        if (!item) {
+                            chest.close()
+                            replyFeedback(username, 'Сложил всё в эндер-сундук')
+                            return
+                        }
+                        chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
+                            replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                            chest.close()
+                        })
+                    }
+
+                    depositNext()
                     return
                 }
+
 
                 const item = bot.inventory.items().find(i => i.name.includes(namePart))
                 if (!item) {
