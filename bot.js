@@ -1560,13 +1560,17 @@ function processCommand(message, username, plainMessage) {
             break
         case "enderchest":
         {
+            if (!WATCHED_PLAYERS.includes(username)) {
+                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                return
+            }
             const namePart = parts[1]?.toLowerCase()
             const chestBlock = bot.findBlock({
                 matching: block => bot.openChest && block.name === 'ender_chest',
                 maxDistance: 4
             })
             if (!chestBlock) {
-                replyFeedback(username, 'Не нашёл эндер-сундук поблизости 😔')
+                replyFeedback(username, 'Не нашёл эндер-сундук поблизости')
                 break
             }
             bot.openChest(chestBlock).then(chest => {
@@ -1591,6 +1595,10 @@ function processCommand(message, username, plainMessage) {
 
         case "unenderchest":
         {
+            if (!WATCHED_PLAYERS.includes(username)) {
+                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                return
+            }
             const namePart = parts[1]?.toLowerCase()
             const chestBlock = bot.findBlock({
                 matching: block => bot.openChest && block.name === 'ender_chest',
