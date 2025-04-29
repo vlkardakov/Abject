@@ -639,7 +639,7 @@ async function depositItems() {
     //         return;
     //     }
     //
-    await unequipArmorAndMainHand()
+    // await unequipArmorAndMainHand()
     //
     //     // const blockToLookAt_rich = bot.findBlock({
     //     //     matching: block => {
