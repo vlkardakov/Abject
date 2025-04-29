@@ -1558,6 +1558,67 @@ function processCommand(message, username, plainMessage) {
             bot.pathfinder.setMovements(defaultMove);
             bot.pathfinder.setGoal(new goals.GoalNear(x,y, z, range));
             break
+        case "enderchest":
+        {
+            const namePart = parts[1]?.toLowerCase()
+            const chestBlock = bot.findBlock({
+                matching: block => bot.openChest && block.name === 'ender_chest',
+                maxDistance: 4
+            })
+            if (!chestBlock) {
+                replyFeedback(username, 'Не нашёл эндер-сундук поблизости 😔')
+                break
+            }
+            bot.openChest(chestBlock).then(chest => {
+                const item = bot.inventory.items().find(i => i.name.includes(namePart))
+                if (!item) {
+                    replyFeedback(username, `У меня нет предмета с "${namePart}"`)
+                    chest.close()
+                    return
+                }
+                chest.deposit(item.type, null, item.count).then(() => {
+                    chest.close()
+                    replyFeedback(username, `Сложил ${item.name} в эндер-сундук`)
+                }).catch(err => {
+                    bot.chat(`Ошибка при складывании: ${err.message}`)
+                    chest.close()
+                })
+            }).catch(err => {
+                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+            })
+        }
+            break
+
+        case "unenderchest":
+        {
+            const namePart = parts[1]?.toLowerCase()
+            const chestBlock = bot.findBlock({
+                matching: block => bot.openChest && block.name === 'ender_chest',
+                maxDistance: 4
+            })
+            if (!chestBlock) {
+                replyFeedback(username, 'Где сундук?')
+                break
+            }
+            bot.openChest(chestBlock).then(chest => {
+                const item = chest.containerItems().find(i => i.name.includes(namePart))
+                if (!item) {
+                    replyFeedback(username, `Нет предмета с "${namePart}" в эндер-сундуке`)
+                    chest.close()
+                    return
+                }
+                chest.withdraw(item.type, null, item.count).then(() => {
+                    chest.close()
+                    replyFeedback(username, `достал ${item.name} из эндер-сундука`)
+                }).catch(err => {
+                    replyFeedback(username, `Ошибка при доставании: ${err.message}`)
+                    chest.close()
+                })
+            }).catch(err => {
+                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+            })
+        }
+            break
 
         case "scan":
             blockName = parts[1]
