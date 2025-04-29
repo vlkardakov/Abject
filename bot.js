@@ -242,7 +242,7 @@ async function sborItems(user_name) {
 //            bot.chat(`Нашел подходящие предметы в контейнере ${name} (${x}, ${y}, ${z}), иду забирать!`);
 
             try {
-                await bot.pathfinder.goto(new GoalNear(Math.floor(x), Math.floor(y), Math.floor(z), 4));
+                await bot.pathfinder.goto(new GoalNear(Math.floor(x), Math.floor(y), Math.floor(z), 3));
 //                await new Promise(res => setTimeout(res, 50));
 
                 const block = bot.blockAt(new vec3(Math.floor(x), Math.floor(y), Math.floor(z)));
@@ -1372,7 +1372,7 @@ function processCommand(message, username, plainMessage) {
                     if (!block || !block.position) continue
 
                     try {
-                        await bot.pathfinder.goto(new GoalNear(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), 4))
+                        await bot.pathfinder.goto(new GoalNear(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), 3))
 
                         const container = await bot.openContainer(block)
                         const items = container.slots.filter(slot => slot && slot.name) // Получаем предметы из контейнера
