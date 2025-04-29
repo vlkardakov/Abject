@@ -1548,6 +1548,14 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "goto":
+            x = parts[1]
+            y = parts[2]
+            z = parts[3]
+
+            bot.pathfinder.setGoal(new goals.GoalNear(x,y, z, 10));
+            break
+
         case "scan":
             blockName = parts[1]
             if (!blockName) {
