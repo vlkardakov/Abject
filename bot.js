@@ -1796,7 +1796,6 @@ function processCommand(message, username, plainMessage) {
 
             drawLoop()
             break
-
         case "equip":
             query = args[0] || null
             if (!query) {return}
@@ -1821,21 +1820,12 @@ function processCommand(message, username, plainMessage) {
             })
             return;
         case "сосал?":
-            if (args.length < 200) {
-                bot.chat(`!Да.`);
-                return;
-            }
-
-            if (task) {
-                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                return;
-            }
+            bot.chat(`!Да.`);
+            return;
         case "server":
-            if (args.length < 200) {
-                bot.chat("/server sleepcraft");
-                return;
-            }
+            bot.chat("/server sleepcraft");
+            return;
+
         case "break":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
@@ -2019,7 +2009,7 @@ function processCommand(message, username, plainMessage) {
             playing = false;
             break;
         case "status":
-            replyFeedback(username,`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
+            console.log(`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()}`)
             break;
         default:
             break;
