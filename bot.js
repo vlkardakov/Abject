@@ -1581,7 +1581,7 @@ function processCommand(message, username, plainMessage) {
                         chest.close()
                         return
                     }
-
+                    unequipArmorAndMainHand()
                     const depositNext = () => {
                         const item = items.shift()
                         if (!item) {
