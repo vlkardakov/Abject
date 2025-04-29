@@ -1552,7 +1552,10 @@ function processCommand(message, username, plainMessage) {
             x = parts[1]
             y = parts[2]
             z = parts[3]
+            range = parts[4] || 5
 
+            bot.pathfinder.setGoal(null);
+            bot.pathfinder.setMovements(defaultMove);
             bot.pathfinder.setGoal(new goals.GoalNear(x,y, z, 10));
             break
 
