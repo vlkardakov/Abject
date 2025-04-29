@@ -1556,7 +1556,7 @@ function processCommand(message, username, plainMessage) {
 
             bot.pathfinder.setGoal(null);
             bot.pathfinder.setMovements(defaultMove);
-            bot.pathfinder.setGoal(new goals.GoalNear(x,y, z, 10));
+            bot.pathfinder.setGoal(new goals.GoalNear(x,y, z, range));
             break
 
         case "scan":
