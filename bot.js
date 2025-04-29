@@ -1574,6 +1574,17 @@ function processCommand(message, username, plainMessage) {
                 break
             }
             bot.openChest(chestBlock).then(chest => {
+                if (namePart === "all") {
+                    chest.depositAll().then(() => {
+                        chest.close()
+                        replyFeedback(username, `Сложил ВСЁ в эндер-сундук 🧳`)
+                    }).catch(err => {
+                        replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                        chest.close()
+                    })
+                    return
+                }
+
                 const item = bot.inventory.items().find(i => i.name.includes(namePart))
                 if (!item) {
                     replyFeedback(username, `У меня нет предмета с "${namePart}"`)
@@ -1584,7 +1595,7 @@ function processCommand(message, username, plainMessage) {
                     chest.close()
                     replyFeedback(username, `Сложил ${item.name} в эндер-сундук`)
                 }).catch(err => {
-                    bot.chat(`Ошибка при складывании: ${err.message}`)
+                    replyFeedback(username, `Ошибка при складывании: ${err.message}`)
                     chest.close()
                 })
             }).catch(err => {
@@ -1592,7 +1603,6 @@ function processCommand(message, username, plainMessage) {
             })
         }
             break
-
         case "unenderchest":
         {
             if (!WATCHED_PLAYERS.includes(username)) {
@@ -1609,6 +1619,30 @@ function processCommand(message, username, plainMessage) {
                 break
             }
             bot.openChest(chestBlock).then(chest => {
+                if (namePart === "all") {
+                    const items = chest.containerItems()
+                    if (items.length === 0) {
+                        replyFeedback(username, 'Эндер-сундук пуст 👀')
+                        chest.close()
+                        return
+                    }
+
+                    const takeNext = () => {
+                        const item = items.shift()
+                        if (!item) {
+                            chest.close()
+                            replyFeedback(username, 'Забрал все предметы из эндер-сундука!')
+                            return
+                        }
+                        chest.withdraw(item.type, null, item.count).then(takeNext).catch(err => {
+                            replyFeedback(username, `Ошибка: ${err.message}`)
+                            chest.close()
+                        })
+                    }
+
+                    takeNext()
+                    return
+                }
                 const item = chest.containerItems().find(i => i.name.includes(namePart))
                 if (!item) {
                     replyFeedback(username, `Нет предмета с "${namePart}" в эндер-сундуке`)
