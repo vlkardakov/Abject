@@ -2009,7 +2009,7 @@ function processCommand(message, username, plainMessage) {
             playing = false;
             break;
         case "status":
-            console.log(`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()[3]}`)
+            console.log(`task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()[3]['text']}`)
             break;
         default:
             break;
