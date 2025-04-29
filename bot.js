@@ -622,7 +622,7 @@ async function depositItems() {
     justCheckedBarrel = true
     chestPos = vec3(2, 82, -33);
     await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
-
+    await unequipArmorAndMainHand()
     const blocks = bot.findBlocks({
         matching: block => block.name.includes('barrel'),
         maxDistance: 10,
@@ -694,7 +694,6 @@ async function depositItems() {
         return;
     }
 
-    await unequipArmorAndMainHand()
     // const chest = await bot.openBlock(chestBlock, null);
 
     bot._client.write('block_place', {
