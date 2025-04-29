@@ -1599,20 +1599,27 @@ function processCommand(message, username, plainMessage) {
                     return
                 }
 
-
-                const item = bot.inventory.items().find(i => i.name.includes(namePart))
-                if (!item) {
-                    replyFeedback(username, `У меня нет предмета с "${namePart}"`)
+                const items = bot.inventory.items().filter(i => i.name.includes(namePart))
+                if (items.length === 0) {
+                    replyFeedback(username, `У меня нет предметов с "${namePart}"`)
                     chest.close()
                     return
                 }
-                chest.deposit(item.type, null, item.count).then(() => {
-                    chest.close()
-                    replyFeedback(username, `Сложил ${item.name} в эндер-сундук`)
-                }).catch(err => {
-                    replyFeedback(username, `Ошибка при складывании: ${err.message}`)
-                    chest.close()
-                })
+
+                const depositNext = () => {
+                    const item = items.shift()
+                    if (!item) {
+                        chest.close()
+                        replyFeedback(username, `Сложил все предметы с "${namePart}" в эндер-сундук ✅`)
+                        return
+                    }
+                    chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
+                        replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                        chest.close()
+                    })
+                }
+                depositNext()
+
             }).catch(err => {
                 replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
@@ -1658,19 +1665,27 @@ function processCommand(message, username, plainMessage) {
                     takeNext()
                     return
                 }
-                const item = chest.containerItems().find(i => i.name.includes(namePart))
-                if (!item) {
-                    replyFeedback(username, `Нет предмета с "${namePart}" в эндер-сундуке`)
+                const items = chest.containerItems().filter(i => i.name.includes(namePart))
+                if (items.length === 0) {
+                    replyFeedback(username, `Нет предметов с "${namePart}" в эндер-сундуке`)
                     chest.close()
                     return
                 }
-                chest.withdraw(item.type, null, item.count).then(() => {
-                    chest.close()
-                    replyFeedback(username, `достал ${item.name} из эндер-сундука`)
-                }).catch(err => {
-                    replyFeedback(username, `Ошибка при доставании: ${err.message}`)
-                    chest.close()
-                })
+
+                const withdrawNext = () => {
+                    const item = items.shift()
+                    if (!item) {
+                        chest.close()
+                        replyFeedback(username, `Достал все предметы с "${namePart}" из эндер-сундука 👜`)
+                        return
+                    }
+                    chest.withdraw(item.type, null, item.count).then(withdrawNext).catch(err => {
+                        replyFeedback(username, `Ошибка при доставании: ${err.message}`)
+                        chest.close()
+                    })
+                }
+                withdrawNext()
+
             }).catch(err => {
                 replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
