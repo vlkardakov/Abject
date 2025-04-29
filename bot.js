@@ -694,7 +694,7 @@ async function depositItems() {
         return;
     }
 
-
+    await unequipArmorAndMainHand()
     // const chest = await bot.openBlock(chestBlock, null);
 
     bot._client.write('block_place', {
