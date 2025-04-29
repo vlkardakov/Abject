@@ -234,7 +234,7 @@ async function sborItems(user_name) {
         return;
     }
 
-    replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
+    replyFeedback(username, `вижу ${containers.length} мусорок, ща чекну чё в них`);
 
     for (const container of containers) {
         //пример: { name: 'barrel', x: 7, y: 92, z: 7 }
@@ -249,8 +249,6 @@ async function sborItems(user_name) {
                 if (!block) continue;
 
                 const chest = await bot.openContainer(block);
-
-                const removedItems = [];
 
                 for (const item of chest.containerItems()) {
                         try {
