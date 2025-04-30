@@ -1547,8 +1547,15 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "door":
-            const doorToActivate = bot.blockAt(new vec3(3, 79, 6))
+            const doorToActivate = bot.findBlock({
+                matching: block => {
+                    return  block.name.toLowerCase().includes('door')
+                },
+                maxDistance: 6,
+                useExtraInfo: true
+            })
             if (doorToActivate) {
+                console.log(block);
                 bot.lookAt(doorToActivate.position);
                 bot.activateBlock(doorToActivate);
             } else {
