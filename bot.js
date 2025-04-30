@@ -1550,7 +1550,6 @@ function processCommand(message, username, plainMessage) {
             const doorToActivate = bot.blockAt(new vec3({ x: 4, y: 79, z: 6 }))
             if (doorToActivate) {
                 console.log(doorToActivate);
-                bot.lookAt(doorToActivate.position);
                 bot.activateBlock(doorToActivate);
             } else {
                 replyFeedback(username, "не могу")
