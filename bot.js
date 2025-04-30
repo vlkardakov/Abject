@@ -1549,14 +1549,16 @@ function processCommand(message, username, plainMessage) {
         case "door":
             const doorToActivate = bot.findBlock({
                 matching: block => {
-                    return  block.name.toLowerCase().includes(parts[1].toLowerCase())
+                    return  block.name.toLowerCase().includes('door')
                 },
-                maxDistance: 5,
+                maxDistance: 6,
                 useExtraInfo: true
             })
             if (doorToActivate) {
                 bot.lookAt(doorToActivate.position);
                 bot.activateBlock(doorToActivate);
+            } else {
+                replyFeedback(username, "не могу")
             }
             break
         case "goto":
