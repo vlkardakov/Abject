@@ -1546,6 +1546,19 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "door":
+            const doorToActivate = bot.findBlock({
+                matching: block => {
+                    return  block.name.toLowerCase().includes(parts[1].toLowerCase())
+                },
+                maxDistance: 5,
+                useExtraInfo: true
+            })
+            if (doorToActivate) {
+                bot.lookAt(doorToActivate.position);
+                bot.activateBlock(doorToActivate);
+            }
+            break
         case "goto":
             x = parts[1]
             y = parts[2]
