@@ -1547,7 +1547,7 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "door":
-            const doorToActivate = bot.blockAt(vec3(3, 79, 6))
+            const doorToActivate = bot.blockAt(new vec3(3, 79, 6))
             if (doorToActivate) {
                 bot.lookAt(doorToActivate.position);
                 bot.activateBlock(doorToActivate);
