@@ -1555,7 +1555,7 @@ function processCommand(message, username, plainMessage) {
                 useExtraInfo: true
             })
             if (doorToActivate) {
-                console.log(block);
+                console.log(doorToActivate);
                 bot.lookAt(doorToActivate.position);
                 bot.activateBlock(doorToActivate);
             } else {
