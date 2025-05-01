@@ -1800,8 +1800,11 @@ function processCommand(message, username, plainMessage) {
                         }
                 });
             }
-
-            bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`)
+            if (entityThatIHaveToFind) {
+                bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`)
+            } else {
+                bot.chat(`/r не нашел`)
+            }
             break
         case "quit":
             bot.chat(`/msg ${username} Самоуничтожение...`);
