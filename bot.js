@@ -1559,12 +1559,15 @@ function processCommand(message, username, plainMessage) {
             const lightButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 80, z: 10 }))
             if (lightButtonToActivate) {
                 console.log(lightButtonToActivate);
+                bot.lookAt(lightButtonToActivate.position, true)
+                bot.activateBlock(block)
                 bot.activateBlock(lightButtonToActivate);
             } else {
                 replyFeedback(username, "не могу")
             }
             const lightButtonToActivate2 = bot.blockAt(new vec3({ x: 4, y: 78, z: 5 }))
             if (lightButtonToActivate2) {
+                bot.lookAt(lightButtonToActivate2.position, true)
                 console.log(lightButtonToActivate2);
                 bot.activateBlock(lightButtonToActivate2);
             } else {
