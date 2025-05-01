@@ -1549,7 +1549,7 @@ function processCommand(message, username, plainMessage) {
         case "attacknotme":
             const targetsToAttackNotMe = Object.values(bot.players)
                 .filter(p => p.entity)
-                .filter(p => !WATCHED_PLAYERS.includes(p.username))
+                .filter(p => !WATCHED_PLAYERS.includes(p.username) && BOT_USERNAME !== p.username)
                 .filter(p => bot.entity.position.distanceTo(p.entity.position) <= 7)
 
             for (const target of targetsToAttackNotMe) {
