@@ -1788,7 +1788,20 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} ${bot.health}`);
             break
         case "cords":
-            bot.chat(`/r ${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}`)
+            if (args.length < 1) {
+                entityThatIHaveToFind = bot.entity;
+                console.log('[CORDS DEBUG] Цель — я');
+            } else {
+                const nameToFind = parts[1];
+                console.log('[CORDS DEBUG] Цель — по аргументу');
+                entityThatIHaveToFind = bot.nearestEntity(entity => {
+                        if (entity.name.toLowerCase().includes(nameToFind)) {
+                            return true;
+                        }
+                });
+            }
+
+            bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`)
             break
         case "quit":
             bot.chat(`/msg ${username} Самоуничтожение...`);
