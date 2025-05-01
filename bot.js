@@ -1553,6 +1553,7 @@ function processCommand(message, username, plainMessage) {
                 .filter(p => bot.entity.position.distanceTo(p.entity.position) <= 4)
 
             for (const target of targetsToAttackNotMe) {
+                bot.lookAt(target.position, true)
                 bot.attack(target.entity)
                 console.log(`атакую ${target.username}`)
             }
