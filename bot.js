@@ -1560,7 +1560,6 @@ function processCommand(message, username, plainMessage) {
             if (lightButtonToActivate) {
                 console.log(lightButtonToActivate);
                 bot.lookAt(lightButtonToActivate.position, true)
-                bot.activateBlock(block)
                 bot.activateBlock(lightButtonToActivate);
             } else {
                 replyFeedback(username, "не могу")
