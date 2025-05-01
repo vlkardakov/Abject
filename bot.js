@@ -1595,7 +1595,7 @@ function processCommand(message, username, plainMessage) {
                 new vec3({x: 8, y: 79, z: -9}),
                 new vec3({x: 3, y: 79, z: -13}),
                 new vec3({x: 0, y: 79, z: -9}),
-                new vec3({x: 0, y: 79, z: -7}),
+                new vec3({x: 0, y: 79, z: -7})
                 //new vec3({x: , y: , z: }),
             ]
             for (const cords of lightButtons) {
@@ -1603,7 +1603,7 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "water":
-            const waterButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 4 }))
+            const waterButtonToActivate = bot.blockAt(new vec3({ x: 7, y: 81, z: -6 }))
             if (waterButtonToActivate) {
                 console.log(waterButtonToActivate);
                 bot.lookAt(waterButtonToActivate.position, true)
@@ -1613,7 +1613,7 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lava":
-            const lavaButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 7 }))
+            const lavaButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 81, z: -6 }))
             if (lavaButtonToActivate) {
                 console.log(lavaButtonToActivate);
                 bot.lookAt(lavaButtonToActivate.position, true)
