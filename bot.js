@@ -1580,21 +1580,26 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lights":
-            const lightButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 80, z: 9 }))
-            if (lightButtonToActivate) {
-                console.log(lightButtonToActivate);
-                bot.lookAt(lightButtonToActivate.position, true)
-                bot.activateBlock(lightButtonToActivate);
-            } else {
-                replyFeedback(username, "не могу")
+            function pressLightButton(cords) { // new vec3({x: 1, y: 80, z: 9})
+                const lightButtonToActivate = bot.blockAt(cords)
+                if (lightButtonToActivate) {
+                    console.log(lightButtonToActivate);
+                    bot.lookAt(lightButtonToActivate.position, true)
+                    bot.activateBlock(lightButtonToActivate);
+                } else {
+                    replyFeedback(username, "не могу")
+                }
             }
-            const lightButtonToActivate2 = bot.blockAt(new vec3({ x: 4, y: 78, z: 5 }))
-            if (lightButtonToActivate2) {
-                bot.lookAt(lightButtonToActivate2.position, true)
-                console.log(lightButtonToActivate2);
-                bot.activateBlock(lightButtonToActivate2);
-            } else {
-                replyFeedback(username, "не могу")
+            const lightButtons = [
+                new vec3({x: 8, y: 79, z: -7}),
+                new vec3({x: 8, y: 79, z: -9}),
+                new vec3({x: 3, y: 79, z: -13}),
+                new vec3({x: 0, y: 79, z: -9}),
+                new vec3({x: 0, y: 79, z: -7}),
+                //new vec3({x: , y: , z: }),
+            ]
+            for (const cords of lightButtons) {
+                pressLightButton(cords)
             }
             break
         case "water":
