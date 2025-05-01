@@ -1549,7 +1549,7 @@ function processCommand(message, username, plainMessage) {
         case "door":
             const doorToActivate = bot.blockAt(new vec3({ x: 4, y: 79, z: 4 }))
             if (doorToActivate) {
-                bot.lookAt(doorButtonToActivate.position, true)
+                bot.lookAt(doorToActivate.position, true)
                 console.log(doorToActivate);
                 bot.activateBlock(doorToActivate);
             } else {
