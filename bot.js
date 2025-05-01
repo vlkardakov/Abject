@@ -1795,7 +1795,7 @@ function processCommand(message, username, plainMessage) {
                 const nameToFind = parts[1];
                 console.log('[CORDS DEBUG] Цель — по аргументу');
                 entityThatIHaveToFind = bot.nearestEntity(entity => {
-                        if (entity.name.toLowerCase().includes(nameToFind)) {
+                        if ((entity.name && entity.name.toLowerCase().includes(nameToFind)) || (entity.username && entity.username.toLowerCase().includes(nameToFind)) ) {
                             return true;
                         }
                 });
