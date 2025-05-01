@@ -1556,7 +1556,7 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lights":
-            const lightButtonToActivate = bot.blockAt(new vec3({ x: 6, y: 80, z: 6 }))
+            const lightButtonToActivate = bot.blockAt(new vec3({ x: 7, y: 80, z: 8 }))
             if (lightButtonToActivate) {
                 console.log(lightButtonToActivate);
                 bot.activateBlock(lightButtonToActivate);
