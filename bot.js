@@ -1565,7 +1565,7 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "water":
-            const waterButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 82, z: 9 }))
+            const waterButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 4 }))
             if (waterButtonToActivate) {
                 console.log(waterButtonToActivate);
                 bot.activateBlock(waterButtonToActivate);
