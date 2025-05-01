@@ -1549,6 +1549,7 @@ function processCommand(message, username, plainMessage) {
         case "door":
             const doorToActivate = bot.blockAt(new vec3({ x: 4, y: 79, z: 4 }))
             if (doorToActivate) {
+                bot.lookAt(doorButtonToActivate.position, true)
                 console.log(doorToActivate);
                 bot.activateBlock(doorToActivate);
             } else {
@@ -1577,6 +1578,7 @@ function processCommand(message, username, plainMessage) {
             const waterButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 4 }))
             if (waterButtonToActivate) {
                 console.log(waterButtonToActivate);
+                bot.lookAt(waterButtonToActivate.position, true)
                 bot.activateBlock(waterButtonToActivate);
             } else {
                 replyFeedback(username, "не могу")
@@ -1586,6 +1588,7 @@ function processCommand(message, username, plainMessage) {
             const lavaButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 7 }))
             if (lavaButtonToActivate) {
                 console.log(lavaButtonToActivate);
+                bot.lookAt(lavaButtonToActivate.position, true)
                 bot.activateBlock(lavaButtonToActivate);
             } else {
                 replyFeedback(username, "не могу")
