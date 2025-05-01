@@ -1546,6 +1546,19 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "attacknotme":
+            const targetsToAttackNotMe = Object.values(bot.players)
+                .filter(p => p.entity)
+                .filter(p => !WATCHED_PLAYERS.includes(p.username))
+                .filter(p => bot.entity.position.distanceTo(p.entity.position) <= 7)
+
+            for (const target of targetsToAttackNotMe) {
+                bot.attack(target.entity)
+                console.log(`атакую ${target.username}`)
+            }
+
+            console.log('Атака завершена')
+            break
         case "door":
             const doorToActivate = bot.blockAt(new vec3({ x: 4, y: 79, z: 4 }))
             if (doorToActivate) {
