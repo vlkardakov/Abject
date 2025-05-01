@@ -1550,7 +1550,7 @@ function processCommand(message, username, plainMessage) {
             const targetsToAttackNotMe = Object.values(bot.players)
                 .filter(p => p.entity)
                 .filter(p => BOT_USERNAME !== p.username)//!WATCHED_PLAYERS.includes(p.username) &&
-        .filter(p => bot.entity.position.distanceTo(p.entity.position) <= 7)
+                .filter(p => bot.entity.position.distanceTo(p.entity.position) <= 4)
 
             for (const target of targetsToAttackNotMe) {
                 bot.attack(target.entity)
