@@ -1564,6 +1564,15 @@ function processCommand(message, username, plainMessage) {
                 replyFeedback(username, "не могу")
             }
             break
+        case "water":
+            const waterButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 82, z: 9 }))
+            if (waterButtonToActivate) {
+                console.log(waterButtonToActivate);
+                bot.activateBlock(waterButtonToActivate);
+            } else {
+                replyFeedback(username, "не могу")
+            }
+            break
         case "goto":
             x = parts[1]
             y = parts[2]
