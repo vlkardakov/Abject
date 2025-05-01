@@ -1561,11 +1561,20 @@ function processCommand(message, username, plainMessage) {
             console.log('Атака завершена')
             break
         case "door":
-            const doorToActivate = bot.blockAt(new vec3({ x: 4, y: 79, z: 4 }))
-            if (doorToActivate) {
-                bot.lookAt(doorToActivate.position, true)
-                console.log(doorToActivate);
-                bot.activateBlock(doorToActivate);
+            const doorToActivate1 = bot.blockAt(new vec3({ x: 4, y: 78, z: -5 }))
+            if (doorToActivate1) {
+                bot.lookAt(doorToActivate1.position, true)
+                console.log(doorToActivate1);
+                bot.activateBlock(doorToActivate1);
+            } else {
+                replyFeedback(username, "не могу")
+            }
+
+            const doorToActivate2 = bot.blockAt(new vec3({ x: 3, y: 78, z: -5 }))
+            if (doorToActivate2) {
+                bot.lookAt(doorToActivate2.position, true)
+                console.log(doorToActivate2);
+                bot.activateBlock(doorToActivate2);
             } else {
                 replyFeedback(username, "не могу")
             }
