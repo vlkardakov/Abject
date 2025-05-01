@@ -1555,6 +1555,15 @@ function processCommand(message, username, plainMessage) {
                 replyFeedback(username, "не могу")
             }
             break
+        case "lights":
+            const lightButtonToActivate = bot.blockAt(new vec3({ x: 6, y: 80, z: 6 }))
+            if (lightButtonToActivate) {
+                console.log(lightButtonToActivate);
+                bot.activateBlock(lightButtonToActivate);
+            } else {
+                replyFeedback(username, "не могу")
+            }
+            break
         case "goto":
             x = parts[1]
             y = parts[2]
