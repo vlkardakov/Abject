@@ -1563,6 +1563,13 @@ function processCommand(message, username, plainMessage) {
             } else {
                 replyFeedback(username, "не могу")
             }
+            const lightButtonToActivate2 = bot.blockAt(new vec3({ x: 5, y: 79, z: 5 }))
+            if (lightButtonToActivate2) {
+                console.log(lightButtonToActivate2);
+                bot.activateBlock(lightButtonToActivate2);
+            } else {
+                replyFeedback(username, "не могу")
+            }
             break
         case "water":
             const waterButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 4 }))
