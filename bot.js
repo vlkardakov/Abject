@@ -1573,6 +1573,15 @@ function processCommand(message, username, plainMessage) {
                 replyFeedback(username, "не могу")
             }
             break
+        case "lava":
+            const lavaButtonToActivate = bot.blockAt(new vec3({ x: 3, y: 82, z: 7 }))
+            if (lavaButtonToActivate) {
+                console.log(lavaButtonToActivate);
+                bot.activateBlock(lavaButtonToActivate);
+            } else {
+                replyFeedback(username, "не могу")
+            }
+            break
         case "goto":
             x = parts[1]
             y = parts[2]
