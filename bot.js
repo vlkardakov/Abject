@@ -1570,19 +1570,19 @@ function processCommand(message, username, plainMessage) {
         case "door":
             pressButton(new vec3({ x: 36, y: 14, z: -2 }))
             break
-        case "lights":
-            const lightButtons = [
-                // new vec3({x: 8, y: 79, z: -7}),
-                // new vec3({x: 8, y: 79, z: -9}),
-                // new vec3({x: 3, y: 79, z: -13}),
-                // new vec3({x: 0, y: 79, z: -9}),
-                // new vec3({x: 0, y: 79, z: -7})
-                //new vec3({x: , y: , z: }),
-            ]
-            for (const cords of lightButtons) {
-                pressButton(cords)
-            }
-            break
+        // case "lights":
+        //     const lightButtons = [
+        //         // new vec3({x: 8, y: 79, z: -7}),
+        //         // new vec3({x: 8, y: 79, z: -9}),
+        //         // new vec3({x: 3, y: 79, z: -13}),
+        //         // new vec3({x: 0, y: 79, z: -9}),
+        //         // new vec3({x: 0, y: 79, z: -7})
+        //         //new vec3({x: , y: , z: }),
+        //     ]
+        //     for (const cords of lightButtons) {
+        //         pressButton(cords)
+        //     }
+        //     break
         case "water":
             const waterButtonToActivate = bot.blockAt(new vec3({ x: 7, y: 81, z: -6 }))
             if (waterButtonToActivate) {
@@ -1593,15 +1593,9 @@ function processCommand(message, username, plainMessage) {
                 replyFeedback(username, "не могу")
             }
             break
-        case "lava":
-            const lavaButtonToActivate = bot.blockAt(new vec3({ x: 1, y: 81, z: -6 }))
-            if (lavaButtonToActivate) {
-                console.log(lavaButtonToActivate);
-                bot.lookAt(lavaButtonToActivate.position, true)
-                bot.activateBlock(lavaButtonToActivate);
-            } else {
-                replyFeedback(username, "не могу")
-            }
+        case "lights":
+            pressButton(new vec3({ x: 39, y: 18, z: 6 }))
+            pressButton(new vec3({ x: 36, y: 18, z: 6 }))
             break
         case "goto":
             x = parts[1]
