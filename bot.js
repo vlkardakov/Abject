@@ -1586,10 +1586,11 @@ function processCommand(message, username, plainMessage) {
         case "lava":
             activateBlock(new vec3({x:36, y:12, z:4 }))
             activateBlock(new vec3({x:39, y:12, z:4 }))
+            activateBlock(new vec3({ x: 35, y: 16, z: -1 }))
+            
             break
         case "lights":
             activateBlock(new vec3({ x: 38, y: 15, z: 6 }))
-            activateBlock(new vec3({ x: 35, y: 16, z: -1 }))
 
             break
         case "goto":
