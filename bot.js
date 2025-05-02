@@ -1588,10 +1588,8 @@ function processCommand(message, username, plainMessage) {
             activateBlock(new vec3({x:39, y:12, z:4 }))
             break
         case "lights":
-            activateBlock(new vec3({ x: 41, y: 18, z: 5 }))
-            activateBlock(new vec3({ x: 33, y: 18, z: 5 }))
-            activateBlock(new vec3({ x: 35, y: 18, z: 6 }))
-            activateBlock(new vec3({ x: 38, y: 13, z: -2 }))
+            activateBlock(new vec3({ x: 38, y: 15, z: 6 }))
+
             break
         case "goto":
             x = parts[1]
