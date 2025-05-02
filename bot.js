@@ -1583,8 +1583,12 @@ function processCommand(message, username, plainMessage) {
         //         activateBlock(cords)
         //     }
         //     break
+        case "arrow":
+            const targetArrowLever1 = new vec3(36, 14, -9)
+                activateBlock(targetArrowLever1)
+            break
         case "arrows":
-            const targetArrowLever = new vec3(35, 15, -4)
+            const targetArrowLever = new vec3(36, 14, -9)
             for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     activateBlock(targetArrowLever)
