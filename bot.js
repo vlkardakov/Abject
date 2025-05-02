@@ -773,7 +773,7 @@ async function downloadMusic(username, songName, fileName) {
     })
 
 }
-function pressButton(cords) { // new vec3({x: 1, y: 80, z: 9})
+function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
     const ButtonToActivate = bot.blockAt(cords)
     if (ButtonToActivate) {
         console.log(ButtonToActivate);
@@ -1568,7 +1568,7 @@ function processCommand(message, username, plainMessage) {
             console.log('Атака завершена')
             break
         case "door":
-            pressButton(new vec3({ x: 36, y: 14, z: -2 }))
+            activateBlock(new vec3({ x: 36, y: 14, z: -2 }))
             break
         // case "lights":
         //     const lightButtons = [
@@ -1580,7 +1580,7 @@ function processCommand(message, username, plainMessage) {
         //         //new vec3({x: , y: , z: }),
         //     ]
         //     for (const cords of lightButtons) {
-        //         pressButton(cords)
+        //         activateBlock(cords)
         //     }
         //     break
         case "water":
@@ -1594,9 +1594,9 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lights":
-            pressButton(new vec3({ x: 39, y: 17, z: 6 }))
-            pressButton(new vec3({ x: 36, y: 17, z: 6 }))
-            pressButton(new vec3({ x: 38, y: 15, z: -3 }))
+            activateBlock(new vec3({ x: 39, y: 17, z: 6 }))
+            activateBlock(new vec3({ x: 36, y: 17, z: 6 }))
+            activateBlock(new vec3({ x: 38, y: 15, z: -3 }))
             break
         case "goto":
             x = parts[1]
