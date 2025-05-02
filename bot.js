@@ -1594,8 +1594,8 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lights":
-            pressButton(new vec3({ x: 39, y: 18, z: 6 }))
-            pressButton(new vec3({ x: 36, y: 18, z: 6 }))
+            pressButton(new vec3({ x: 39, y: 17, z: 6 }))
+            pressButton(new vec3({ x: 36, y: 17, z: 6 }))
             pressButton(new vec3({ x: 38, y: 15, z: -3 }))
             break
         case "goto":
