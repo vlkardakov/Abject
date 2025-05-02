@@ -1590,7 +1590,7 @@ function processCommand(message, username, plainMessage) {
             
             break
         case "lavalight":
-            activateBlock(new vec3({ x: 38, y: 15, z: 6 }))
+            activateBlock(new vec3({ x: 35, y: 12, z: 2 }))
             break
         case "lamp":
             activateBlock(new vec3({ x: 38, y: 13, z: -2 }))
