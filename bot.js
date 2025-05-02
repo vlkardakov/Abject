@@ -1583,12 +1583,23 @@ function processCommand(message, username, plainMessage) {
         //         activateBlock(cords)
         //     }
         //     break
+        case "arrows":
+            const targetArrowLever = new vec3(35, 15, -4)
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    activateBlock(targetArrowLever)
+                }, i * 50)
+            }
+            break
         case "lava":
             activateBlock(new vec3({x:37, y:12, z:1 }))
             activateBlock(new vec3({ x: 35, y: 16, z: -1 }))
             break
         case "lavalight":
             activateBlock(new vec3({ x: 35, y: 12, z: 2 }))
+            break
+        case "lamp":
+            activateBlock(new vec3({ x: 38, y: 13, z: -2 }))
             break
         case "lamp":
             activateBlock(new vec3({ x: 38, y: 13, z: -2 }))
