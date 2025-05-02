@@ -1585,7 +1585,7 @@ function processCommand(message, username, plainMessage) {
         //     break
         case "arrows":
             const targetArrowLever = new vec3(35, 15, -4)
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     activateBlock(targetArrowLever)
                 }, i * 50)
