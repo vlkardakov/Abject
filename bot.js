@@ -1583,15 +1583,9 @@ function processCommand(message, username, plainMessage) {
         //         activateBlock(cords)
         //     }
         //     break
-        case "water":
-            const waterButtonToActivate = bot.blockAt(new vec3({ x: 7, y: 81, z: -6 }))
-            if (waterButtonToActivate) {
-                console.log(waterButtonToActivate);
-                bot.lookAt(waterButtonToActivate.position, true)
-                bot.activateBlock(waterButtonToActivate);
-            } else {
-                replyFeedback(username, "не могу")
-            }
+        case "lava":
+            activateBlock(new vec3({x:36, y:12, z:4 }))
+            activateBlock(new vec3({x:39, y:12, z:4 }))
             break
         case "lights":
             activateBlock(new vec3({ x: 39, y: 17, z: 6 }))
