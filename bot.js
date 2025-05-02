@@ -1596,7 +1596,7 @@ function processCommand(message, username, plainMessage) {
         case "lights":
             activateBlock(new vec3({ x: 39, y: 17, z: 6 }))
             activateBlock(new vec3({ x: 36, y: 17, z: 6 }))
-            activateBlock(new vec3({ x: 38, y: 15, z: -3 }))
+            activateBlock(new vec3({ x: 38, y: 13, z: -2 }))
             break
         case "goto":
             x = parts[1]
