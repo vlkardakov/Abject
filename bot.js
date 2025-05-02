@@ -773,7 +773,14 @@ async function downloadMusic(username, songName, fileName) {
     })
 
 }
-
+function pressButton(cords) { // new vec3({x: 1, y: 80, z: 9})
+    const ButtonToActivate = bot.blockAt(cords)
+    if (ButtonToActivate) {
+        console.log(ButtonToActivate);
+        bot.lookAt(ButtonToActivate.position, true)
+        bot.activateBlock(ButtonToActivate);
+    }
+}
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
@@ -1561,45 +1568,19 @@ function processCommand(message, username, plainMessage) {
             console.log('Атака завершена')
             break
         case "door":
-            const doorToActivate1 = bot.blockAt(new vec3({ x: 4, y: 78, z: -5 }))
-            if (doorToActivate1) {
-                bot.lookAt(doorToActivate1.position, true)
-                console.log(doorToActivate1);
-                bot.activateBlock(doorToActivate1);
-            } else {
-                replyFeedback(username, "не могу")
-            }
-
-            const doorToActivate2 = bot.blockAt(new vec3({ x: 3, y: 78, z: -5 }))
-            if (doorToActivate2) {
-                bot.lookAt(doorToActivate2.position, true)
-                console.log(doorToActivate2);
-                bot.activateBlock(doorToActivate2);
-            } else {
-                replyFeedback(username, "не могу")
-            }
+            pressButton(new vec3({ x: 36, y: 14, z: -2 }))
             break
         case "lights":
-            function pressLightButton(cords) { // new vec3({x: 1, y: 80, z: 9})
-                const lightButtonToActivate = bot.blockAt(cords)
-                if (lightButtonToActivate) {
-                    console.log(lightButtonToActivate);
-                    bot.lookAt(lightButtonToActivate.position, true)
-                    bot.activateBlock(lightButtonToActivate);
-                } else {
-                    replyFeedback(username, "не могу")
-                }
-            }
             const lightButtons = [
-                new vec3({x: 8, y: 79, z: -7}),
-                new vec3({x: 8, y: 79, z: -9}),
-                new vec3({x: 3, y: 79, z: -13}),
-                new vec3({x: 0, y: 79, z: -9}),
-                new vec3({x: 0, y: 79, z: -7})
+                // new vec3({x: 8, y: 79, z: -7}),
+                // new vec3({x: 8, y: 79, z: -9}),
+                // new vec3({x: 3, y: 79, z: -13}),
+                // new vec3({x: 0, y: 79, z: -9}),
+                // new vec3({x: 0, y: 79, z: -7})
                 //new vec3({x: , y: , z: }),
             ]
             for (const cords of lightButtons) {
-                pressLightButton(cords)
+                pressButton(cords)
             }
             break
         case "water":
