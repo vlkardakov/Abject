@@ -848,7 +848,7 @@ function findNearestEnemy() {
             name.includes('phantom')
         );
 
-        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase() < 30;
+        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS)// && distanceToPofikBase() < 30;
     });
 }
 
