@@ -796,12 +796,12 @@ function distanceToPofikBase(entity) {
 }
 function getLore(itemEntity) {
     loreItem = null;
-    try {
+    //try {
         loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
             .split('Подпись: #')[1]
             .split('","bold"')[0];
-    } catch (e) {
-    }
+    //} catch (e) {
+    //}
     return loreItem
 }
 function findNearestItem(searchName = '') {
