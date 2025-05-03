@@ -2319,97 +2319,97 @@ bot.on("plasmovoice_audio_end", () => {
     SOUND = null
 })
 
-// bot.on('entitySpawn', (entity) => {
-//     if (entity.name !== 'item') {
-//         return
-//     }
-//     const { x, y, z } = entity.position
-//     const nearest = Object.values(bot.players)
-//         .map(p => p.entity)
-//         .filter(e => e && e.position.distanceTo(entity.position) <= 2.5)
-//         .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(entity.position))[0]
-//     if (!nearest) return
-//
-//     setTimeout(() => {
-//         const meta = entity.metadata?.[8]
-//         const id = meta?.itemId
-//         const count = meta?.itemCount
-//         const name = getRussianName(itemProtocolIdMap?.[id]) || `id:${id}`
-//         let loreItem = 'нет';
-//         try {
-//             loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-//                 .split('Подпись: #')[1]
-//                 .split('","bold"')[0];
-//         } catch (e) {
-//         }
-//         maybe_latest_block = [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]
-//         if (latestBrokenBlock !== maybe_latest_block) {
-//             console.log(maybe_latest_block)
-//             console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
-//         }
-//     }, 200)
-// })
-//
-// bot.on('playerCollect', (player, item) => {
-//     id = item?.metadata?.[8]?.itemId
-//     count = item?.metadata?.[8]?.itemCount
-//
-//     if (id) {
-//         name = getRussianName(itemProtocolIdMap[id])
-//     } else {
-//         name = item.name
-//     }
-//
-//
-//
-//     const { x, y, z } = item.position
-//     const roundedX = Math.round(x)
-//     const roundedY = Math.round(y)
-//     const roundedZ = Math.round(z)
-//
-//     let loreItem = 'нет';
-//     try {
-//         loreItem = item.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-//             .split('Подпись: #')[1]
-//             .split('","bold"')[0];
-//     } catch (e) {
-//     }
-//
-//     // if (WATCHED_PLAYERS.includes(loreItem)) {
-//     // if (loreItem) {
-//     //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
-//     // } else {
-//     if (id) console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
-//     else console.log(`${player.username} <= ${name} в ${roundedX} ${roundedY} ${roundedZ}`)
-//     // }
-//     // console.log(JSON.stringify(item?.metadata, null, 2));
-//     // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
-// })
-//
-// bot.on('blockUpdate', (oldBlock, newBlock) => {
-//     if (!oldBlock || !newBlock || oldBlock.type === newBlock.type) {
-//         return
-//     }
-//
-//     const { x, y, z } = oldBlock.position
-//     const nearestPlayer = Object.values(bot.players)
-//         .map(p => p.entity)
-//         .find(e => e && e.position.distanceTo(oldBlock.position) <= 2.5)
-//
-//     if (!nearestPlayer) return
-//
-//     const { username } = nearestPlayer
-//     const oldBlockName = oldBlock.name
-//     const newBlockName = newBlock.name
-//
-//     if (!['air', 'water', 'lava'].includes(oldBlockName)) {
-//         console.log(`${username} [-] ${oldBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}.`)
-//         setLatestBrokenBlock(oldBlock)
-//     } else {
-//         console.log(`${username} [+] ${newBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
-//     }
-//
-//     })
+bot.on('entitySpawn', (entity) => {
+    if (entity.name !== 'item') {
+        return
+    }
+    const { x, y, z } = entity.position
+    const nearest = Object.values(bot.players)
+        .map(p => p.entity)
+        .filter(e => e && e.position.distanceTo(entity.position) <= 2.5)
+        .sort((a, b) => a.position.distanceTo(entity.position) - b.position.distanceTo(entity.position))[0]
+    if (!nearest) return
+
+    setTimeout(() => {
+        const meta = entity.metadata?.[8]
+        const id = meta?.itemId
+        const count = meta?.itemCount
+        const name = getRussianName(itemProtocolIdMap?.[id]) || `id:${id}`
+        let loreItem = 'нет';
+        try {
+            loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+                .split('Подпись: #')[1]
+                .split('","bold"')[0];
+        } catch (e) {
+        }
+        maybe_latest_block = [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]
+        if (latestBrokenBlock !== maybe_latest_block) {
+            console.log(maybe_latest_block)
+            console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+        }
+    }, 200)
+})
+
+bot.on('playerCollect', (player, item) => {
+    id = item?.metadata?.[8]?.itemId
+    count = item?.metadata?.[8]?.itemCount
+
+    if (id) {
+        name = getRussianName(itemProtocolIdMap[id])
+    } else {
+        name = item.name
+    }
+
+
+
+    const { x, y, z } = item.position
+    const roundedX = Math.round(x)
+    const roundedY = Math.round(y)
+    const roundedZ = Math.round(z)
+
+    let loreItem = 'нет';
+    try {
+        loreItem = item.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+            .split('Подпись: #')[1]
+            .split('","bold"')[0];
+    } catch (e) {
+    }
+
+    // if (WATCHED_PLAYERS.includes(loreItem)) {
+    // if (loreItem) {
+    //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
+    // } else {
+    if (id) console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
+    else console.log(`${player.username} <= ${name} в ${roundedX} ${roundedY} ${roundedZ}`)
+    // }
+    // console.log(JSON.stringify(item?.metadata, null, 2));
+    // console.log(require('util').inspect(item?.metadata, { depth: null, colors: true }));
+})
+
+bot.on('blockUpdate', (oldBlock, newBlock) => {
+    if (!oldBlock || !newBlock || oldBlock.type === newBlock.type) {
+        return
+    }
+
+    const { x, y, z } = oldBlock.position
+    const nearestPlayer = Object.values(bot.players)
+        .map(p => p.entity)
+        .find(e => e && e.position.distanceTo(oldBlock.position) <= 2.5)
+
+    if (!nearestPlayer) return
+
+    const { username } = nearestPlayer
+    const oldBlockName = oldBlock.name
+    const newBlockName = newBlock.name
+
+    if (!['air', 'water', 'lava'].includes(oldBlockName)) {
+        console.log(`${username} [-] ${oldBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}.`)
+        setLatestBrokenBlock(oldBlock)
+    } else {
+        console.log(`${username} [+] ${newBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
+    }
+
+    })
 
 
 rl.on('line', (line) => {
