@@ -1178,6 +1178,10 @@ function processCommand(message, username, plainMessage) {
                     //     await new Promise(resolve => setTimeout(resolve, 5000));
                     //     return;
                     // }
+                    if (task !== 'protecting') {
+                        clearInterval(protectInterval)
+                        return;
+                    }
                     const targetEnemy = findNearestEnemy();
 
                     // console.log('targetItem ', targetItem);
