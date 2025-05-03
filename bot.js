@@ -790,7 +790,7 @@ function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         const matchesCriteria = (
             // (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
-            (entity.type === 'mob' && entity.name?.toLowerCase().includes('zombie') || entity.type === 'mob' && entity.name?.toLowerCase().includes('skelet') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('spider') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('creep'))
+            ((entity.type === 'mob') && (entity.name?.toLowerCase().includes('zombie') || entity.name?.toLowerCase().includes('skelet') || entity.name?.toLowerCase().includes('spider') || entity.name?.toLowerCase().includes('creep')))
         );
         return matchesCriteria && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);});
 }
