@@ -786,6 +786,13 @@ async function downloadMusic(username, songName, fileName) {
     })
 
 }
+
+function distanceToPofikBase(entity) {
+    const pos = entity.position;
+    const dx = pos.x - 648;
+    const dz = pos.z + 515;
+    return Math.sqrt(dx * dx + dz * dz);
+}
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
@@ -798,7 +805,7 @@ function findNearestEnemy() {
             name.includes('creeper')
         );
 
-        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);
+        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase() < 30;
     });
 }
 
@@ -1164,12 +1171,6 @@ function processCommand(message, username, plainMessage) {
 
 
 
-            function isFarFromPofikBase() {
-                const pos = bot.entity.position;
-                const dx = pos.x - 648;
-                const dz = pos.z + 515;
-                return Math.sqrt(dx * dx + dz * dz) > 15;
-            }
 
             let protectInterval = null;
 
@@ -1207,7 +1208,7 @@ function processCommand(message, username, plainMessage) {
                         bot.pathfinder.setGoal(null)
                         bot.pvp.attack(targetEnemy)
                     } else {
-                        if (isFarFromPofikBase() && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
+                        if (distanceToPofikBase(bot.entity > 10) && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(648, 64, -514);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 1));
