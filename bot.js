@@ -788,7 +788,7 @@ async function downloadMusic(username, songName, fileName) {
 }
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
-        if (entity.type !== 'mob' || !entity.name) return false;
+        if (!entity.name) return false;
 
         const name = entity.name.toLowerCase();
         const isHostile = (
