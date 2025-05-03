@@ -85,7 +85,16 @@ const SPAWN_POSITIONS = [
     new vec3(40, 79, -15),
 ];
 
-const POFIK_POSITIONS = []
+const POFIK_POSITIONS = [
+    new vec3(620, 63, -516),
+    new vec3(622, 68, -516),
+    new vec3(635, 63, -501),
+    new vec3(644, 63, -510),
+    new vec3(652, 67, -515),
+    new vec3(659, 65, -532),
+    new vec3(666, 69, -542),
+    new vec3(679, 64, -519),
+];
 
 console.log(process.argv)
 
@@ -736,12 +745,14 @@ async function depositItems() {
 
     chest.close();
 }
-function isItemOnSpawn(itemEntity) {
-    if (!itemEntity || !itemEntity.position) return false;
-    // console.log("Тестим на видимость!")
-    return SPAWN_POSITIONS.some(spawnPos => {
-        return isEntityVisibleFromPos(spawnPos, itemEntity);
+function isEntityVisibleFromPositions(entity, positions) {
+    if (!entity || !entity.position) return false;
+    return positions.some(spawnPos => {
+        return isEntityVisibleFromPos(spawnPos, entity);
     });
+}
+function isItemOnSpawn(itemEntity) {
+    return isEntityVisibleFromPositions(itemEntity, SPAWN_POSITIONS);
 }
 
 async function downloadMusic(username, songName, fileName) {
@@ -1127,6 +1138,88 @@ function processCommand(message, username, plainMessage) {
             // console.log(searchName)
             collecting = true;
             startCollecting(searchName);
+            break;
+        case "protect":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
+                return;
+            }
+
+            function findNearestEnemy() {
+                return bot.nearestEntity(entity => {
+                    const matchesCriteria = (
+                        // (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
+                        (entity.type === 'mob' && entity.name?.toLowerCase().includes('zombie') || entity.type === 'mob' && entity.name?.toLowerCase().includes('skelet') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('spider') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('creep'))
+                    );
+                    return matchesCriteria && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);});
+            }
+
+            function isFarFromPofikBase() {
+                const pos = bot.entity.position;
+                const dx = pos.x - 648;
+                const dz = pos.z + 515;
+                return Math.sqrt(dx * dx + dz * dz) > 15;
+            }
+
+            let protectInterval = null;
+
+            function startProtecting(searchName = '') {
+                if (collectInterval) clearInterval(protectInterval);
+
+                task = 'protecting';
+
+
+                let oldTargetEnemy = null
+
+                protectInterval = setInterval(async () => {
+                    // if (collecting_paused) {
+                    //     console.log('Сбор приостановлен, жду 5 секунд...');
+                    //     await new Promise(resolve => setTimeout(resolve, 5000));
+                    //     return;
+                    // }
+                    const targetEnemy = findNearestEnemy(searchName);
+
+                    // console.log('targetItem ', targetItem);
+                    console.log(bot.pathfinder.goal);
+
+                    if (targetEnemy && targetEnemy !== oldTargetEnemy) {
+                        oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
+                        bot.pathfinder.setMovements(defaultMove);
+                        name = targetEnemy.name
+                        console.log(`name: ${name}`);
+                        // console.log(JSON.stringify(targetItem.metadata, null, 2));
+                        replyFeedback(`Иду защищать!`)
+                        bot.pathfinder.setMovements(defaultMove);
+                        bot.pathfinder.setGoal(null)
+                        bot.pvp.attack(targetEnemy)
+                    } else {
+                        if (isFarFromPofikBase() && !targetEnemy && !bot.pathfinder.goal) {
+                            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу пофика..`)
+                            pofikPos = vec3(648, 64, -514);
+                            await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
+                        } else if (!bot.pathfinder.goal) {
+                            replyFeedback('Я на базе.')
+                            // blockToLookAfterDeposit = bot.findBlock({
+                            //     matching: block => {
+                            //         const nameMatches = block.name.toLowerCase().includes('calcite')
+                            //         const isVisible = bot.canSeeBlock(block)
+                            //         return nameMatches && isVisible
+                            //     },
+                            //     maxDistance: 5,
+                            //     useExtraInfo: true
+                            // })
+                            // if (blockToLookAfterDeposit) {
+                            //     bot.lookAt(blockToLookAfterDeposit.position, true );
+                            // }
+                            // bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
+                        }
+                    }
+
+                }, 1000);
+            }
+
+            startProtecting(searchName);
             break;
 
         case "piglins":
