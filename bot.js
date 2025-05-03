@@ -27,7 +27,7 @@ const rl = readline.createInterface({
 const { exec } = require('child_process')
 
 
-const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__'];// 'monoplan',
+const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
 let protectedPlayer = null;
