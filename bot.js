@@ -1164,7 +1164,7 @@ function processCommand(message, username, plainMessage) {
 
             let protectInterval = null;
 
-            function startProtecting(searchName = '') {
+            function startProtecting() {
                 if (collectInterval) clearInterval(protectInterval);
 
                 task = 'protecting';
@@ -1219,7 +1219,7 @@ function processCommand(message, username, plainMessage) {
                 }, 1000);
             }
 
-            startProtecting(searchName);
+            startProtecting();
             break;
 
         case "piglins":
