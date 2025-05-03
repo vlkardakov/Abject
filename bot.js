@@ -809,24 +809,24 @@ function findNearestItem(searchName = '') {
         }
     });
 }
-function findNearestItemWithLore(searchName = '', lookingLore = BOT_USERNAME) {
+function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) {
     wanted_ids = []
     if (searchName) {
         wanted_ids = selectIdsWithName(searchName);
     }
     return bot.nearestEntity(entity => {
-        if (searchName) {
-            matchesWithSearch = (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id))
-            loreItem = null;
-            try {
-                loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-                    .split('Подпись: #')[1]
-                    .split('","bold"')[0];
-            } catch (e) {
-            }
-            return matchesWithSearch && loreItem === BOT_USERNAME;
-        } else {
-            matchesWithoutSearch = (entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id))
+        // if (searchName) {
+        //     matchesWithSearch = (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id))
+        //     loreItem = null;
+        //     try {
+        //         loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+        //             .split('Подпись: #')[1]
+        //             .split('","bold"')[0];
+        //     } catch (e) {
+        //     }
+        //     return matchesWithSearch && loreItem === BOT_USERNAME;
+        // } else {
+            matchesWithoutSearch = (entity.name === 'item' && entity?.metadata?.[8]?.present && (isEntityVisible(entity)))
             loreItem = null;
             try {
                 loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
@@ -835,7 +835,7 @@ function findNearestItemWithLore(searchName = '', lookingLore = BOT_USERNAME) {
             } catch (e) {
             }
             return matchesWithoutSearch && loreItem === BOT_USERNAME;
-        }
+        // }
     });
 }
 function findItems(searchName) {
