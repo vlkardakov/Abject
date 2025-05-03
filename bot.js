@@ -825,8 +825,8 @@ function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) 
         //     } catch (e) {
         //     }
         //     return matchesWithSearch && loreItem === BOT_USERNAME;
-        // } else {
-            matchesWithoutSearch = (entity.name === 'item' && entity?.metadata?.[8]?.present && (isEntityVisible(entity)))
+        // } else {&& entity?.metadata?.[8]?.present
+            matchesWithoutSearch = (entity.name === 'item'  && (isEntityVisible(entity)))
             loreItem = null;
             try {
                 loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
