@@ -810,7 +810,6 @@ function findNearestItem(searchName = '') {
         if (searchName) {
             if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME) {
                 return true;
-            }
         } else {
             return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
         }
