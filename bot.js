@@ -811,7 +811,6 @@ function findNearestItem(searchName = '') {
         wanted_ids = selectIdsWithName(searchName);
     }
     return bot.nearestEntity(entity => {
-        loreItem = getLore(entity);
         if (searchName) {
             if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {// && loreItem === BOT_USERNAME) {
                 return true;
@@ -823,36 +822,24 @@ function findNearestItem(searchName = '') {
         }
     });
 }
-function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) {
-    // wanted_ids = []
-    // if (searchName) {
-    //     wanted_ids = selectIdsWithName(searchName);
-    // }
+function findNearestItemWithLore(searchName = '') {
+    wanted_ids = []
+    if (searchName) {
+        wanted_ids = selectIdsWithName(searchName);
+    }
     return bot.nearestEntity(entity => {
-        // if (searchName) {
-        //     matchesWithSearch = (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id))
-        //     loreItem = null;
-        //     try {
-        //         loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-        //             .split('Подпись: #')[1]
-        //             .split('","bold"')[0];
-        //     } catch (e) {
-        //     }
-        //     return matchesWithSearch && loreItem === BOT_USERNAME;
-        // } else {&& entity?.metadata?.[8]?.present
-            matchesWithoutSearch = (entity.name === 'item')
-            // loreItem = null;
-            // try {
-            //     loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-            //         .split('Подпись: #')[1]
-            //         .split('","bold"')[0];
-            // } catch (e) {
-            // }
-            return matchesWithoutSearch// && loreItem === BOT_USERNAME;
-        // }
+        loreItem = getLore(entity);
+        if (searchName) {
+            if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {// && loreItem === BOT_USERNAME) {
+                return true;
+            } else return false
+        } else {
+            console.log(`Подпись предмета: ${loreItem}`)
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
+
+        }
     });
-}
-function findItems(searchName) {
+}function findItems(searchName) {
     let wanted_ids = []
     if (searchName) {
         wanted_ids = selectIdsWithName(searchName)
