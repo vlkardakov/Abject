@@ -793,6 +793,47 @@ function distanceToPofikBase(entity) {
     const dz = pos.z + 515;
     return Math.sqrt(dx * dx + dz * dz);
 }
+function findNearestItem(searchName = '') {
+    wanted_ids = []
+    if (searchName) {
+        wanted_ids = selectIdsWithName(searchName);
+    }
+    return bot.nearestEntity(entity => {
+        if (searchName) {
+            if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {
+                return true;
+            }
+        } else {
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id);
+        }
+    });
+}
+function findItems(searchName = '') {
+    let wanted_ids = []
+    if (searchName) {
+        wanted_ids = selectIdsWithName(searchName)
+    }
+
+    const items = Object.values(bot.entities).filter(entity => {
+        const meta = entity?.metadata?.[8]
+        const isWanted = !searchName || (meta?.present && wanted_ids.includes(meta.itemId))
+        return (
+            entity.name === 'item' &&
+            meta?.present &&
+            isWanted &&
+            (isItemOnSpawn(entity) || isEntityVisible(entity)) &&
+            !getUsedIds().includes(entity.id)
+        )
+    })
+
+    for (const item of items) {
+        const pos = item.position
+        const itemId = item?.metadata?.[8]?.itemId
+        const itemName = itemId ? bot.registry.items[itemId]?.name : 'неизвестно'
+        sendFeedback(`${pos.x.toFixed(1)} ${pos.y.toFixed(1)} ${pos.z.toFixed(1)} ${itemName}`)
+    }
+}
+
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
@@ -1051,21 +1092,6 @@ function processCommand(message, username, plainMessage) {
 //                        }
 //                    }
 //                });
-        function findNearestItem(searchName = '') {
-            wanted_ids = []
-            if (searchName) {
-                wanted_ids = selectIdsWithName(searchName);
-            }
-            return bot.nearestEntity(entity => {
-                if (searchName) {
-                    if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {
-                        return true;
-                    }
-                } else {
-                    return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id);
-                }
-            });
-        }
 
         function isFarFromCenter() {
             const pos = bot.entity.position;
