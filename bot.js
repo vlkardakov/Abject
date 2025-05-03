@@ -833,35 +833,11 @@ function findNearestItemWithLore(searchName = '') {
                 return true;
             } else return false
         } else {
-            console.log(`Подпись предмета: ${loreItem}`)
+            // console.log(`Подпись предмета: ${loreItem}`)
             return entity.name === 'item' && entity?.metadata?.[8]?.present && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
 
         }
     });
-}function findItems(searchName) {
-    let wanted_ids = []
-    if (searchName) {
-        wanted_ids = selectIdsWithName(searchName)
-    }
-
-    const items = Object.values(bot.entities).filter(entity => {
-        const meta = entity?.metadata?.[8]
-        const isWanted = !searchName || (meta?.present && wanted_ids.includes(meta.itemId))
-        return (
-            entity.name === 'item' &&
-            meta?.present &&
-            isWanted &&
-            (isItemOnSpawn(entity) || isEntityVisible(entity)) &&
-            !getUsedIds().includes(entity.id)
-        )
-    })
-
-    for (const item of items) {
-        const pos = item.position
-        const itemId = item?.metadata?.[8]?.itemId
-        const itemName = itemId ? bot.registry.items[itemId]?.name : 'неизвестно'
-        sendFeedback(`${pos.x.toFixed(1)} ${pos.y.toFixed(1)} ${pos.z.toFixed(1)} ${itemName}`)
-    }
 }
 
 function findNearestEnemy() {
