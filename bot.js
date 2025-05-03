@@ -1243,7 +1243,8 @@ function processCommand(message, username, plainMessage) {
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
                         bot.pathfinder.setGoal(new GoalFollow(my_item, 0));
-                    } else if (targetEnemy && targetEnemy !== oldTargetEnemy) {
+                    } else if (targetEnemy ) {
+                        if (targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
                         bot.pathfinder.setMovements(defaultMove);
                         name = targetEnemy.name
@@ -1253,6 +1254,7 @@ function processCommand(message, username, plainMessage) {
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
                         bot.pvp.attack(targetEnemy)
+                        }
                     } else {
                         if (distanceToPofikBase(bot.entity) > 10 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
