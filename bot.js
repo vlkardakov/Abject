@@ -85,6 +85,7 @@ const SPAWN_POSITIONS = [
     new vec3(40, 79, -15),
 ];
 
+const POFIK_POSITIONS = []
 
 console.log(process.argv)
 
