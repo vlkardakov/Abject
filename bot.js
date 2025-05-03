@@ -798,7 +798,7 @@ function findNearestEnemy() {
             name.includes('creeper')
         );
 
-        return isHostile //&& isEntityVisibleFromPositions(entity, POFIK_POSITIONS);
+        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);
     });
 }
 
