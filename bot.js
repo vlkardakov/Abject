@@ -808,7 +808,7 @@ function findNearestItem(searchName = '') {
         }
     });
 }
-function findItems(searchName = '') {
+function findItems(searchName) {
     let wanted_ids = []
     if (searchName) {
         wanted_ids = selectIdsWithName(searchName)
