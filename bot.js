@@ -795,14 +795,14 @@ function distanceToPofikBase(entity) {
     return Math.sqrt(dx * dx + dz * dz);
 }
 function getLore(itemEntity) {
-    if (!itemEntity || !itemEntity.metadata[8]) return false
+    // if (!itemEntity || !itemEntity.metadata[8]) return false
     loreItem = null;
-    //try {
+    try {
         loreItem = itemEntity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
             .split('Подпись: #')[1]
             .split('","bold"')[0];
-    //} catch (e) {
-    //}
+    } catch (e) {
+    }
     return loreItem
 }
 function findNearestItem(searchName = '') {
