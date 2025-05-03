@@ -1253,6 +1253,8 @@ function processCommand(message, username, plainMessage) {
                         sendFeedback(`Иду защищать!`)
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
+                        equipItem('axe')
+                        equipItem('sword')
                         bot.pvp.attack(targetEnemy)
                         }
                     } else {
