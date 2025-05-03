@@ -1165,7 +1165,7 @@ function processCommand(message, username, plainMessage) {
             let protectInterval = null;
 
             function startProtecting() {
-                if (collectInterval) clearInterval(protectInterval);
+                if (protectInterval) clearInterval(protectInterval);
 
                 task = 'protecting';
 
