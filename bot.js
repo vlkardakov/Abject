@@ -84,8 +84,7 @@ const SPAWN_POSITIONS = [
     new vec3(1, 96, 0),
     new vec3(40, 79, -15),
 ];
-const POFIK_POSITIONS = [
-];
+
 
 console.log(process.argv)
 
@@ -1466,11 +1465,11 @@ function processCommand(message, username, plainMessage) {
             break;
         case "logpofikpos":
             console.log('pofik позици щапрошены')
-            if (SPAWN_POSITIONS.length === 0) {
+            if (POFIK_POSITIONS.length === 0) {
                 bot.chat(`/msg ${username} позиций нет 😢`);
             } else {
                 console.log("const POFIK_POSITIONS = [");
-                SPAWN_POSITIONS.forEach((pos) => {
+                POFIK_POSITIONS.forEach((pos) => {
                     console.log(`    new vec3(${pos.x}, ${pos.y}, ${pos.z}),`);
                 });
                 console.log("];");
