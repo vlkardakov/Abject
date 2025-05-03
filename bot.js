@@ -810,10 +810,10 @@ function findNearestItem(searchName = '') {
     });
 }
 function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) {
-    wanted_ids = []
-    if (searchName) {
-        wanted_ids = selectIdsWithName(searchName);
-    }
+    // wanted_ids = []
+    // if (searchName) {
+    //     wanted_ids = selectIdsWithName(searchName);
+    // }
     return bot.nearestEntity(entity => {
         // if (searchName) {
         //     matchesWithSearch = (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id))
@@ -826,14 +826,14 @@ function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) 
         //     }
         //     return matchesWithSearch && loreItem === BOT_USERNAME;
         // } else {&& entity?.metadata?.[8]?.present
-            matchesWithoutSearch = (entity.name === 'item'  && (isEntityVisible(entity)))
-            loreItem = null;
-            try {
-                loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-                    .split('Подпись: #')[1]
-                    .split('","bold"')[0];
-            } catch (e) {
-            }
+            matchesWithoutSearch = (entity.name === 'item')
+            // loreItem = null;
+            // try {
+            //     loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+            //         .split('Подпись: #')[1]
+            //         .split('","bold"')[0];
+            // } catch (e) {
+            // }
             return matchesWithoutSearch// && loreItem === BOT_USERNAME;
         // }
     });
