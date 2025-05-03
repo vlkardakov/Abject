@@ -850,8 +850,8 @@ function findNearestEnemy() {
             name.includes('skeleton') ||
             name.includes('spider') ||
             name.includes('creeper') ||
-            name.includes('drowned') ||
-            name.includes('phantom')
+            name.includes('drowned') //||
+            // name.includes('phantom')
         );
 
         return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
