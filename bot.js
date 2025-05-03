@@ -834,7 +834,7 @@ function findNearestItemWithLore(searchName = null, lookingLore = BOT_USERNAME) 
                     .split('","bold"')[0];
             } catch (e) {
             }
-            return matchesWithoutSearch && loreItem === BOT_USERNAME;
+            return matchesWithoutSearch// && loreItem === BOT_USERNAME;
         // }
     });
 }
