@@ -789,6 +789,7 @@ async function downloadMusic(username, songName, fileName) {
 
 function distanceToPofikBase(entity) {
     const pos = entity.position;
+    if (!pos) return 1000
     const dx = pos.x - 648;
     const dz = pos.z + 515;
     return Math.sqrt(dx * dx + dz * dz);
