@@ -788,12 +788,20 @@ async function downloadMusic(username, songName, fileName) {
 }
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
-        const matchesCriteria = (
-            // (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
-            ((entity.type === 'mob') && (entity.name?.toLowerCase().includes('zombie') || entity.name?.toLowerCase().includes('skelet') || entity.name?.toLowerCase().includes('spider') || entity.name?.toLowerCase().includes('creep')))
+        if (entity.type !== 'mob' || !entity.name) return false;
+
+        const name = entity.name.toLowerCase();
+        const isHostile = (
+            name.includes('zombie') ||
+            name.includes('skeleton') ||
+            name.includes('spider') ||
+            name.includes('creeper')
         );
-        return matchesCriteria && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);});
+
+        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);
+    });
 }
+
 function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
     const ButtonToActivate = bot.blockAt(cords)
     if (ButtonToActivate) {
