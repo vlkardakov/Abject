@@ -1207,10 +1207,10 @@ function processCommand(message, username, plainMessage) {
                         bot.pathfinder.setGoal(null)
                         bot.pvp.attack(targetEnemy)
                     } else {
-                        if (isFarFromPofikBase() && !targetEnemy && !bot.pvp.target) {
+                        if (isFarFromPofikBase() && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(648, 64, -514);
-                            await bot.pathfinder.goto(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 1));
+                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 1));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
                             // blockToLookAfterDeposit = bot.findBlock({
