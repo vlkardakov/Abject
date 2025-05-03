@@ -1231,7 +1231,19 @@ function processCommand(message, username, plainMessage) {
                     // console.log('targetItem ', targetItem);
                     console.log(bot.pathfinder.goal);
 
-                    if (targetEnemy && targetEnemy !== oldTargetEnemy) {
+                    my_item = findNearestItemWithLore();
+                    if (my_item) {
+                        bot.pathfinder.setMovements(defaultMove);
+                        id = my_item?.metadata?.[8]?.itemId
+                        count = my_item?.metadata?.[8]?.itemCount
+                        console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
+                        // console.log(JSON.stringify(targetItem.metadata, null, 2));
+                        justCheckedBarrel = false;
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
+                        bot.pathfinder.setMovements(defaultMove);
+                        bot.pathfinder.setGoal(null)
+                        bot.pathfinder.setGoal(new GoalFollow(my_item, 0));
+                    } else if (targetEnemy && targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
                         bot.pathfinder.setMovements(defaultMove);
                         name = targetEnemy.name
