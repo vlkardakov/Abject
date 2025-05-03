@@ -794,25 +794,29 @@ function distanceToPofikBase(entity) {
     const dz = pos.z + 515;
     return Math.sqrt(dx * dx + dz * dz);
 }
+function getLore(itemEntity) {
+    loreItem = null;
+    try {
+        loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
+            .split('Подпись: #')[1]
+            .split('","bold"')[0];
+    } catch (e) {
+    }
+    return loreItem
+}
 function findNearestItem(searchName = '') {
     wanted_ids = []
     if (searchName) {
         wanted_ids = selectIdsWithName(searchName);
     }
     return bot.nearestEntity(entity => {
-        loreItem = 'нет';
-        try {
-            loreItem = entity.metadata[8].nbtData.value.display.value.Lore.value.value[0]
-                .split('Подпись: #')[1]
-                .split('","bold"')[0];
-        } catch (e) {
-        }
+        loreItem = getLore(entity);
         if (searchName) {
             if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {// && loreItem === BOT_USERNAME) {
                 return true;
             } else return false
         } else {
-            if (loreItem)             return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
+            if (loreItem) return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
 
         }
     });
