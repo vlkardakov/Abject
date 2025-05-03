@@ -1178,7 +1178,7 @@ function processCommand(message, username, plainMessage) {
                     //     await new Promise(resolve => setTimeout(resolve, 5000));
                     //     return;
                     // }
-                    const targetEnemy = findNearestEnemy(searchName);
+                    const targetEnemy = findNearestEnemy();
 
                     // console.log('targetItem ', targetItem);
                     console.log(bot.pathfinder.goal);
