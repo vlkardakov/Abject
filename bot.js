@@ -834,7 +834,7 @@ function findNearestItemWithLore(searchName = '') {
             } else return false
         } else {
             console.log(`Подпись предмета: ${loreItem}`)
-            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
 
         }
     });
