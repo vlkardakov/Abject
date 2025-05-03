@@ -816,7 +816,8 @@ function findNearestItem(searchName = '') {
                 return true;
             } else return false
         } else {
-            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
+            console.log(`Подпись предмета: ${loreItem}`)
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
 
         }
     });
