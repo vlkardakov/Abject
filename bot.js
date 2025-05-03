@@ -816,7 +816,7 @@ function findNearestItem(searchName = '') {
                 return true;
             } else return false
         } else {
-            if (loreItem) return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
 
         }
     });
