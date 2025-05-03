@@ -1189,17 +1189,17 @@ function processCommand(message, username, plainMessage) {
                         name = targetEnemy.name
                         console.log(`name: ${name}`);
                         // console.log(JSON.stringify(targetItem.metadata, null, 2));
-                        replyFeedback(`Иду защищать!`)
+                        sendFeedback(`Иду защищать!`)
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
                         bot.pvp.attack(targetEnemy)
                     } else {
                         if (isFarFromPofikBase() && !targetEnemy && !bot.pathfinder.goal) {
-                            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу пофика..`)
+                            sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(648, 64, -514);
                             await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
                         } else if (!bot.pathfinder.goal) {
-                            replyFeedback('Я на базе.')
+                            sendFeedback('Я на базе.')
                             // blockToLookAfterDeposit = bot.findBlock({
                             //     matching: block => {
                             //         const nameMatches = block.name.toLowerCase().includes('calcite')
