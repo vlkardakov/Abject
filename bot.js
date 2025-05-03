@@ -786,6 +786,14 @@ async function downloadMusic(username, songName, fileName) {
     })
 
 }
+function findNearestEnemy() {
+    return bot.nearestEntity(entity => {
+        const matchesCriteria = (
+            // (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
+            (entity.type === 'mob' && entity.name?.toLowerCase().includes('zombie') || entity.type === 'mob' && entity.name?.toLowerCase().includes('skelet') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('spider') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('creep'))
+        );
+        return matchesCriteria && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);});
+}
 function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
     const ButtonToActivate = bot.blockAt(cords)
     if (ButtonToActivate) {
@@ -1146,14 +1154,7 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
 
-            function findNearestEnemy() {
-                return bot.nearestEntity(entity => {
-                    const matchesCriteria = (
-                        // (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
-                        (entity.type === 'mob' && entity.name?.toLowerCase().includes('zombie') || entity.type === 'mob' && entity.name?.toLowerCase().includes('skelet') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('spider') ||  entity.type === 'mob' && entity.name?.toLowerCase().includes('creep'))
-                    );
-                    return matchesCriteria && isEntityVisibleFromPositions(entity, POFIK_POSITIONS);});
-            }
+
 
             function isFarFromPofikBase() {
                 const pos = bot.entity.position;
