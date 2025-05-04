@@ -680,7 +680,7 @@ async function depositItems() {
     // const chestBlock = blocks
     //     .map(pos => bot.blockAt(pos))
     //     .find(block => block && block.position.x === 0 && block.position.z === -34 && block.position.y === 82 )
-    const chestBlock = bot.blockAt(new vec3({x: chestPos.x, y: chestPos.y, z: chestPos.z}));
+    const chestBlock = bot.blockAt(chestPos);
     // console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
     if (!chestBlock) {
         bot.chat(`/msg ${username} не нашел бочку :(`);
