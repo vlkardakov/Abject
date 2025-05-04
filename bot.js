@@ -59,8 +59,12 @@ let playing = false;
 let latestBrokenBlock = [new vec3(0, 0, 0), 'air']
 
 const SPAWN_POSITIONS = [
-
+    new vec3(-286, 92, 407),
+    new vec3(-280, 90, 410),
+    new vec3(-241, 65, 410),
+    new vec3(-268, 22, 407),
 ];
+
 
 const POFIK_POSITIONS = [
     new vec3(620, 63, -516),
