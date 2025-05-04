@@ -64,7 +64,14 @@ const SPAWN_POSITIONS = [
     new vec3(-241, 65, 410),
     new vec3(-268, 22, 407),
 ];
+const MUSOR_CHESTS = [
+    new vec3(-289, 91, 403),
+    new vec3(-289, 91, 401),
+    new vec3(-289, 90, 403),
+    new vec3(-289, 90, 401),
+];
 
+let MUSOR_INDEX = 0;
 
 const POFIK_POSITIONS = [
     new vec3(620, 63, -516),
@@ -608,106 +615,58 @@ function isEntityVisibleFromPos(fromPos, entity) {
     }
 }
 async function depositItems() {
-    if (justCheckedBarrel) {return}
-    console.log('Запуск очистки...')
+    if (justCheckedBarrel) return;
 
+    console.log('Запуск очистки...');
+    justCheckedBarrel = true;
 
+    let chest = null;
+    let chestBlock = null;
+    let attempt = 0;
+    const maxAttempts = MUSOR_CHESTS.length;
 
-    justCheckedBarrel = true
-    chestPos = vec3(-289, 91, 403);
-    await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
-    // const blocks = bot.findBlocks({
-    //     matching: block => block.name.includes('barrel'),
-    //     maxDistance: 10,
-    //     count: 10,
-    // })
+    while (attempt < maxAttempts) {
+        const chestPos = MUSOR_CHESTS[MUSOR_INDEX];
+        console.log(`Пробую мусорку #${MUSOR_INDEX} на позиции ${chestPos}`);
+        await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
+        chestBlock = bot.blockAt(chestPos);
 
-    // if (hasRichItems()) {
-    //     console.log("у меня есть ценные вещи")
-    //     const chestBlock_rich = blocks
-    //         .map(pos => bot.blockAt(pos))
-    //         // .find(block => block && block.position.y === 86 && block.position.z === 8)
-    //         .find(block => block && block.position.y > 89)
-    //     if (!chestBlock_rich) {
-    //         bot.chat(`/msg ${username} не нашел бочку :(`);
-    //         return;
-    //     }
-    //
-    // await unequipArmorAndMainHand()
-    //
-    //     // const blockToLookAt_rich = bot.findBlock({
-    //     //     matching: block => {
-    //     //         const nameMatches = block.name.toLowerCase().includes('calcite');
-    //     //         const isVisible = bot.canSeeBlock(block);
-    //     //         return nameMatches && isVisible;
-    //     //     },
-    //     //     maxDistance: 5,
-    //     //     useExtraInfo: true
-    //     // });
-    //     //
-    //     // if (blockToLookAt_rich) {
-    //     //     const center_rich = blockToLookAt_rich.position.offset(0.5, 0.5, 0.5);
-    //     //     await bot.lookAt(center_rich, true);
-    //     // }
-    //
-    //     // const chest_rich = await bot.openBlock(chestBlock_rich, null);
-    //     // типа открываем бочку без поворота
-    //     bot._client.write('block_place', {
-    //         hand: 0, // 0 - main hand
-    //         location: chestBlock_rich.position,
-    //         direction: 1, // направление клика (1 = верх блока, норм)
-    //         cursorX: 8, // 8/16 = 0.5, центр блока
-    //         cursorY: 8,
-    //         cursorZ: 8,
-    //         insideBlock: false
-    //     })
-    //
-    //     // теперь надо самим замутить openContainer
-    //     const chest_rich = await bot.openContainer(chestBlock_rich)
-    //
-    //     for (let item of bot.inventory.items()) {
-    //         if (RICH_ITEMS.some(keyword => item.name.includes(keyword))) {                        try {
-    //                 console.log(`Кладу ${item.name}`)
-    //                 await chest_rich.deposit(item.type, null, item.count);
-    //             } catch (err) {
-    //                 console.log(`Не смог положить ${item.name}: ${err.message}`);
-    //             }
-    //         }
-    //     }
-    //     chest_rich.close();
-    // }
+        if (!chestBlock) {
+            console.log('Не нашел бочку 😢');
+            attempt++;
+            MUSOR_INDEX = (MUSOR_INDEX + 1) % MUSOR_CHESTS.length;
+            continue;
+        }
 
-    // const chestBlock = blocks
-    //     .map(pos => bot.blockAt(pos))
-    //     .find(block => block && block.position.x === 0 && block.position.z === -34 && block.position.y === 82 )
-    const chestBlock = bot.blockAt(chestPos);
-    // console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
-    if (!chestBlock) {
-        bot.chat(`/msg ${username} не нашел бочку :(`);
+        try {
+            chest = await bot.openBlock(chestBlock, null);
+            break;
+        } catch (err) {
+            console.log('Не смог открыть бочку:', err.message);
+            attempt++;
+            MUSOR_INDEX = (MUSOR_INDEX + 1) % MUSOR_CHESTS.length;
+        }
+    }
+
+    if (!chest) {
+        bot.chat(`/msg ${username} не удалось найти доступную мусорку 😓`);
         return;
     }
 
-    const chest = await bot.openBlock(chestBlock, null);
-    //
-    // bot._client.write('block_place', {
-    //     hand: 0,
-    //     location: chestBlock.position,
-    //     direction: 1,
-    //     cursorX: 8,
-    //     cursorY: 8,
-    //     cursorZ: 8,
-    //     insideBlock: false
-    // })
+    console.log('Мусорка открыта');
 
-    // const chest = await bot.openContainer(chestBlock)
-
-    console.log('Мусорка открыта')
     for (const item of bot.inventory.items()) {
         try {
-            console.log(`Кладу ${item.name}`)
+            console.log(`Кладу ${item.name}`);
             await chest.deposit(item.type, null, item.count);
         } catch (err) {
             console.log(`Не смог положить ${item.name}: ${err.message}`);
+
+            // Пытаемся переключиться на следующую мусорку и начать заново
+            chest.close();
+            MUSOR_INDEX = (MUSOR_INDEX + 1) % MUSOR_CHESTS.length;
+            await depositItems(); // рекурсия 👀
+            return;
         }
     }
 
@@ -728,6 +687,7 @@ async function depositItems() {
 
     chest.close();
 }
+
 function isEntityVisibleFromPositions(entity, positions) {
     if (!entity || !entity.position) return false;
     return positions.some(spawnPos => {
