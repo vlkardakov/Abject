@@ -302,6 +302,8 @@ async function autoEat() {
                 try { await bot.unequip('hand'); } catch (unequipErr) {/* Игнорируем */}
             } finally {
                 isEating = false;
+                equipItem('axe')
+                equipItem('sword')
             }
         } else {
             console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}, но еды в инвентаре нет.`);
