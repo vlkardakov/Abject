@@ -633,13 +633,13 @@ async function depositItems() {
 
 
     justCheckedBarrel = true
-    chestPos = vec3(2, 82, -33);
+    chestPos = vec3(-289, 91, 403);
     await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 1));
-    const blocks = bot.findBlocks({
-        matching: block => block.name.includes('barrel'),
-        maxDistance: 10,
-        count: 10,
-    })
+    // const blocks = bot.findBlocks({
+    //     matching: block => block.name.includes('barrel'),
+    //     maxDistance: 10,
+    //     count: 10,
+    // })
 
     // if (hasRichItems()) {
     //     console.log("у меня есть ценные вещи")
@@ -696,10 +696,10 @@ async function depositItems() {
     //     chest_rich.close();
     // }
 
-    const chestBlock = blocks
-        .map(pos => bot.blockAt(pos))
-        .find(block => block && block.position.x === 0 && block.position.z === -34 && block.position.y === 82 )
-
+    // const chestBlock = blocks
+    //     .map(pos => bot.blockAt(pos))
+    //     .find(block => block && block.position.x === 0 && block.position.z === -34 && block.position.y === 82 )
+    const chestBlock = bot.blockAt(new vec3({x: chestPos.x, y: chestPos.y, z: 1}));
     // console.log(`Distnace to barrel: ${bot.entity.position.distanceTo(chestPos)}`);
     if (!chestBlock) {
         bot.chat(`/msg ${username} не нашел бочку :(`);
@@ -1105,8 +1105,8 @@ function processCommand(message, username, plainMessage) {
 
         function isFarFromCenter() {
             const pos = bot.entity.position;
-            const dx = pos.x - 2;
-            const dz = pos.z + 33;
+            const dx = pos.x + 287;
+            const dz = pos.z - 404;
             return Math.sqrt(dx * dx + dz * dz) > 15;
         }
         async function unequipArmorAndMainHand() {
@@ -1162,7 +1162,7 @@ function processCommand(message, username, plainMessage) {
                 } else {
                     if (isFarFromCenter() && !targetItem && !bot.pathfinder.goal) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
-                        chestPos = vec3(2, 82, -33);
+                        chestPos = vec3(-289, 91, 403);
                         await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
                     } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                         await depositItems();
@@ -1260,7 +1260,7 @@ function processCommand(message, username, plainMessage) {
                         bot.pvp.attack(targetEnemy)
                         }
                     } else {
-                        if (distanceToPofikBase(bot.entity) > 10 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
+                        if (distanceToPofikBase(bot.entity) > 2 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(648, 64, -515);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 0));
