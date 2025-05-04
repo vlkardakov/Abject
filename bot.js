@@ -789,21 +789,28 @@ function getLore(itemEntity) {
     return loreItem
 }
 function findNearestItem(searchName = '') {
-    wanted_ids = []
+    let wanted_ids = []
     if (searchName) {
         wanted_ids = selectIdsWithName(searchName);
     }
-    return bot.nearestEntity(entity => {
-        if (searchName) {
-            if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {// && loreItem === BOT_USERNAME) {
-                return true;
-            } else return false
-        } else {
-            return entity.name === 'item' && entity?.metadata?.[8]?.present && (isItemOnSpawn(entity) || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)// && loreItem === BOT_USERNAME;
 
+    return bot.nearestEntity(entity => {
+        if (entity.name !== 'item') return false
+        if (!entity?.metadata?.[8]?.present) return false
+        if (getUsedIds().includes(entity.id)) return false
+        if (!isItemOnSpawn(entity) && !isEntityVisible(entity)) return false
+
+        const tooClosePlayer = bot.entities.find(e => e.type === 'player' && e.username !== bot.username && e.position.distanceTo(entity.position) <= 3);
+        if (tooClosePlayer) return false;
+
+        if (searchName) {
+            return wanted_ids.includes(entity?.metadata?.[8]?.itemId);
         }
+
+        return true;
     });
 }
+
 function findNearestItemWithLore(searchName = '') {
     wanted_ids = []
     if (searchName) {
@@ -839,6 +846,9 @@ function findNearestEnemy() {
 
         return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
     });
+}
+function getFreeInventorySlots() {
+    return bot.inventory.slots.filter(slot => slot === null).length;
 }
 
 function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
@@ -1126,7 +1136,7 @@ function processCommand(message, username, plainMessage) {
                 // console.log('targetItem ', targetItem);
                 console.log(bot.pathfinder.goal);
 
-                if (targetItem && targetItem !== oldTargetItem) {
+                if (targetItem && targetItem !== oldTargetItem && getFreeInventorySlots() > 5) {
                     oldTargetItem = targetItem;
                     setState(`collecting:${targetItem.id}`);
                     // console.log('Нормальный предмет detetcted!')
