@@ -1260,8 +1260,8 @@ function processCommand(message, username, plainMessage) {
                     } else {
                         if (distanceToPofikBase(bot.entity) > 10 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
-                            pofikPos = vec3(648, 64, -514);
-                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 1));
+                            pofikPos = vec3(648, 64, -515);
+                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 0));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
                             // blockToLookAfterDeposit = bot.findBlock({
