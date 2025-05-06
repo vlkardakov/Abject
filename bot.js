@@ -119,7 +119,9 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
-console.log(typeof customPVP)
+console.log(customPVP)
+
+
 bot.loadPlugin(customPVP.plugin)
 
 function findFood(botInstance) {
