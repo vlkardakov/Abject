@@ -100,7 +100,9 @@ direct message: bot.chat('/r сообщение');
 you play in minecraft server sleepcraft (слипкрафт), as a mineflayer bot (bot). You have to answer to any chat messages in code, like bot.chat('hello');
 you have to use ONLY code in answers, you can do anything with mineflayer api for doing anything. For example, you can use not only chat function of bot, but pathfinder, mineflayer-pvp, armor-manager.. and almost all other plugins.
 ОТВЕЧАЙ ТОЛЬКО КОДОМ!!! ТВОЙ КОД БУДЕТ АВТОМАТИЧЕСКИ ВЫПОЛНЯТЬСЯ! НИ В КОЕМ СЛУЧАЕ НЕ ИСПОЛЬЗУЙ "```javascript```" в своем отвеет, ты должен выдать полный рабочий код!
-""",
+некоторое пояснение mineflayer:
+следовать за игроком: bot.pathfinder.setGoal(
+new """,
 )
 
 description = ""
@@ -134,7 +136,7 @@ def ask_api():
         return jsonify({'error': 'No prompt provided'}), 400
 
     # try:
-    prompt = prompt.split('$ ')[1]
+    prompt = prompt.replace('$ ', ' ')
     answer = ask_gemini(prompt)
     return jsonify({'response': answer})
     # except Exception as e:
