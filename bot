@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull origin && node bot.js && python3 geminiServer.py
+git pull origin && node bot.js & python3 geminiServer.py
