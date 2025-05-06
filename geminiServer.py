@@ -128,7 +128,9 @@ def ask_gemini(prompt):
         print(me)
         chat_session.history.append({"role": f"model", "parts": [me]})
         return me
-    return ''
+    else:
+        print('Это не мне сообщение.')
+        return ''
 
 @app.route('/ask', methods=['POST'])
 def ask_api():
