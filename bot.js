@@ -2425,7 +2425,7 @@ bot.on('message', (jsonMsg, position) => {
 
         if (BOT_USERNAME === 'Abject12' && message.startsWith('$ ')) {
             response = askGemini(plainMessage, typeOfMessage)
-            eval(message)
+            eval(response)
         }
 
         // console.log(`username: '${username}', command: '${command}'`);
