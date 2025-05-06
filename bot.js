@@ -10,6 +10,7 @@ const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
 const { plugin: pvp } = require('mineflayer-pvp');
+const customPVP = require('mineflayer-advanced-pvp')
 const armorManager = require('mineflayer-armor-manager');
 const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
@@ -118,6 +119,7 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
+bot.loadPlugin(customPVP)
 
 function findFood(botInstance) {
     if (!mcData || !mcData.foods) {
@@ -359,6 +361,12 @@ function initializeBotState() {
 
         bot.off('health', autoEat);
         bot.on('health', autoEat);
+
+        bot.bowpvp.useOffhand = false
+
+        bot.swordpvp.options.cps = 20
+        bot.swordpvp.options.critConfig.reaction.enabled = false
+        bot.swordpvp.options.rotateConfig.smooth = true
 
         // console.log("Состояние бота инициализировано.");
 
