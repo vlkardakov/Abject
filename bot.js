@@ -10,7 +10,7 @@ const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
 const { plugin: pvp } = require('mineflayer-pvp');
-const customPVP = require('@nxg-org/mineflayer-custom-pvp')
+// const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const armorManager = require('mineflayer-armor-manager');
 const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
@@ -116,8 +116,8 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
-// console.log(customPVP)
-bot.loadPlugin(customPVP.default)
+// // console.log(customPVP)
+// bot.loadPlugin(customPVP.default)
 
 function findFood(botInstance) {
     if (!mcData || !mcData.foods) {
