@@ -363,11 +363,11 @@ function initializeBotState() {
 
         bot.bowpvp.useOffhand = false
 
-        bot.swordpvp.options.cps = 20
+        // bot.swordpvp.options.cps = 20
         bot.swordpvp.options.critConfig.reaction.enabled = false
         // bot.swordpvp.options.rotateConfig.smooth = true
 
-        критика
+        // критика
         bot.swordpvp.options.critConfig.enabled = true
         bot.swordpvp.options.critConfig.mode = 'packet'
         bot.swordpvp.options.critConfig.reaction.enabled = false
