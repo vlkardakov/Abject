@@ -122,12 +122,12 @@ def ask_api():
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
 
-    try:
-        prompt = prompt.split('$ ')[1]
-        answer = ask_gemini(prompt)
-        return jsonify({'response': answer})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # try:
+    prompt = prompt.split('$ ')[1]
+    answer = ask_gemini(prompt)
+    return jsonify({'response': answer})
+    # except Exception as e:
+    # return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=4345, debug=True)
