@@ -2432,6 +2432,9 @@ bot.on('message', (jsonMsg, position) => {
         // console.log(`username: '${username}', command: '${command}'`);
         processCommand(message, username, plainMessage)
     }
+    else {
+        askGemini(plainMessage, 'system')
+    }
 });
 
 bot.on('kicked', (reason, loggedIn) => {
