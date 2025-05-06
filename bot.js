@@ -363,8 +363,9 @@ function initializeBotState() {
 
         bot.bowpvp.useOffhand = false
 
-        // bot.swordpvp.options.cps = 20
-        bot.swordpvp.options.critConfig.reaction.enabled = false
+        bot.swordpvp.options.cps = 5
+        // bot.swordpvp.options.critConfig.reaction.enabled =
+        bot.swordpvp.options.critConfig.reaction.enabled = true
         // bot.swordpvp.options.rotateConfig.smooth = true
 
         // критика
