@@ -839,7 +839,7 @@ async function askGemini(prompt, type) {
 }
 async function infoGemini(prompt) {
     try {
-        axios.post('http://127.0.0.1:4345/info', {
+        const response = axios.post('http://127.0.0.1:4345/info', {
             prompt: prompt
         });
     } catch (err) {
