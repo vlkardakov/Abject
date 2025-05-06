@@ -825,7 +825,7 @@ function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
 async function askGemini(prompt, type) {
     prompt = `${prompt} (тип: ${type})`;
     try {
-        const response = await axios.post('http://localhost:5000/ask', {
+        const response = await axios.post('http://localhost:4345/ask', {
             prompt: prompt
         });
 
