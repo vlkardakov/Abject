@@ -119,10 +119,8 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
-console.log(customPVP)
-
-
-bot.loadPlugin(customPVP.plugin)
+// console.log(customPVP)
+bot.loadPlugin(customPVP.default)
 
 function findFood(botInstance) {
     if (!mcData || !mcData.foods) {
