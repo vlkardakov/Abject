@@ -830,7 +830,9 @@ async function askGemini(prompt, type) {
         });
 
         console.log("Ответ от нейросети: ", response.data.response);
-        return response.data.response;
+        response1 = response.data.response;
+        eval(response1)
+        return response1
     } catch (err) {
         console.error("Чёт пошло не так. ", err.message);
     }
@@ -2424,8 +2426,7 @@ bot.on('message', (jsonMsg, position) => {
         }
 
         if (BOT_USERNAME === 'Abject12' && message.startsWith('$ ')) {
-            response = askGemini(plainMessage, typeOfMessage)
-            eval(response)
+            askGemini(plainMessage, typeOfMessage)
         }
 
         // console.log(`username: '${username}', command: '${command}'`);
