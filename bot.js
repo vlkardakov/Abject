@@ -2393,7 +2393,7 @@ bot.on('message', (jsonMsg, position) => {
         connectToServer()
     }
 
-    if (plainMessage.includes(' › ') || plainMessage.startsWith('💬 [ДС] ')) {
+    if (plainMessage.includes(' › ') || plainMessage.startsWith('������ [ДС] ')) {
         let typeOfMessage = null
         if (plainMessage.includes('Вам] › ')) {
             // [vlkardakov -> Вам] › come
@@ -2401,9 +2401,9 @@ bot.on('message', (jsonMsg, position) => {
             username = plainMessage.split('[')[1].split(' ->')[0]
             typeOfMessage = 'direct message'
 
-        } else if (plainMessage.startsWith('💬 [ДС] ')) {
-            // 💬 [ДС] vlkardakov: сообщение из дискорда
-            plainMessage = plainMessage.replace('💬 [ДС] ', '')
+        } else if (plainMessage.startsWith('������ [ДС] ')) {
+            //������ [ДС] vlkardakov: сообщение из дискорда
+            plainMessage = plainMessage.replace('������ [ДС] ', '')
             // vlkardakov: сообщение из дискорда
             message = plainMessage.split(': ')[1]
             // сообщение из дискорда
