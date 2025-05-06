@@ -4,7 +4,6 @@
 // //не засоряя консоль
 
 require('dotenv').config()
-const mineflayer = require('mineflayer');
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
 const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
@@ -119,6 +118,7 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
+console.log(typeof customPVP)
 bot.loadPlugin(customPVP.plugin)
 
 function findFood(botInstance) {
