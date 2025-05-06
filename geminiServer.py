@@ -114,6 +114,17 @@ chat_session = model.start_chat(
 def boolean(string):
     return string != '-'
 
+def ask_gemini(prompt):
+    global chat_session
+    print()
+    response = chat_session.send_message(prompt)
+    model_response = response.text #.split("$")[1]
+
+    print()
+    me = model_response
+    print(me)
+    return me
+
 @app.route('/ask', methods=['POST'])
 def ask_api():
     data = request.get_json()
