@@ -121,6 +121,7 @@ def ask_gemini(prompt):
     print()
     chat_session.history.append({"role": f"user", "parts": [prompt]})
     if '$ ' in prompt:
+        prompt = prompt.replace('$ ', ' ')
         response = chat_session.send_message(prompt)
         model_response = response.text #.split("$")[1]
         print()
@@ -141,7 +142,6 @@ def ask_api():
         return jsonify({'error': 'No prompt provided'}), 400
 
     # try:
-    prompt = prompt.replace('$ ', ' ')
     answer = ask_gemini(prompt)
     return jsonify({'response': answer})
     # except Exception as e:
