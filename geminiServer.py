@@ -120,7 +120,7 @@ def ask_gemini(prompt):
     global chat_session
     print()
     chat_session.history.append({"role": f"user", "parts": [prompt]})
-    if prompt.startswith('$ '):
+    if '$ ' in prompt:
         response = chat_session.send_message(prompt)
         model_response = response.text #.split("$")[1]
         print()
