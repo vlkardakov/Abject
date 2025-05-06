@@ -372,7 +372,7 @@ function initializeBotState() {
         bot.swordpvp.options.critConfig.mode = 'packet'
         bot.swordpvp.options.critConfig.reaction.enabled = false
 
-        прыжки при преследовании
+        // прыжки при преследовании
         bot.swordpvp.options.followConfig.mode = 'jump'
 
         // Strafing configuration
