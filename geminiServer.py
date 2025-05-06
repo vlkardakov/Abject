@@ -123,6 +123,7 @@ def ask_api():
         return jsonify({'error': 'No prompt provided'}), 400
 
     try:
+        prompt = prompt.split('$ ')[1]
         answer = ask_gemini(prompt)
         return jsonify({'response': answer})
     except Exception as e:

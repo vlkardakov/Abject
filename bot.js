@@ -2423,7 +2423,7 @@ bot.on('message', (jsonMsg, position) => {
             else typeOfMessage = 'global chat'
         }
 
-        if (BOT_USERNAME === 'Abject12') {
+        if (BOT_USERNAME === 'Abject12' && message.startsWith('$ ')) {
             response = askGemini(plainMessage, typeOfMessage)
             try {eval(message.split('exec '));}
             catch (e) {console.log(e)}
