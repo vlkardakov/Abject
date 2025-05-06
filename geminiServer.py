@@ -118,6 +118,7 @@ def boolean(string):
 
 def ask_gemini(prompt):
     global chat_session
+    print(f'выполняю `{prompt}`')
     print()
     chat_session.history.append({"role": f"user", "parts": [prompt]})
     if '$ ' in prompt:
