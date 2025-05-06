@@ -364,27 +364,27 @@ function initializeBotState() {
 
         bot.swordpvp.options.cps = 20
         bot.swordpvp.options.critConfig.reaction.enabled = false
-        bot.swordpvp.options.rotateConfig.smooth = true
+        // bot.swordpvp.options.rotateConfig.smooth = true
 
         //критика
-        bot.swordpvp.options.critConfig.enabled = true
-        bot.swordpvp.options.critConfig.mode = 'packet'
-        bot.swordpvp.options.critConfig.reaction.enabled = false
+        // bot.swordpvp.options.critConfig.enabled = true
+        // bot.swordpvp.options.critConfig.mode = 'packet'
+        // bot.swordpvp.options.critConfig.reaction.enabled = false
 
         // прыжки при преследовании
-        bot.swordpvp.options.followConfig.mode = 'jump'
+        // bot.swordpvp.options.followConfig.mode = 'jump'
 
-        // Strafing configuration
-        bot.swordpvp.options.strafeConfig.enabled = true
-        bot.swordpvp.options.strafeConfig.mode.mode = 'intelligent'
+        // // Strafing configuration
+        // bot.swordpvp.options.strafeConfig.enabled = true
+        // bot.swordpvp.options.strafeConfig.mode.mode = 'intelligent'
+        //
+        // // Tap configuration for knockback
+        // bot.swordpvp.options.tapConfig.enabled = true
+        // bot.swordpvp.options.tapConfig.mode = 'wtap'
 
-        // Tap configuration for knockback
-        bot.swordpvp.options.tapConfig.enabled = true
-        bot.swordpvp.options.tapConfig.mode = 'wtap'
-
-        // Look behavior
-        bot.swordpvp.options.rotateConfig.smooth = true
-        bot.swordpvp.options.rotateConfig.mode = 'constant'
+        // // Look behavior
+        // bot.swordpvp.options.rotateConfig.smooth = true
+        // bot.swordpvp.options.rotateConfig.mode = 'constant'
         // console.log("Состояние бота инициализировано.");
 
     } catch (error) {
