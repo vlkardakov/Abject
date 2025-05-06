@@ -339,6 +339,7 @@ function initializeBotState() {
 
 
         defaultMove.speed = 10
+        defaultMove.allowFreeMotion = true
         defaultMove.allow1by1towers = false
         // defaultMove.allowParkour = false
         defaultMove.canPlaceBlocks = false
@@ -374,10 +375,10 @@ function initializeBotState() {
         // прыжки при преследовании
         // bot.swordpvp.options.followConfig.mode = 'jump'
 
-        // // Strafing configuration
-        // bot.swordpvp.options.strafeConfig.enabled = true
-        // bot.swordpvp.options.strafeConfig.mode.mode = 'intelligent'
-        //
+        // Strafing configuration
+        bot.swordpvp.options.strafeConfig.enabled = true
+        bot.swordpvp.options.strafeConfig.mode.mode = 'intelligent'
+
         // // Tap configuration for knockback
         // bot.swordpvp.options.tapConfig.enabled = true
         // bot.swordpvp.options.tapConfig.mode = 'wtap'
