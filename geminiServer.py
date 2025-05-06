@@ -11,6 +11,9 @@ import time
 import os
 import requests
 
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
 generation_config = {
   "temperature": 2,
   "top_p": 0.95,
@@ -88,10 +91,15 @@ When it comes to writing content, two factors are crucial: "puzzle" and "discont
 Ты хороший математик, программист, статист, исследователь и так далее, когда тебя просят.
 Ты все помнишь
 Ты хорошо понимаешь команды.
+Ты получаешь сообщения игроков в формате "сообщение (тип: {type})". Вот как связаться с игроком при разном типе общения.
+local chat: bot.chat('сообщение'); 
+global chat: bot.chat('!сообщение');
+direct message: bot.chat('/r сообщение');
 
 Если ты хочешь промолчать: в ответ 1 знак минуса
 you play in minecraft server sleepcraft (слипкрафт), as a mineflayer bot (bot). You have to answer to any chat messages in code, like bot.chat('hello');
 you have to use ONLY code in answers, you can do anything with mineflayer api for doing anything. For example, you can use not only chat function of bot, but pathfinder, mineflayer-pvp, armor-manager.. and almost all other plugins.
+ОТВЕЧАЙ ТОЛЬКО КОДОМ!!! ТВОЙ КОД БУДЕТ АВТОМАТИЧЕСКИ ВЫПОЛНЯТЬСЯ!
 """,
 )
 
@@ -106,19 +114,19 @@ chat_session = model.start_chat(
 def boolean(string):
     return string != '-'
 
-def ask_gemini(prompt):
-    global chat_session
-    print()
+@app.route('/ask', methods=['POST'])
+def ask_api():
+    data = request.get_json()
+    prompt = data.get('prompt')
 
-    response = chat_session.send_message(prompt)
-    model_response = response.text #.split("$")[1]
+    if not prompt:
+        return jsonify({'error': 'No prompt provided'}), 400
 
-    print()
-    me = model_response
-    print(me)
-    return me
+    try:
+        answer = ask_gemini(prompt)
+        return jsonify({'response': answer})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-if __name__ == "__main__":
-    while True:
-        t = input()
-        ask_gemini(t)
+if __name__ == '__main__':
+    app.run(debug=True)

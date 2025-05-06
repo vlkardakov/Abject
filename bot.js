@@ -19,12 +19,14 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const yts = require("yt-search");
+const axios = require('axios');
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: '> '
 });
 const { exec } = require('child_process')
+
 
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
@@ -818,6 +820,19 @@ function activateBlock(cords) { // new vec3({x: 1, y: 80, z: 9})
         console.log(ButtonToActivate);
         bot.lookAt(ButtonToActivate.position, true)
         bot.activateBlock(ButtonToActivate);
+    }
+}
+async function askGemini(prompt, type) {
+    prompt = `${prompt} (тип: ${type})`;
+    try {
+        const response = await axios.post('http://localhost:5000/ask', {
+            prompt: prompt
+        });
+
+        console.log("Ответ от нейросети: ", response.data.response);
+        return response.data.response;
+    } catch (err) {
+        console.error("Чёт пошло не так. ", err.message);
     }
 }
 function processCommand(message, username, plainMessage) {
@@ -2364,6 +2379,7 @@ rl.on('line', (line) => {
 });
 bot.on('chat', (username, message) => {
     console.log(`I have got a message from ${username}: ${message}`);
+
     processCommand(message, username, message)
 })
 
@@ -2376,10 +2392,12 @@ bot.on('message', (jsonMsg, position) => {
     }
 
     if (plainMessage.includes(' › ') || plainMessage.startsWith('💬 [ДС] ')) {
+        let typeOfMessage = null
         if (plainMessage.includes('Вам] › ')) {
             // [vlkardakov -> Вам] › come
             message = plainMessage.split('Вам] › ')[1]
             username = plainMessage.split('[')[1].split(' ->')[0]
+            typeOfMessage = 'direct message'
 
         } else if (plainMessage.startsWith('💬 [ДС] ')) {
             // 💬 [ДС] vlkardakov: сообщение из дискорда
@@ -2389,12 +2407,26 @@ bot.on('message', (jsonMsg, position) => {
             // сообщение из дискорда
             username = plainMessage.split(': ')[0]
             // vlkardakov
+            typeOfMessage = 'global chat'
+
 
         } else if (plainMessage.includes(' › ')) {
             // vlkardakov › come
             message = plainMessage.split(' › ')[1]
             username = plainMessage.split(' › ')[0]
 
+            player = Object.values(bot.entities).find(
+                (e) => e.type === 'player' && e.username === username
+            );
+
+            if (player) typeOfMessage = 'local chat'
+            else typeOfMessage = 'global chat'
+        }
+
+        if (BOT_USERNAME === 'Abject12') {
+            response = askGemini(plainMessage, typeOfMessage)
+            try {eval(message.split('exec '));}
+            catch (e) {console.log(e)}
         }
 
         // console.log(`username: '${username}', command: '${command}'`);
