@@ -11,27 +11,6 @@ import time
 import os
 import requests
 
-# proxy = 'http://hAnuPVxQqi:DgH2Yc44lq@109.120.129.171:59597'
-# os.environ['http_proxy'] = proxy
-keys_proxies = [
-    {"key":'AIzaSyD4tOt2tCAtOHlFQQz4nI3kWMCytPOawcY', "proxy":'http://nether:nether@193.124.133.231:63712'}, #ПЛАТЁЖНЫЙ
-    {"key":'AIzaSyD4tOt2tCAtOHlFQQz4nI3kWMCytPOawcY', "proxy":'http://nether:nether@193.124.133.231:63712'}, #ПЛАТЁЖНЫЙ
-    {"key":'AIzaSyD4tOt2tCAtOHlFQQz4nI3kWMCytPOawcY', "proxy":'http://nether:nether@193.124.133.231:63712'}, #ПЛАТЁЖНЫЙ
-]
-
-key_index = 0
-current_key_proxy = keys_proxies[0]
-
-zaprosi_history = []
-
-def get_next():
-    global key_index
-
-    key_index = (key_index + 1) % len(keys_proxies)
-    key_proxy = keys_proxies[key_index]
-
-    return key_proxy
-
 generation_config = {
   "temperature": 2,
   "top_p": 0.95,
@@ -58,7 +37,8 @@ safety_settings = [
   },
 ]
 
-os.environ["http_proxy"] = ""
+os.environ["http_proxy"] = os.getenv('PROXY')
+genai.configure(api_key=os.getenv('API_KEY'))
 
 model = genai.GenerativeModel(
   # model_name="gemini-2.0-flash-exp",
