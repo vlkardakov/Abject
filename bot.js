@@ -837,6 +837,15 @@ async function askGemini(prompt, type) {
         console.error("Чёт пошло не так. ", err.message);
     }
 }
+async function infoGemini(prompt) {
+    try {
+        axios.post('http://127.0.0.1:4345/info', {
+            prompt: prompt
+        });
+    } catch (err) {
+        console.error("Чёт пошло не так. ", err.message);
+    }
+}
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
@@ -2427,6 +2436,8 @@ bot.on('message', (jsonMsg, position) => {
 
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
+        } else if (username === BOT_USERNAME) {
+            infoGemini(plainMessage);
         }
 
         // console.log(`username: '${username}', command: '${command}'`);

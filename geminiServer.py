@@ -151,5 +151,20 @@ def ask_api():
     # except Exception as e:
     # return jsonify({'error': str(e)}), 500
 
+@app.route('/info', methods=['POST'])
+def info_api():
+    global chat_session
+    data = request.get_json()
+    prompt = data.get('prompt').replace('$', '')
+
+
+
+    if not prompt:
+        return jsonify({'error': 'No prompt provided'}), 400
+    chat_session.history.append({"role": f"model", "parts": [prompt]})
+
+    # except Exception as e:
+    # return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=4345, debug=True)
