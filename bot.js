@@ -2425,7 +2425,7 @@ bot.on('message', (jsonMsg, position) => {
             else typeOfMessage = 'global chat'
         }
 
-        if (BOT_USERNAME === 'Abject12' && message.startsWith('$ ')) {
+        if (BOT_USERNAME === 'Abject12') {
             askGemini(plainMessage, typeOfMessage)
         }
 

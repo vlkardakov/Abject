@@ -119,13 +119,18 @@ def boolean(string):
 def ask_gemini(prompt):
     global chat_session
     print()
-    response = chat_session.send_message(prompt)
-    model_response = response.text #.split("$")[1]
+    chat_session.history.append()
+    chat_session.history.append({"role": f"user", "parts": [prompt]})
 
-    print()
-    me = model_response
-    print(me)
-    return me
+    if prompt.startswith('$ '):
+        response = chat_session.send_message(prompt)
+        model_response = response.text #.split("$")[1]
+        print()
+        me = model_response
+        print(me)
+        chat_session.history.append({"role": f"model", "parts": [me]})
+        return me
+    return ''
 
 @app.route('/ask', methods=['POST'])
 def ask_api():
