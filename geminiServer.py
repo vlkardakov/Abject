@@ -99,7 +99,7 @@ def ask_gemini(prompt: str):
             json={
                 # "model": "google/gemini-pro-1.5",
                 # "model": "google/gemini-pro-1.5",
-                "model": "google/gemini-pro-2.5",
+                "model": "google/gemini-2.5-pro-preview",
                 # "model": "openai/o1-mini",
                 "messages": messages,
                 "conversation_id": CONVERSATION_ID
