@@ -2275,7 +2275,7 @@ function processCommand(message, username, plainMessage) {
             try {
                 const shot = planner.shotToEntity(target);
                 if (!shot || !shot.shotInfo?.intersectPos) {
-                    bot.chat(`/msg ${username} Не могу точно прицелиться... 😕`);
+                    bot.chat(`/msg ${username} Не могу точно прицелиться...`);
                     return;
                 }
 
