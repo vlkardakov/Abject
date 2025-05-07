@@ -1761,6 +1761,8 @@ function processCommand(message, username, plainMessage) {
                     } else {
                         bot.chat(`/msg ${username} Броня (${slot}): ${item.name}, Прочность: Нет данных о прочности.`);
                     }
+                } else {
+                    bot.chat(`/msg ${username} Броня (${slot}): Нет предмета.`);
                 }
             });
 
@@ -1771,6 +1773,8 @@ function processCommand(message, username, plainMessage) {
                 } else {
                     bot.chat(`/msg ${username} Во второй руке: ${offhandItem.name}, Прочность: Нет данных о прочности.`);
                 }
+            } else {
+                bot.chat(`/msg ${username} Во второй руке: Нет предмета.`);
             }
             break;
 
