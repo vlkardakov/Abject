@@ -22,7 +22,7 @@ bot.once('spawn', () => {
 
     python.stdout.on('data', data => {
         const text = data.toString().trim()
-        if (text) bot.chat(`/m ${BOT_USERNAME} распознал: ${text}`)
+        if (text) bot.chat(`/m vlkardakov распознал: ${text}`)
     })
 
     bot.on('plasmovoice_pcm', (username, buffer) => {
