@@ -19,7 +19,13 @@ bot.once('spawn', () => {
     bot.chat('/l 22132213')
 
     const python = spawn('python3', ['recognizer.py'])
+    python.on('spawn', () => {
+        console.log('Python запущен!')
+    })
 
+    python.stderr.on('data', (data) => {
+        console.error('Python error:', data.toString())
+    })
     python.stdout.on('data', data => {
         const text = data.toString().trim()
         if (text) bot.chat(`/m vlkardakov распознал: ${text}`)
