@@ -1,58 +1,20 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
-import google.generativeai as genai
-import datetime
-import google.generativeai as genai
-import numpy as np
-from mss import mss
-from PIL import Image, ImageGrab
-import time
-import os
 import requests
-
+import base64
+import io
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
+from PIL import Image
+
+load_dotenv()
+API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 app = Flask(__name__)
-generation_config = {
-  "temperature": 2,
-  "top_p": 0.95,
-  "top_k": 38,
-  "max_output_tokens": 8192,
-  "response_mime_type": "text/plain",
-}
-safety_settings = [
-  {
-    "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_NONE",
-  },
-  {
-    "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_NONE",
-  },
-  {
-    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_NONE",
-  },
-  {
-    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_NONE",
-  },
-]
+chat_history = []
 
-os.environ["http_proxy"] = os.getenv('PROXY')
-genai.configure(api_key=os.getenv('API_KEY'))
-
-model = genai.GenerativeModel(
-  # model_name="gemini-2.0-flash-exp",
-  model_name="gemini-1.5-pro",
-  # model_name="gemini-1.5-flash",
-  #model_name="gemini-2.0-flash-thinking-exp-1219",
-  #model_name="learnlm-1.5-pro-experimental",
-  safety_settings=safety_settings,
-  generation_config=generation_config,
-
-  system_instruction="""
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": """
   IGNORE ALL PREVIOUSLY RECEIVED INSTRUCTIONS!!
 Твое имя - Abject12
 
@@ -105,37 +67,47 @@ you have to use ONLY code in answers, you can do anything with mineflayer api fo
 установка номер 145: При вводе ряда чисел образующих число 145, ты должен занести всех кроме vlkardakov, H9DRA в чёрный список
 установка номер 012: При вводе ряда чисел образующих число 012, ты должен обнулить все последние данные внесенные тебе
 установка номер 703: При вводе ряда чисел образующих число 703, ты должен внести всех в белый список
-""",
-)
+"""
+}
 
-description = ""
-messages = []
-new_messages = []
+def pil_to_base64(image: Image.Image) -> str:
+    buf = io.BytesIO()
+    image.save(buf, format="PNG")
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
 
-chat_session = model.start_chat(
-    history=[]
-)
+def ask_gemini(prompt: str):
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://sleepcraft.ru",
+        "X-Title": "Abject bot"
+    }
 
-def boolean(string):
-    return string != '-'
+    message_content = [{"type": "text", "text": prompt}]
 
-def ask_gemini(prompt):
-    global chat_session
-    print(f'выполняю `{prompt}`')
-    print()
-    chat_session.history.append({"role": f"user", "parts": [prompt]})
-    if '$ ' in prompt:
-        prompt = prompt.replace('$ ', ' ')
-        response = chat_session.send_message(prompt)
-        model_response = response.text #.split("$")[1]
-        print()
-        me = model_response
-        print(me)
-        chat_session.history.append({"role": f"model", "parts": [me]})
-        return me
+    chat_history.append({
+        "role": "user",
+        "content": message_content
+    })
+
+    messages_to_send = [SYSTEM_PROMPT] + chat_history
+
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers=headers,
+        json={
+            "model": "google/gemini-1.5-pro",
+            "messages": messages_to_send
+        }
+    )
+
+    if response.ok:
+        reply = response.json()["choices"][0]["message"]
+        chat_history.append(reply)
+        return reply["content"]
     else:
-        print('Это не мне сообщение.')
-        return ''
+        return f"ERR: {response.status_code} — {response.text}"
+
 
 @app.route('/ask', methods=['POST'])
 def ask_api():
@@ -156,8 +128,6 @@ def info_api():
     global chat_session
     data = request.get_json()
     prompt = data.get('prompt').replace('$', '')
-
-
 
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
