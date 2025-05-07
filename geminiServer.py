@@ -95,7 +95,9 @@ def ask_gemini(prompt: str):
             "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json={
-                "model": "google/gemini-pro-1.5",
+                # "model": "google/gemini-pro-1.5",
+                "model": "openai/o1-mini",
+
                 "messages": messages,
                 "conversation_id": CONVERSATION_ID
             }
