@@ -35,6 +35,13 @@ bot.once('spawn', () => {
         console.log(`[VOICE] ${username} → ${buffer.length} байт`)
         python.stdin.write(buffer)
     })
+    bot.on('plasmovoice_audio_end', () => {
+        console.log('Аудио завершено')
+    })
+
+    bot.on('error', (err) => {
+        console.error('Ошибка: ', err)
+    })
 
 })
 
