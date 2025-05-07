@@ -96,7 +96,7 @@ def ask_gemini(prompt: str):
             headers=headers,
             json={
                 # "model": "google/gemini-pro-1.5",
-                "model": "qwen/qwen-2-72b-instruct",
+                "model": "deepseek/deepseek-prover-v2",
                 "messages": messages,
                 "conversation_id": CONVERSATION_ID
             }
