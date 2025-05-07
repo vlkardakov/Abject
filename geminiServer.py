@@ -88,24 +88,24 @@ def ask_gemini(prompt: str):
         "role": "user",
         "content": message_content
     })
+    if '$' in prompt:
+        messages_to_send = [SYSTEM_PROMPT] + chat_history
 
-    messages_to_send = [SYSTEM_PROMPT] + chat_history
-
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers=headers,
-        json={
-            "model": "google/gemini-pro-1.5",
-            "messages": messages_to_send
-        }
-    )
-
-    if response.ok:
-        reply = response.json()["choices"][0]["message"]
-        chat_history.append(reply)
-        return reply["content"]
-    else:
-        return f"ERR: {response.status_code} — {response.text}"
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers=headers,
+            json={
+                "model": "google/gemini-pro-1.5",
+                "messages": messages_to_send
+            }
+        )
+        if response.ok:
+            reply = response.json()["choices"][0]["message"]
+            chat_history.append(reply)
+            return reply["content"]
+        else:
+            return f"ERR: {response.status_code} — {response.text}"
+    return 'OK'
 
 
 @app.route('/ask', methods=['POST'])
