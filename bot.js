@@ -2336,6 +2336,8 @@ function processCommand(message, username, plainMessage) {
             }
             sendFeedback(`Останавливаюсь.`)
             bot.pvp.stop();
+            bot.swordpvp.stop();
+            bot.bowpvp.stop();
             followingProtectedPlayer = false;
             miningSand = false;
             following = false;
