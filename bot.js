@@ -2246,9 +2246,16 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
                 return;
             }
+            const ENDER_PEARL_PROFILE = {
+                gravity: 0.03, // Перлы падают быстрее
+                drag: 0.99,
+                speed: 1.5, // Медленнее стрелы
+                initialPitchOffset: 0,
+                handSwing: true,
+            };
             const { ProjectileWeapons } = require('@nxg-org/mineflayer-trajectories');
             ProjectileWeapons["ender_pearl"] = ENDER_PEARL_PROFILE;
-            
+
             const planner = new ShotPlanner(bot);
             planner.weapon = 'ender_pearl';
 
