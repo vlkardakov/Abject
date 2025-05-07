@@ -105,7 +105,7 @@ def ask_gemini(prompt: str):
             return reply["content"]
         else:
             return f"ERR: {response.status_code} — {response.text}"
-    return 'OK'
+    return '//OK'
 
 
 @app.route('/ask', methods=['POST'])
@@ -137,7 +137,7 @@ def info_api():
         "role": "user",
         "content": message_content
     })
-    return jsonify({'ok': 'ok'}), 200
+    return jsonify({'//ok': '//ok'}), 200
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=4345, debug=True)
