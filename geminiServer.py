@@ -90,7 +90,6 @@ def ask_gemini(prompt: str):
         "role": "user",
         "content": message_content
     })
-
     if '$' in prompt:
         response = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",

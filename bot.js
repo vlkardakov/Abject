@@ -1737,6 +1737,22 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "brokeness":
+            const items = bot.inventory.items();
+
+            if (items.length === 0) {
+                bot.chat(`/msg ${username} У тебя нет предметов в инвентаре.`);
+            } else {
+                items.forEach(item => {
+                    if (item.durability !== undefined) {
+                        bot.chat(`/msg ${username} Предмет: ${item.name}, Прочность: ${item.durability}/${item.maxDurability}`);
+                    } else {
+                        bot.chat(`/msg ${username} Предмет: ${item.name}, Прочность: Нет данных о прочности.`);
+                    }
+                });
+            }
+            break;
+
         case "attacknotme":
             const targetsToAttackNotMe = Object.values(bot.players)
                 .filter(p => p.entity)
