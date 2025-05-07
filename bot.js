@@ -1515,7 +1515,7 @@ function processCommand(message, username, plainMessage) {
             bot.pathfinder.setGoal(null);
             equipItem('axe')
             equipItem('sword')
-            bot.swordpvp.attack(targetEntity);
+            bot.swordpvp.attack(targetEntitycustom);
             break;
         case "remember":
             if (task) {
