@@ -2247,17 +2247,14 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
 
-            const planner = new ShotPlanner(bot);
-            planner.weapon = 'ender_pearl';
-
             let playerToTeleport;
 
             if (args.length < 1) {
                 playerToTeleport = bot.players[username]?.entity;
                 console.log('[TP DEBUG] Цель — вызывающий');
             } else {
-                const targetName = args[0];
-                playerToTeleport = findEntityWithName(bot, targetName);
+                const targetTeleportName = args[0];
+                playerToTeleport = findEntityWithName(bot, targetTeleportName);
                 console.log('[TP DEBUG] Цель — по аргументу');
             }
 
@@ -2266,36 +2263,43 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
 
+            const teleportTargetPosition = playerToTeleport.position;
+
             const enderPearlItem = bot.inventory.items().find(item => item.name === 'ender_pearl');
             if (!enderPearlItem) {
                 bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
                 return;
             }
 
-        async function teleportToPlayerWithPlanner(target) {
+        async function teleportToPlayer(targetPosition) {
             try {
-                const shot = planner.shotToEntity(target);
-                if (!shot || !shot.shotInfo?.intersectPos) {
-                    bot.chat(`/msg ${username} Не могу точно прицелиться...`);
+                const planner = new ShotPlanner(bot);
+                planner.weapon = 'ender_pearl'; // передаем оружие
+
+                const shot = planner.shotToEntity(playerToTeleport); // получаем траекторию для пёрла
+
+                if (!shot) {
+                    bot.chat(`/msg ${username} Не могу точно вычислить траекторию 😢`);
                     return;
                 }
 
                 await bot.equip(enderPearlItem, 'hand');
-                await bot.look(shot.yaw, shot.pitch, true);
-                await bot.waitForTicks(10)
-                bot.chat(`/msg ${username} Бросаю пёрл в ${target.username || 'цель'}`);
+                await bot.lookAt(targetPosition);
+
+                bot.chat(`/msg ${username} Прицелился... Кидаю!`);
 
                 bot.activateItem();
-                await bot.waitForTicks(5); // подожди, пока "зарядится"
+                await bot.waitForTicks(5);
                 bot.deactivateItem();
-            } catch (err) {
-                console.log('[TP ERROR]', err);
-                bot.chat(`/msg ${username} Не получилось тпшнуться, сорри 🥲`);
+            } catch (teleportError) {
+                console.log('[TP ERROR] Не смог ', teleportError);
+                bot.chat(`/msg ${username} Что-то пошло не так с телепортом..`);
             }
         }
 
-            teleportToPlayerWithPlanner(playerToTeleport);
+            teleportToPlayer(teleportTargetPosition);
             break;
+
         case "cometo":
             const player = bot.players[username]?.entity
 
