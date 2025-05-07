@@ -73,7 +73,6 @@ CONVERSATION_ID = "abject-session-v1"
 
 messages = [
     SYSTEM_PROMPT,
-    {"role": "user", "content": prompt}
 ]
 
 def ask_gemini(prompt: str):
