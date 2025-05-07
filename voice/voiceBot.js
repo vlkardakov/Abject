@@ -32,7 +32,9 @@ bot.once('spawn', () => {
     })
 
     bot.on('plasmovoice_pcm', (username, buffer) => {
+        console.log(`[VOICE] ${username} → ${buffer.length} байт`)
         python.stdin.write(buffer)
     })
+
 })
 
