@@ -137,9 +137,7 @@ def info_api():
         "role": "user",
         "content": message_content
     })
-
-    # except Exception as e:
-    # return jsonify({'error': str(e)}), 500
+    return jsonify({'ok': 'ok'}), 200
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=4345, debug=True)
