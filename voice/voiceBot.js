@@ -18,7 +18,7 @@ bot.loadPlugin(plasmo.plugin)
 bot.once('spawn', () => {
     bot.chat('/l 22132213')
 
-    const python = spawn('python', ['recognizer.py'])
+    const python = spawn('python3', ['recognizer.py'])
 
     python.stdout.on('data', data => {
         const text = data.toString().trim()
