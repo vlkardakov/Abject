@@ -125,13 +125,19 @@ def ask_api():
 
 @app.route('/info', methods=['POST'])
 def info_api():
-    global chat_session
+    global chat_history
     data = request.get_json()
     prompt = data.get('prompt').replace('$', '')
 
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
-    chat_session.history.append({"role": f"model", "parts": [prompt]})
+
+    message_content = [{"type": "text", "text": prompt}]
+
+    chat_history.append({
+        "role": "user",
+        "content": message_content
+    })
 
     # except Exception as e:
     # return jsonify({'error': str(e)}), 500
