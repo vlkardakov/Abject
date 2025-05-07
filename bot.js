@@ -363,7 +363,7 @@ function initializeBotState() {
 
         // bot.bowpvp.useOffhand = false
         //
-        // // bot.swordpvp.options.critConfig.reaction.enabled =
+        // // bot.swordpvp.options.critConfig.reaction.enabled = true
         // bot.swordpvp.options.critConfig.reaction.enabled = true
         // // bot.swordpvp.options.rotateConfig.smooth = true
 
