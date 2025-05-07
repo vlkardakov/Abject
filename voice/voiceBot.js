@@ -25,7 +25,7 @@ bot.once('spawn', () => {
         if (text) bot.chat(`/m ${BOT_USERNAME} распознал: ${text}`)
     })
 
-    bot.plasmoVoice.on('pcm', (user, buffer) => {
+    bot.on('plasmovoice_pcm', (username, buffer) => {
         python.stdin.write(buffer)
     })
 })
