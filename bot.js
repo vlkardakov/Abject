@@ -2248,6 +2248,7 @@ function processCommand(message, username, plainMessage) {
             }
 
             const planner = new ShotPlanner(bot);
+            planner.weapon = 'ender_pearl';
 
             let playerToTeleport;
 
