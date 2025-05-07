@@ -69,12 +69,15 @@ you have to use ONLY code in answers, you can do anything with mineflayer api fo
 """
 }
 
-def pil_to_base64(image: Image.Image) -> str:
-    buf = io.BytesIO()
-    image.save(buf, format="PNG")
-    return base64.b64encode(buf.getvalue()).decode("utf-8")
+CONVERSATION_ID = "abject-session-v1"
+
+messages = [
+    SYSTEM_PROMPT,
+    {"role": "user", "content": prompt}
+]
 
 def ask_gemini(prompt: str):
+    global messages
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
@@ -83,25 +86,24 @@ def ask_gemini(prompt: str):
     }
 
     message_content = [{"type": "text", "text": prompt}]
-
-    chat_history.append({
+    messages.append({
         "role": "user",
         "content": message_content
     })
-    if '$' in prompt:
-        messages_to_send = [SYSTEM_PROMPT] + chat_history
 
+    if '$' in prompt:
         response = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json={
                 "model": "google/gemini-pro-1.5",
-                "messages": messages_to_send
+                "messages": messages,
+                "conversation_id": CONVERSATION_ID
             }
         )
         if response.ok:
             reply = response.json()["choices"][0]["message"]
-            chat_history.append(reply)
+            messages.append(reply)
             return reply["content"]
         else:
             return f"ERR: {response.status_code} — {response.text}"
@@ -124,7 +126,8 @@ def ask_api():
 
 @app.route('/info', methods=['POST'])
 def info_api():
-    global chat_history
+    global messages
+
     data = request.get_json()
     prompt = data.get('prompt').replace('$', '')
 
@@ -132,8 +135,7 @@ def info_api():
         return jsonify({'error': 'No prompt provided'}), 400
 
     message_content = [{"type": "text", "text": prompt}]
-
-    chat_history.append({
+    messages.append({
         "role": "user",
         "content": message_content
     })
