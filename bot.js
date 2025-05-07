@@ -2281,7 +2281,7 @@ function processCommand(message, username, plainMessage) {
 
                 await bot.equip(enderPearlItem, 'hand');
                 await bot.look(shot.yaw, shot.pitch, true);
-
+                await bot.waitForTicks(5)
                 bot.chat(`/msg ${username} Бросаю пёрл в ${target.username || 'цель'} ✨`);
 
                 bot.activateItem();
