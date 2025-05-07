@@ -1,7 +1,6 @@
-const { createBot } = require('mineflayer')
-const { plugin: pvPlugin } = require('mineflayer-plasmovoice')
 const fs = require('fs')
 const mineflayer = require("mineflayer")
+const { plugin: pvPlugin } = require('mineflayer-plasmovoice')
 const { spawn } = require('child_process')
 
 const BOT_USERNAME = 'Abject12'
@@ -13,7 +12,7 @@ const bot = mineflayer.createBot({
     version: '1.20.4'
 })
 
-bot.loadPlugin(pvPlugin)
+bot.loadPlugin(pvPlugin.plugin)
 
 bot.once('spawn', () => {
     bot.chat('/l 22132213')
