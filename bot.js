@@ -2246,7 +2246,9 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
                 return;
             }
-
+            const { ProjectileWeapons } = require('@nxg-org/mineflayer-trajectories');
+            ProjectileWeapons["ender_pearl"] = ENDER_PEARL_PROFILE;
+            
             const planner = new ShotPlanner(bot);
             planner.weapon = 'ender_pearl';
 
