@@ -102,6 +102,7 @@ def ask_gemini(prompt: str):
             }
         )
         if response.ok:
+            print(response.json())
             reply = response.json()["choices"][0]["message"]
             messages.append(reply)
             return reply["content"]
