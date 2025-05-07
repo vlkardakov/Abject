@@ -98,7 +98,8 @@ def ask_gemini(prompt: str):
             headers=headers,
             json={
                 # "model": "google/gemini-pro-1.5",
-                "model": "google/gemini-pro-1.5",
+                # "model": "google/gemini-pro-1.5",
+                "model": "google/gemini-flash-1.5-8b",
                 # "model": "openai/o1-mini",
                 "messages": messages,
                 "conversation_id": CONVERSATION_ID
