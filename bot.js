@@ -1751,7 +1751,29 @@ function processCommand(message, username, plainMessage) {
                     }
                 });
             }
+
+            const armorSlots = ['helmet', 'chestplate', 'leggings', 'boots'];
+            armorSlots.forEach(slot => {
+                const item = bot.armorInventory[slot];
+                if (item) {
+                    if (item.durability !== undefined) {
+                        bot.chat(`/msg ${username} Броня (${slot}): ${item.name}, Прочность: ${item.durability}/${item.maxDurability}`);
+                    } else {
+                        bot.chat(`/msg ${username} Броня (${slot}): ${item.name}, Прочность: Нет данных о прочности.`);
+                    }
+                }
+            });
+
+            const offhandItem = bot.inventory.slots[40];
+            if (offhandItem) {
+                if (offhandItem.durability !== undefined) {
+                    bot.chat(`/msg ${username} Во второй руке: ${offhandItem.name}, Прочность: ${offhandItem.durability}/${offhandItem.maxDurability}`);
+                } else {
+                    bot.chat(`/msg ${username} Во второй руке: ${offhandItem.name}, Прочность: Нет данных о прочности.`);
+                }
+            }
             break;
+
 
         case "attacknotme":
             const targetsToAttackNotMe = Object.values(bot.players)
