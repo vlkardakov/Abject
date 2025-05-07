@@ -96,7 +96,7 @@ def ask_gemini(prompt: str):
         "https://openrouter.ai/api/v1/chat/completions",
         headers=headers,
         json={
-            "model": "google/gemini-1.5-pro",
+            "model": "google/gemini-pro-1.5",
             "messages": messages_to_send
         }
     )
@@ -109,32 +109,32 @@ def ask_gemini(prompt: str):
         return f"ERR: {response.status_code} — {response.text}"
 
 
-@app.route('/ask', methods=['POST'])
-def ask_api():
-    data = request.get_json()
-    prompt = data.get('prompt')
-
-    if not prompt:
-        return jsonify({'error': 'No prompt provided'}), 400
-
-    # try:
-    answer = ask_gemini(prompt)
-    return jsonify({'response': answer})
-    # except Exception as e:
-    # return jsonify({'error': str(e)}), 500
-
-@app.route('/info', methods=['POST'])
-def info_api():
-    global chat_session
-    data = request.get_json()
-    prompt = data.get('prompt').replace('$', '')
-
-    if not prompt:
-        return jsonify({'error': 'No prompt provided'}), 400
-    chat_session.history.append({"role": f"model", "parts": [prompt]})
-
-    # except Exception as e:
-    # return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=4345, debug=True)
+# @app.route('/ask', methods=['POST'])
+# def ask_api():
+#     data = request.get_json()
+#     prompt = data.get('prompt')
+#
+#     if not prompt:
+#         return jsonify({'error': 'No prompt provided'}), 400
+#
+#     # try:
+#     answer = ask_gemini(prompt)
+#     return jsonify({'response': answer})
+#     # except Exception as e:
+#     # return jsonify({'error': str(e)}), 500
+#
+# @app.route('/info', methods=['POST'])
+# def info_api():
+#     global chat_session
+#     data = request.get_json()
+#     prompt = data.get('prompt').replace('$', '')
+#
+#     if not prompt:
+#         return jsonify({'error': 'No prompt provided'}), 400
+#     chat_session.history.append({"role": f"model", "parts": [prompt]})
+#
+#     # except Exception as e:
+#     # return jsonify({'error': str(e)}), 500
+#
+# if __name__ == '__main__':
+#     app.run(host='127.0.0.1', port=4345, debug=True)
