@@ -878,6 +878,7 @@ async function takeItem(blockPos, itemName, count = 1) {
     if (!block) return sendFeedback('Блок не найден по координатам')
 
     try {
+        await bot.lookAt(blockPos, true)
         const chest = await bot.openContainer(block)
         const item = chest.containerItems().find(i => i.name === itemName)
 
