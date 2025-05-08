@@ -1531,6 +1531,42 @@ function processCommand(message, username, plainMessage) {
             const initialTarget = findNewTarget();
             startCampAttack(initialTarget);
             break;
+        case "attack":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+
+            if (args.length < 1) {
+                bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
+                return;
+            }
+            let targetUsernameh = args[0];
+            if (targetUsernameh === 'vlkardakov') {
+                // bot.chat(Нет идите нафиг')
+                return;
+            }
+
+            task = 'attack'
+            
+            try {
+                badEntity = bot.players[targetUsernameh];
+                bot.pathfinder.setGoal(null)
+                bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
+
+                attackInterval = setInterval(() => {
+                    if (!badEntity || badEntity.isValid === false || task !== 'attack') {
+                        clearInterval(attackInterval)
+                        task = null
+                        return
+                    }
+                    bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
+                    if (bot.entity.attackCooldown > 0.9) bot.attack(badEntity)
+                }, 1000)
+            } catch(e) {}
+            break;
         case "kill":
             if (task) {
                 bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
@@ -1566,43 +1602,6 @@ function processCommand(message, username, plainMessage) {
             equipItem('axe')
             equipItem('sword')
             bot.pvp.attack(targetEntity);
-            break;
-        case "attack":
-            if (task) {
-                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                return;
-            }
-
-            if (MODE === "мирный") {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
-                return;
-            }
-            if (args.length < 1) {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                return;
-            }
-            let targetUsernameg = args[0];
-            if (targetUsernameg === 'enemy') targetUsernameg = 'zombie';
-
-            if (targetUsernameg === 'vlkardakov') {
-                bot.chat(`/msg ${username} Нет идите нафиг`)
-                return;}
-
-            targetEntityg = findEntityWithName(bot, targetUsernameg);
-
-            if (!targetEntityg) {
-                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameg}.`);
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameg}.`);
-                return;
-            }
-            bot.pathfinder.setGoal(null);
-            equipItem('axe')
-            equipItem('sword')
-            bot.fp=bot.players['vlkardakov']?.entity,bot.on('physicsTick',()=>{if(!bot.fp)return;const e=bot.fp,r=bot.entity.attackCooldown>0.9;bot.lookAt(e.position.offset(0,1.6,0),!0);if(r&&bot.entity.onGround)bot.setControlState('jump',!0),setTimeout(()=>{bot.attack(e);bot.setControlState('jump',!1)},150)})
-            bot.on('physicsTick',()=>{const e=targetEntityg,r=bot.entity.attackCooldown>0.9;bot.lookAt(e.position.offset(0,1.6,0),!0);if(r&&bot.entity.onGround)bot.setControlState('jump',!0),setTimeout(()=>{bot.attack(e);bot.setControlState('jump',!1)},150)})
             break;
         case "custom-kill":
             if (task) {
