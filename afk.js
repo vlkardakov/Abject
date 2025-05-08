@@ -60,6 +60,14 @@ bot.on('message', (jsonMsg, position) => {
     }
 });
 
+bot.on('entityHurt', async (entity) => {
+    if (entity === bot.entity) {
+        // bot.chat('Получен урон :(')
+        console.log('Меня атакуют!');
+        bot.quit()
+    }
+});
+
 bot.on('kicked', (reason, loggedIn) => {
     console.error('Бот был кикнут!');
     console.error('--- Детали Причины Кика ---');
