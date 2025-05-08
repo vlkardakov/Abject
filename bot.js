@@ -873,6 +873,33 @@ async function infoGemini(prompt) {
         console.error("Чёт пошло не так. ", err.message);
     }
 }
+async function craftItem(itemName, count = 1) {
+    const item = bot.registry.itemsByName[itemName]
+    if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
+
+    const recipes = bot.recipesFor(item.id, null, count, null)
+    if (recipes.length === 0) return sendFeedback(`Нет рецептов для: ${itemName}`)
+
+    const recipe = recipes[0]
+    let craftingTable = null
+
+    if (recipe.requiresTable) {
+        craftingTable = bot.findBlock({
+            matching: block => bot.registry.blocks[block.type].name === 'crafting_table',
+            maxDistance: 10
+        })
+
+        if (!craftingTable) return sendFeedback('Верстак не найден поблизости')
+    }
+
+    try {
+        await bot.craft(recipe, count, craftingTable)
+        sendFeedback(`Скрафтил ${count} x ${itemName}`)
+    } catch (err) {
+        sendFeedback(`Ошибка при крафте: ${err.message}`)
+    }
+}
+
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
