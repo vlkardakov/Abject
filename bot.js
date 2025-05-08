@@ -1549,12 +1549,6 @@ function processCommand(message, username, plainMessage) {
             // }
 
             task = 'attack'
-            async function goHome() {
-                await bot.waitForTicks(30)
-                bot.pathfinder.setGoal(null);
-                bot.pathfinder.setMovements(defaultMove);
-                bot.pathfinder.setGoal(new GoalBlock(bot.blockAt(new vec3({x:36, y:11, z:-1})), 1))
-            }
             async function attackPlayer() {
                 // try {
                 badEntity = bot.players[targetUsernameh].entity;
@@ -1562,8 +1556,6 @@ function processCommand(message, username, plainMessage) {
                 attackInterval1 = setInterval(() => {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
                         task = null
-                        console.log('Пора прекращать.')
-                        goHome()
                         clearInterval(attackInterval1)
                         return
                     }
@@ -1994,6 +1986,9 @@ function processCommand(message, username, plainMessage) {
         case "lava":
             activateBlock(new vec3({x:37, y:12, z:1 }))
             activateBlock(new vec3({ x: 35, y: 16, z: -1 }))
+            break
+        case "lamp":
+            activateBlock(new vec3({x:37, y:11, z:-2 }))
             break
         case "lavalight":
             activateBlock(new vec3({ x: 35, y: 12, z: 2 }))
