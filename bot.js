@@ -1557,6 +1557,7 @@ function processCommand(message, username, plainMessage) {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
                         clearInterval(attackInterval)
                         task = null
+                        bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
                         return
                     }
                     if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 2));
