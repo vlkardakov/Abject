@@ -1566,6 +1566,7 @@ function processCommand(message, username, plainMessage) {
                 }, 1000)
                 // } catch(e) {}
             }
+            attackPlayer()
             break;
         case "kill":
             if (task) {
