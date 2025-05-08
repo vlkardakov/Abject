@@ -960,13 +960,24 @@ async function craftSet(count = 1) {
     equipItem('sword')
 }
 function digPacket(block) {
+    bot._client.write('arm_animation', {}) // чтоб махнул рукой
     bot._client.write('block_dig', {
         status: 0, // START_DESTROY_BLOCK
         location: block.position,
-        face: 1, // сверху
+        face: 1,
         sequence: bot._client.sequence ?? 0
     })
+
+    setTimeout(() => {
+        bot._client.write('block_dig', {
+            status: 2,
+            location: block.position,
+            face: 1,
+            sequence: bot._client.sequence ?? 0
+        })
+    }, 300)
 }
+
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
