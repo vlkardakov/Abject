@@ -2365,6 +2365,7 @@ function processCommand(message, username, plainMessage) {
         }
 
             teleportToPlayerWithPlanner(playerToTeleport);
+            equipItem('sword')
             break;
         case "cometo":
             const player = bot.players[username]?.entity
