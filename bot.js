@@ -1549,7 +1549,7 @@ function processCommand(message, username, plainMessage) {
             // }
 
             task = 'attack'
-            function attackPlayer() {
+            async function attackPlayer() {
                 // try {
                 badEntity = bot.players[targetUsernameh].entity;
                 bot.pathfinder.setGoal(null)
