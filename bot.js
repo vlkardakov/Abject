@@ -1551,7 +1551,9 @@ function processCommand(message, username, plainMessage) {
             task = 'attack'
             async function goHome() {
                 await bot.waitForTicks(30)
-                bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
+                bot.pathfinder.setGoal(null);
+                bot.pathfinder.setMovements(defaultMove);
+                bot.pathfinder.setGoal(new GoalBlock(bot.blockAt(new vec3({x:36, y:11, z:-1})), 1))
             }
             async function attackPlayer() {
                 // try {
@@ -2475,7 +2477,7 @@ function processCommand(message, username, plainMessage) {
             miningSand = false;
             following = false;
             bot.pathfinder.setGoal(null);
-            // bot.pathfinder.stop();
+            bot.pathfinder.stop();
             bot.clearControlStates();
             collecting = false;
             task = null;
