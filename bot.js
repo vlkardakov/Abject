@@ -1984,7 +1984,7 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "lava":
-            activateBlock(new vec3({x:37, y:12, z:1 }))
+            activateBlock(new vec3({x:38, y:11, z:1 }))
             activateBlock(new vec3({ x: 35, y: 16, z: -1 }))
             break
         case "lamp":
