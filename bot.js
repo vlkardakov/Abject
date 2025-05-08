@@ -1555,8 +1555,8 @@ function processCommand(message, username, plainMessage) {
                 bot.pathfinder.setGoal(null)
                 attackInterval1 = setInterval(() => {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
-
                         task = null
+                        console.log('Пора прекращать.')
                         bot.pathfinder.setGoal(null)
                         bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
                         clearInterval(attackInterval1)
