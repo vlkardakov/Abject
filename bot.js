@@ -943,6 +943,25 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
+function fullAttack(nick) {
+    const target = bot.players[nick]?.entity
+    if (!target) return sendFeedback('игрок не найден')
+
+    if (bot.entity.attackCooldown <= 0.9) return
+
+    bot.setControlState('jump', true)
+
+    setTimeout(() => {
+        bot._client.write('use_entity', {
+            target: target.id,
+            type: 1,
+            hand: 0,
+            sneaking: false
+        })
+        bot._client.write('animation', { hand: 0 })
+        bot.setControlState('jump', false)
+    }, 100)
+}
 
 function processCommand(message, username, plainMessage) {
 
