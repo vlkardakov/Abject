@@ -1549,6 +1549,10 @@ function processCommand(message, username, plainMessage) {
             // }
 
             task = 'attack'
+            async function goHome() {
+                await bot.waitForTicks(10)
+                bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
+            }
             async function attackPlayer() {
                 // try {
                 badEntity = bot.players[targetUsernameh].entity;
@@ -1557,8 +1561,7 @@ function processCommand(message, username, plainMessage) {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
                         task = null
                         console.log('Пора прекращать.')
-                        bot.pathfinder.setGoal(null)
-                        bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
+                        goHome()
                         clearInterval(attackInterval1)
                         return
                     }
