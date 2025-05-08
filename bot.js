@@ -1553,9 +1553,9 @@ function processCommand(message, username, plainMessage) {
                 // try {
                 badEntity = bot.players[targetUsernameh].entity;
                 bot.pathfinder.setGoal(null)
-                attackInterval = setInterval(() => {
+                attackInterval1 = setInterval(() => {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
-                        clearInterval(attackInterval)
+                        clearInterval(attackInterval1)
                         task = null
                         bot.pathfinder.setGoal(new GoalNear(new vec3({x:36, y:11, z:-1})))
                         return
