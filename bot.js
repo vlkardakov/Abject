@@ -1550,7 +1550,7 @@ function processCommand(message, username, plainMessage) {
 
             task = 'attack'
 
-            try {
+            // try {
                 badEntity = bot.players[targetUsernameh];
                 bot.pathfinder.setGoal(null)
                 bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
@@ -1564,7 +1564,7 @@ function processCommand(message, username, plainMessage) {
                     bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
                     if (bot.entity.attackCooldown > 0.9) bot.attack(badEntity)
                 }, 1000)
-            } catch(e) {}
+            // } catch(e) {}
             break;
         case "kill":
             if (task) {
