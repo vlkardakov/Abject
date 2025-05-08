@@ -380,13 +380,13 @@ function initializeBotState() {
         // bot.swordpvp.options.strafeConfig.enabled = true
         // bot.swordpvp.options.strafeConfig.mode.mode = 'intelligent'
 
-        // // Tap configuration for knockback
-        // bot.swordpvp.options.tapConfig.enabled = true
-        // bot.swordpvp.options.tapConfig.mode = 'wtap'
+        // Tap configuration for knockback
+        bot.swordpvp.options.tapConfig.enabled = true
+        bot.swordpvp.options.tapConfig.mode = 'wtap'
 
-        // // Look behavior
-        // bot.swordpvp.options.rotateConfig.smooth = true
-        // bot.swordpvp.options.rotateConfig.mode = 'constant'
+        // Look behavior
+        bot.swordpvp.options.rotateConfig.smooth = false
+        bot.swordpvp.options.rotateConfig.mode = 'constant'
         console.log("Состояние бота инициализировано.");
 
     } catch (error) {
