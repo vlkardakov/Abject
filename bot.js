@@ -943,23 +943,30 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
-function fullAttack(nick) {
-    const target = bot.players[nick]?.entity
-    if (!target) return sendFeedback('игрок не найден')
+function startAutoFullAttack(nick) {
+    bot.autoAttackTarget = bot.players[nick]?.entity
+    if (!bot.autoAttackTarget) return sendFeedback('игрок не найден')
 
-    if (bot.entity.attackCooldown <= 0.9) return
+    if (bot.autoAttackInterval) clearInterval(bot.autoAttackInterval)
 
-    bot.setControlState('jump', true)
+    bot.autoAttackInterval = setInterval(() => {
+        const target = bot.autoAttackTarget
+        if (!target || !target.position) return
+        if (bot.entity.attackCooldown <= 0.9) return
+        if (!bot.entity.onGround) return
 
-    setTimeout(() => {
-        bot._client.write('use_entity', {
-            target: target.id,
-            type: 1,
-            hand: 0,
-            sneaking: false
-        })
-        bot._client.write('animation', { hand: 0 })
-        bot.setControlState('jump', false)
+        bot.lookAt(target.position.offset(0, 1.6, 0), true)
+        bot.setControlState('jump', true)
+
+        setTimeout(() => {
+            bot.setControlState('jump', false)
+            bot._client.write('use_entity', {
+                target: target.id,
+                type: 1,
+                hand: 0
+            })
+            bot._client.write('animation', { hand: 0 })
+        }, 120)
     }, 100)
 }
 
