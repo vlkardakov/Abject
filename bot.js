@@ -921,6 +921,23 @@ async function craftItem(itemName, count = 1) {
         sendFeedback(`Ошибка при крафте: ${err.message}`)
     }
 }
+async function craftSet(count = 1) {
+    const ironBarrel = new vec3({x:3, y:85, z:6})
+    const stickBarrel = new vec3({x:2, y:85, z:6})
+    const chickenBarrel = new vec3({x:2, y:85, z:5})
+
+    await takeItem(ironBarrel, count=count*26)
+    await takeItem(stickBarrel, count=count*2)
+    await takeItem(chickenBarrel, count=count*9)
+
+    await craftItem('iron_helmet', count = 1)
+    await craftItem('iron_chestplate', count = 1)
+    await craftItem('iron_leggings', count = 1)
+    await craftItem('iron_boots', count = 1)
+    await craftItem('iron_sword', count = 1)
+
+    await bot.armorManager.equipAll()
+}
 
 function processCommand(message, username, plainMessage) {
 
