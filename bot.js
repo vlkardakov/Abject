@@ -1551,7 +1551,7 @@ function processCommand(message, username, plainMessage) {
             task = 'attack'
 
             // try {
-                badEntity = bot.players[targetUsernameh];
+                badEntity = bot.players[targetUsernameh].entity;
                 bot.pathfinder.setGoal(null)
                 bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
 
