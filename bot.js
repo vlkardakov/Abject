@@ -1553,14 +1553,13 @@ function processCommand(message, username, plainMessage) {
                 // try {
                 badEntity = bot.players[targetUsernameh].entity;
                 bot.pathfinder.setGoal(null)
-                await bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
-
                 attackInterval = setInterval(() => {
                     if (!badEntity || badEntity.isValid === false || task !== 'attack') {
                         clearInterval(attackInterval)
                         task = null
                         return
                     }
+                    if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
                     bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
                     if (bot.entity.attackCooldown > 0.9) bot.attack(badEntity)
                 }, 1000)
