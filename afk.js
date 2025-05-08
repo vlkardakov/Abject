@@ -29,16 +29,18 @@ async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
     bot.chat('/server sleepcraft');
-    await bot.waitForTicks(40)
-    bot.chat('/sit')
+    // await bot.waitForTicks(40)
+
 }
 
 bot.on('resourcePack', (url, hash) => {
     bot.acceptResourcePack();
 });
-//
-// bot.on('spawn', () => {
-// });
+
+bot.on('spawn', () => {
+    bot.chat('/sit')
+    console.log('Я сел?')
+});
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
