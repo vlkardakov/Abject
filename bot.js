@@ -943,32 +943,6 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
-function startAutoFullAttack(nick) {
-    bot.autoAttackTarget = bot.players[nick]?.entity
-    if (!bot.autoAttackTarget) return sendFeedback('игрок не найден')
-
-    if (bot.autoAttackInterval) clearInterval(bot.autoAttackInterval)
-
-    bot.autoAttackInterval = setInterval(() => {
-        const target = bot.autoAttackTarget
-        if (!target || !target.position) return
-        if (bot.entity.attackCooldown <= 0.9) return
-        if (!bot.entity.onGround) return
-
-        bot.lookAt(target.position.offset(0, 1.6, 0), true)
-        bot.setControlState('jump', true)
-
-        setTimeout(() => {
-            bot.setControlState('jump', false)
-            bot._client.write('use_entity', {
-                target: target.id,
-                type: 1,
-                hand: 0
-            })
-            bot._client.write('animation', { hand: 0 })
-        }, 120)
-    }, 100)
-}
 
 function processCommand(message, username, plainMessage) {
 
@@ -2384,6 +2358,7 @@ function processCommand(message, username, plainMessage) {
                 bot.activateItem();
                 await bot.waitForTicks(5); // подожди, пока "зарядится"
                 bot.deactivateItem();
+                equipItem('sword')
             } catch (err) {
                 console.log('[TP ERROR]', err);
                 bot.chat(`/msg ${username} Не получилось тпшнуться, сорри 🥲`);
@@ -2391,7 +2366,7 @@ function processCommand(message, username, plainMessage) {
         }
 
             teleportToPlayerWithPlanner(playerToTeleport);
-            equipItem('sword')
+
             break;
         case "cometo":
             const player = bot.players[username]?.entity
