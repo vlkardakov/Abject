@@ -1559,7 +1559,7 @@ function processCommand(message, username, plainMessage) {
                         task = null
                         return
                     }
-                    if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 1));
+                    if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 2));
                     bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
                     if (bot.entity.attackCooldown > 0.9) bot.attack(badEntity)
                 }, 1000)
