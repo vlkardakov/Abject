@@ -36,12 +36,9 @@ async function connectToServer() {
 bot.on('resourcePack', (url, hash) => {
     bot.acceptResourcePack();
 });
-
-bot.on('spawn', () => {
-    sendFeedback(`плюх!`);
-    // console.log("Событие 'spawn' получено.");
-    initializeBotState();
-});
+//
+// bot.on('spawn', () => {
+// });
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
