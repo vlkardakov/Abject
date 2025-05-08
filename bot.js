@@ -102,7 +102,8 @@ console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
-    host: '212.80.7.178', //or f1.play2go.cloud:22034
+    // host: '212.80.7.178', //or
+    host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
     version: '1.20.4'
@@ -958,7 +959,14 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
-
+function digPacket(block) {
+    bot._client.write('block_dig', {
+        status: 0, // START_DESTROY_BLOCK
+        location: block.position,
+        face: 1, // сверху
+        sequence: bot._client.sequence ?? 0
+    })
+}
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
