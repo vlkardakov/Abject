@@ -899,20 +899,22 @@ async function craftItem(itemName, count = 1) {
     const item = bot.registry.itemsByName[itemName]
     if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
 
-    const recipes = bot.recipesFor(item.id, null, count, null)
-    if (recipes.length === 0) return sendFeedback(`Нет рецептов для: ${itemName}`)
+    let recipes = bot.recipesFor(item.id, null, count, null)
 
-    const recipe = recipes[0]
     let craftingTable = null
-
-    if (recipe.requiresTable) {
+    if (recipes.length === 0) {
         craftingTable = bot.findBlock({
             matching: block => bot.registry.blocks[block.type].name === 'crafting_table',
             maxDistance: 10
         })
 
         if (!craftingTable) return sendFeedback('Верстак не найден поблизости')
+
+        recipes = bot.recipesFor(item.id, null, count, craftingTable)
+        if (recipes.length === 0) return sendFeedback(`Нет рецептов даже с верстаком для: ${itemName}`)
     }
+
+    const recipe = recipes[0]
 
     try {
         await bot.craft(recipe, count, craftingTable)
@@ -921,6 +923,7 @@ async function craftItem(itemName, count = 1) {
         sendFeedback(`Ошибка при крафте: ${err.message}`)
     }
 }
+
 async function craftSet(count = 1) {
     const ironBarrel = new vec3({x:3, y:85, z:6})
     const stickBarrel = new vec3({x:2, y:85, z:6})
