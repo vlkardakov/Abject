@@ -1538,19 +1538,18 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
 
-
             if (args.length < 1) {
                 bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
                 return;
             }
             let targetUsernameh = args[0];
-            if (targetUsernameh === 'vlkardakov') {
-                // bot.chat(Нет идите нафиг')
-                return;
-            }
+            // if (targetUsernameh === 'vlkardakov') {
+            //     // bot.chat(Нет идите нафиг')
+            //     return;
+            // }
 
             task = 'attack'
-            
+
             try {
                 badEntity = bot.players[targetUsernameh];
                 bot.pathfinder.setGoal(null)
