@@ -2302,7 +2302,7 @@ function processCommand(message, username, plainMessage) {
                 async function comePlayer() {
                     bot.pathfinder.setMovements(defaultMove);
                     // console.log(`[DEBUG] Перед setGoal(GoalFollow): canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
-                    await bot.pathfinder.setGoal(new GoalFollow(playerToCome, 0));
+                    await bot.pathfinder.setGoal(new GoalFollow(playerToCome, 1));
                     task = null;
                     // console.log("Готово!");
                 }
