@@ -1561,7 +1561,8 @@ function processCommand(message, username, plainMessage) {
                     }
                     if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 2));
                     bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
-                    if (bot.entity.attackCooldown > 0.9) bot.attack(badEntity)
+                    // if (bot.entity.attackCooldown > 0.9)
+                    bot.attack(badEntity)
                 }, 1000)
                 // } catch(e) {}
             }
