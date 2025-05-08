@@ -873,6 +873,28 @@ async function infoGemini(prompt) {
         console.error("Чёт пошло не так. ", err.message);
     }
 }
+async function takeItem(blockPos, itemName, count = 1) {
+    const block = bot.blockAt(blockPos)
+    if (!block) return sendFeedback('Блок не найден по координатам')
+
+    try {
+        const chest = await bot.openContainer(block)
+        const item = chest.containerItems().find(i => i.name === itemName)
+
+        if (!item) {
+            chest.close()
+            return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
+        }
+
+        const takeCount = Math.min(item.count, count)
+
+        await chest.withdraw(item.type, null, takeCount)
+        chest.close()
+        sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+    } catch (err) {
+        sendFeedback(`Не получилось взять предмет: ${err.message}`)
+    }
+}
 async function craftItem(itemName, count = 1) {
     const item = bot.registry.itemsByName[itemName]
     if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
