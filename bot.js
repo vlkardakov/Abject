@@ -1018,6 +1018,28 @@ function debugTextDisplayMetadata() {
         console.log('=============================\n')
     }
 }
+function extractTextDisplayNumbers() {
+    const numbers = []
+
+    for (const entity of Object.values(bot.entities)) {
+        if (entity?.name !== 'text_display') continue
+
+        const meta = entity?.metadata?.find(m => m?.type === 'compound' && m?.value?.extra)
+        if (!meta) continue
+
+        const textChunks = meta.value.extra?.value?.value
+        if (!Array.isArray(textChunks)) continue
+
+        for (const chunk of textChunks) {
+            const raw = chunk?.text?.value
+            if (typeof raw === 'string' && /\d/.test(raw)) {
+                numbers.push(raw.trim())
+            }
+        }
+    }
+
+    return numbers
+}
 
 
 function processCommand(message, username, plainMessage) {
