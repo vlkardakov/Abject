@@ -999,6 +999,26 @@ function getAllTextDisplaysTexts() {
 
     return texts
 }
+function debugTextDisplayMetadata() {
+    for (const entity of Object.values(bot.entities)) {
+        if (entity?.name !== 'text_display') continue
+
+        console.log(`=== TextDisplay ID: ${entity.id} ===`)
+
+        if (!Array.isArray(entity.metadata)) {
+            console.log('metadata отсутствует или не массив')
+            continue
+        }
+
+        for (const meta of entity.metadata) {
+            console.log(`key: ${meta?.key}, type: ${meta?.type}, value:`)
+            console.dir(meta?.value, { depth: null }) // глубоко распарсит объекты
+        }
+
+        console.log('=============================\n')
+    }
+}
+
 
 function processCommand(message, username, plainMessage) {
 
