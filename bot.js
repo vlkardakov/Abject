@@ -977,6 +977,23 @@ function digPacket(block) {
         })
     }, 300)
 }
+function getAllTextDisplaysTexts() {
+    const texts = []
+
+    for (const entity of Object.values(bot.entities)) {
+        if (entity.name !== 'text_display') continue
+
+        const meta = entity.metadata?.find(m => m.key === 23)
+
+        if (meta?.value?.text) {
+            texts.push(meta.value.text)
+        } else {
+            texts.push('(нет текста)')
+        }
+    }
+
+    return texts
+}
 
 function processCommand(message, username, plainMessage) {
 
