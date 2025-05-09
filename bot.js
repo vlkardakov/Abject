@@ -981,14 +981,19 @@ function getAllTextDisplaysTexts() {
     const texts = []
 
     for (const entity of Object.values(bot.entities)) {
-        if (entity.name !== 'text_display') continue
+        if (entity?.name !== 'text_display') continue
 
-        const meta = entity.metadata?.find(m => m.key === 23)
+        const metadata = entity?.metadata
+        if (!Array.isArray(metadata)) {
+            texts.push('(нет metadata 😭)')
+            continue
+        }
 
-        if (meta?.value?.text) {
-            texts.push(meta.value.text)
+        const metaText = metadata.find(m => m?.key === 23)
+        if (metaText?.value?.text) {
+            texts.push(metaText.value.text)
         } else {
-            texts.push('(нет текста)')
+            texts.push('(нет текста 😢)')
         }
     }
 
