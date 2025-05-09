@@ -1561,7 +1561,7 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
                 return;
             }
-            let targetUsernameh = args[0];
+            let targetUsernameh = parts[1];
             // if (targetUsernameh === 'vlkardakov') {
             //     // bot.chat(Нет идите нафиг')
             //     return;
@@ -1570,6 +1570,7 @@ function processCommand(message, username, plainMessage) {
             task = 'attack'
             async function attackPlayer() {
                 // try {
+                console.log(`try attacking '${targetUsernameh}'`)
                 badEntity = bot.players[targetUsernameh].entity;
                 bot.pathfinder.setGoal(null)
                 attackInterval1 = setInterval(() => {
