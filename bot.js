@@ -1691,7 +1691,7 @@ function processCommand(message, username, plainMessage) {
             targetEntityshot = findEntityWithName(bot, targetUsernameshot);
 
             if (!targetEntityshot) {
-                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
                 return;
             }
