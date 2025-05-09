@@ -102,8 +102,8 @@ console.log("Порядковый номер: ", NUMBER)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
-    // host: '212.80.7.178', //or
-    host: '87.120.187.6', //or
+    host: '212.80.7.178', //or
+    // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
     version: '1.20.4'
