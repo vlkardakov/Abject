@@ -2605,6 +2605,10 @@ function processCommand(message, username, plainMessage) {
             task = null;
             break;
         case "stop-music":
+            if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                return;
+            }
             SOUND = null;
             playing = false;
             break;
