@@ -1663,6 +1663,43 @@ function processCommand(message, username, plainMessage) {
             equipItem('sword')
             bot.swordpvp.attack(targetEntitycustom);
             break;
+        case "shot":
+            if (task) {
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            if (MODE === "мирный") {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                return;
+            }
+
+            if (args.length < 1) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: shot <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: shot <ник_игрока | тип_моба>`);
+                return;
+            }
+            let targetUsernameshot = args[0];
+            if (targetUsernameshot === 'enemy') targetUsernameshot = 'zombie';
+
+            if (targetUsernameshot === 'vlkardakov') {
+                bot.chat(`/msg ${username} Нет идите нафиг`)
+                return;}
+
+            targetEntityshot = findEntityWithName(bot, targetUsernameshot);
+
+            if (!targetEntityshot) {
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
+                return;
+            }
+            bot.pathfinder.setGoal(null);
+            equipItem('axe')
+            equipItem('sword')
+            bot.bowpvp.attack(targetEntityshot);
+            break;
         case "remember":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
