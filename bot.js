@@ -1561,11 +1561,13 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
                 return;
             }
-            let targetUsernameh = parts[1];
-            // if (targetUsernameh === 'vlkardakov') {
-            //     // bot.chat(Нет идите нафиг')
-            //     return;
-            // }
+            let inputName = parts[1].toLowerCase()
+            let targetUsernameh = Object.keys(bot.players).find(name => name.toLowerCase() === inputName)
+
+            if (!targetUsernameh) {
+                sendFeedback("я не вижу такого чела")
+                return
+            }
 
             task = 'attack'
             async function attackPlayer() {
