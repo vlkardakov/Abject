@@ -2022,7 +2022,7 @@ function processCommand(message, username, plainMessage) {
             break
         case "flowers":
             integers = extractTextDisplayNumbers();
-            if (integers.length === 2) bot.chat(`!Могила заполнена цветами на ${integers[0]} ${integers[1]}`);
+            if (integers.length === 2) bot.chat(`Могила заполнена цветами на ${integers[0]} ${integers[1]}`);
 
             break
         case "brokeness":
