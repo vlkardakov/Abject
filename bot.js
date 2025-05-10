@@ -29,8 +29,6 @@ const rl = readline.createInterface({
 });
 const { exec } = require('child_process')
 
-
-
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
@@ -2642,7 +2640,6 @@ bot.on('spawn', () => {
     sendFeedback(`плюх!`);
     // console.log("Событие 'spawn' получено.");
     initializeBotState();
-
 });
 
 bot.once('login', () => {
@@ -2846,6 +2843,13 @@ bot.on('end', (reason) => {
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
+process.on('uncaughtException', err => {
+    if (err.message.includes('Invalid typed array length')) {
+        console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
+    } else {
+        throw err
+    }
+})
 
 process.on('uncaughtException', (err) => {
     console.error('Неперехваченное исключение:', err);
