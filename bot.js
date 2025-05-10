@@ -2843,14 +2843,12 @@ bot.on('end', (reason) => {
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
-process.on('uncaughtException', err => {
+
+
+process.on('uncaughtException', (err) => {
     if (err.message.includes('Invalid typed array length')) {
-        console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
+    console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
     } else {
         throw err
     }
-})
-
-process.on('uncaughtException', (err) => {
-    console.error('Неперехваченное исключение:', err);
 });
