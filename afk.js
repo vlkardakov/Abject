@@ -89,22 +89,7 @@ function findFood(botInstance) {
 async function autoEat() {
     if (isEating || !mcData) return;
 
-    const target = bot.swordpvp?.target
-    const distanceToTarget = target ? bot.entity.position.distanceTo(target.position) : Infinity
-    const justAttacked = Date.now() - lastAttackTime < 1000
-
-
     if (bot.food <= EAT_THRESHOLD) {
-
-        if (target && distanceToTarget < 4) {
-            console.log(`[АвтоЕда] Враг слишком близко (${distanceToTarget.toFixed(2)} блоков), не ем.`)
-            return
-        }
-        if (justAttacked) {
-            console.log(`[АвтоЕда] Только что ударил, подожду с едой.`)
-            return
-        }
-
         const food = findFood(bot);
         if (food) {
             console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}. Найдена еда: ${food.name}. Начинаю есть.`);
