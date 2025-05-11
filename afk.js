@@ -166,7 +166,10 @@ bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
         // bot.chat('Получен урон :(')
         console.log('Меня атакуют!');
-        bot.quit()
+        if (bot.health < 4) {
+            console.log('Я выхожу!')
+            bot.quit()
+        }
     }
 });
 
