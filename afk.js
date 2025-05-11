@@ -83,6 +83,12 @@ function initializeBotState() {
 bot.on('resourcePack', (url, hash) => {
     bot.acceptResourcePack();
 });
+function equipItem(name) {
+    const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
+    if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
+        bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
+    }
+}
 function findFood(botInstance) {
     if (!mcData || !mcData.foods) {
         console.error("mcData или mcData.foods не загружены!");
