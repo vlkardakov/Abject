@@ -129,6 +129,7 @@ async function autoEat() {
     }
 }
 bot.on('spawn', () => {
+    initializeBotState()
     const attackLoop = async () => {
         while (true) {
             const skel = bot.nearestEntity(e =>
