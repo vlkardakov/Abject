@@ -9,8 +9,12 @@ const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
 const PASSWORD = process.argv[3] || process.env.PASSWORD
 const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
 
+const EAT_THRESHOLD = 16;
+
 let mcData;
 let isEating = false;
+
+
 
 console.log('----------------')
 console.log('Сведения о боте :')
