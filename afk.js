@@ -101,7 +101,7 @@ async function autoEat() {
 
     while (bot.food <= EAT_THRESHOLD) {
         const food = findFood(bot);
-        if (food) {
+        if (food && !isEating) {
             console.log(`[АвтоЕда] Голод ${bot.food}. Найдена еда: ${food.name}. Начинаю есть.`);
             isEating = true;
             try {
