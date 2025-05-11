@@ -132,6 +132,7 @@ bot.on('spawn', () => {
                 e.position.distanceTo(bot.entity.position) <= 6
             )
             if (skel) {
+                equipItem('sword')
                 bot.lookAt(skel.position.offset(0, 1.6, 0), true)
                 //if (bot.entity.attackCooldown > 0.9)
                 bot.attack(skel)
