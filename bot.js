@@ -1993,8 +1993,11 @@ function processCommand(message, username, plainMessage) {
                 sendFeedback('Я закончил играть!')
                 SOUND = null;
                 playing = false;
+
                 fs.readdirSync(tempDir).forEach(file => {
-                    fs.unlinkSync(path.join(tempDir, file));
+                    try {
+                        fs.unlinkSync(path.join(tempDir, file));
+                    } catch (e) {console.log('ыыыы ошибка в перелинковке файлов как обычно но зачем нам это?')}
                 });
                 playing = false;
                 return;
