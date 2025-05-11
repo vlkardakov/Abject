@@ -9,7 +9,7 @@ const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
 const PASSWORD = process.argv[3] || process.env.PASSWORD
 const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
 
-const EAT_THRESHOLD = 16;
+const EAT_THRESHOLD = 18;
 
 let mcData;
 let isEating = false;
@@ -99,10 +99,10 @@ function findFood(botInstance) {
 async function autoEat() {
     if (isEating || !mcData) return;
 
-    if (bot.food <= EAT_THRESHOLD) {
+    while (bot.food <= EAT_THRESHOLD) {
         const food = findFood(bot);
         if (food) {
-            console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}. Найдена еда: ${food.name}. Начинаю есть.`);
+            console.log(`[АвтоЕда] Голод ${bot.food}. Найдена еда: ${food.name}. Начинаю есть.`);
             isEating = true;
             try {
                 await bot.equip(food, 'hand');
@@ -165,7 +165,7 @@ bot.on('message', (jsonMsg, position) => {
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
         // bot.chat('Получен урон :(')
-        console.log('Меня атакуют!');
+        console.log(`Меня атакуют! Здоровье: ${bot.health}`);
         if (bot.health < 4) {
             console.log('Я выхожу!')
             bot.quit()
