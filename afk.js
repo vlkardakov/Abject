@@ -137,7 +137,8 @@ bot.on('spawn', () => {
             )
             if (skel) {
                 bot.lookAt(skel.position.offset(0, 1.6, 0), true)
-                if (bot.entity.attackCooldown > 0.9) bot.attack(skel)
+                //if (bot.entity.attackCooldown > 0.9)
+                bot.attack(skel)
                 await bot.waitForTicks(20)
             } else {
                 await bot.waitForTicks(100)
