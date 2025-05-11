@@ -45,20 +45,20 @@ function initializeBotState() {
             return;
         }
 
-        defaultMove = new Movements(bot, mcData);
+        // defaultMove = new Movements(bot, mcData);
+        //
+        //
+        // defaultMove.speed = 10
+        // defaultMove.allowFreeMotion = true
+        // defaultMove.allow1by1towers = false
+        // // defaultMove.allowParkour = false
+        // defaultMove.canPlaceBlocks = false
+        // defaultMove.scafoldingBlocks = []
+        // defaultMove.canDig = false
 
 
-        defaultMove.speed = 10
-        defaultMove.allowFreeMotion = true
-        defaultMove.allow1by1towers = false
-        // defaultMove.allowParkour = false
-        defaultMove.canPlaceBlocks = false
-        defaultMove.scafoldingBlocks = []
-        defaultMove.canDig = false
-
-
-        bot.pathfinder.setMovements(defaultMove);
-        bot.pathfinder.setGoal(null);
+        // bot.pathfinder.setMovements(defaultMove);
+        // bot.pathfinder.setGoal(null);
 
         following = false;
         miningSand = false;
