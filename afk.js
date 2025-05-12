@@ -150,10 +150,10 @@ bot.on('spawn', () => {
                 e.name === 'skeleton' &&
                 e.position.distanceTo(bot.entity.position) <= 6
             )
-            if (skel) {
+            if (skel && !isEating) {
                 equipItem('sword')
                 swordDamage = getSwordDamage()
-                if (swordDamage > 100) {
+                if (swordDamage > 500) {
                     console.error('У бота ломается меч. Выхожу')
                     bot.quit()
                 } else console.log(`Я продолжаю, ведь меч сломан всего на ${swordDamage}. Скелет атакован.`)
