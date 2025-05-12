@@ -128,7 +128,7 @@ bot.once('spawn', () => {
 
 })
 
-async function getSwordDamage(){
+function getSwordDamage(){
     const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
     if (!item) {
         console.log(`У меня нет в инвентаре`);
