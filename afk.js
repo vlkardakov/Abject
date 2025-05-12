@@ -137,7 +137,9 @@ function getSwordDamage(){
     }
     const meta = item.nbt?.value
     console.log(JSON.stringify(meta));
-    damageOfItem = meta.Damage.value
+    try {
+        damageOfItem = meta.Damage.value
+    } catch(e) {return 0}
     return damageOfItem
 }
 
