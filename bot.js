@@ -2006,11 +2006,16 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "metadata":
-            item = findNearestItemWithLore('sword')
-            meta = item//.metadata?.[8]
-            console.log(JSON.stringify(meta));
-            repairCost = meta.nbtData.value.RepairCost.value
-            bot.chat(`/msg ${username} ${repairCost}`);
+            const item = bot.inventory.slots[bot.getEquipmentDestSlot('hand')] // или любой item
+            const meta = item?.nbt?.value
+
+            const damage = meta?.Damage?.value ?? 0
+            const maxDurability = item?.durability ?? 0
+
+            const remainingDurability = maxDurability - damage
+
+            console.log(`Осталось ${remainingDurability} из ${maxDurability} прочности`)
+            replyFeedback(username, `Осталось ${remainingDurability} из ${maxDurability} прочности`)
             break
         case "flowers":
             integers = extractTextDisplayNumbers();
