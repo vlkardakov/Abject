@@ -123,8 +123,10 @@ async function autoEat() {
         }
     }
 }
-bot.on('spawn', () => {
+bot.once('spawn', () => {
     initializeBotState()
+})
+bot.on('spawn', () => {
     const attackLoop = async () => {
         while (true) {
             const skel = bot.nearestEntity(e =>
