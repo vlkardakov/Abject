@@ -2007,7 +2007,7 @@ function processCommand(message, username, plainMessage) {
             break
         case "metadata":
             item = findNearestItemWithLore('sword')
-            meta = item.metadata?.[8]
+            meta = item//.metadata?.[8]
             console.log(JSON.stringify(meta));
             repairCost = meta.nbtData.value.RepairCost.value
             bot.chat(`/msg ${username} ${repairCost}`);
