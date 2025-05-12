@@ -33,6 +33,7 @@ const bot = mineflayer.createBot({
 console.log("Запуск бота...");
 
 bot.loadPlugin(plasmo.plugin)
+
 async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
