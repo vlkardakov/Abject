@@ -2005,17 +2005,7 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
-        case "durability":
-            const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
-            if (!item) {
-                bot.chat(`/msg ${username} У тебя нет в инвентаре`)
-                break
-            }
-            const meta = item.nbt?.value
-            console.log(JSON.stringify(meta));
-            damageOfItem = meta.Damage.value
-            bot.chat(`/msg ${username} ${damageOfItem}`);
-            break
+
         case "flowers":
             integers = extractTextDisplayNumbers();
             if (integers.length === 2) bot.chat(`!Могила заполнена цветами на ${integers[0]} из ${integers[1]}`);

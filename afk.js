@@ -125,7 +125,21 @@ async function autoEat() {
 }
 bot.once('spawn', () => {
     initializeBotState()
+
 })
+
+async function getSwordDamage(){
+    const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
+    if (!item) {
+        console.log(`У меня нет в инвентаре`)
+        return -1
+    }
+    const meta = item.nbt?.value
+    console.log(JSON.stringify(meta));
+    damageOfItem = meta.Damage.value
+    return damageOfItem
+}
+
 bot.on('spawn', () => {
     const attackLoop = async () => {
         while (true) {
@@ -135,6 +149,10 @@ bot.on('spawn', () => {
             )
             if (skel) {
                 equipItem('sword')
+                if (getSwordDamage() > 100) {
+                    console.error('У бота ломается меч. Выхожу')
+                    bot.quit()
+                }
                 bot.lookAt(skel.position.offset(0, 1.6, 0), true)
                 //if (bot.entity.attackCooldown > 0.9)
                 bot.attack(skel)
