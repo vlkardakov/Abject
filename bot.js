@@ -2005,6 +2005,10 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
+        case "metadata":
+            findNearestItemWithLore('sword')
+            bot.chat(`/msg ${username} Привета!`);
+            break
         case "flowers":
             integers = extractTextDisplayNumbers();
             if (integers.length === 2) bot.chat(`!Могила заполнена цветами на ${integers[0]} из ${integers[1]}`);
