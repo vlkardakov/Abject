@@ -117,7 +117,8 @@ bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
-bot.loadPlugin(elytrafly)
+// bot.loadPlugin(elytrafly)
+console.log(elytrafly)
 // console.log(customPVP)
 bot.loadPlugin(customPVP.default)
 
