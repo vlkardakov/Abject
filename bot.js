@@ -2009,8 +2009,8 @@ function processCommand(message, username, plainMessage) {
             item = findNearestItemWithLore('sword')
             meta = item.metadata?.[8]
 
-            console.log(meta.nbtData.value.RepairCost.value);
-            bot.chat(`/msg ${username} Привета!`);
+            repairCost = meta.nbtData.value.RepairCost.value
+            bot.chat(`/msg ${username} ${repairCost}`);
             break
         case "flowers":
             integers = extractTextDisplayNumbers();
