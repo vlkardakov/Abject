@@ -2013,7 +2013,7 @@ function processCommand(message, username, plainMessage) {
             }
             const meta = item.nbt?.value
             console.log(JSON.stringify(meta));
-            damageOfItem = meta.nbtData.value.Damage.value
+            damageOfItem = meta.Damage.value
             bot.chat(`/msg ${username} ${damageOfItem}`);
             break
         case "flowers":
