@@ -2005,60 +2005,22 @@ function processCommand(message, username, plainMessage) {
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
-        case "metadata":
-            item = findNearestItemWithLore('sword')
-            meta = item.metadata//?.[8]
+        case "durability":
+            const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
+            if (!item) {
+                bot.chat(`/msg ${username} У тебя нет в инвентаре`)
+                break
+            }
+            const meta = item.nbt?.value
             console.log(JSON.stringify(meta));
-            repairCost = meta.nbtData.value.RepairCost.value
-            bot.chat(`/msg ${username} ${repairCost}`);
+            damageOfItem = meta.nbtData.value.Damage.value
+            bot.chat(`/msg ${username} ${damageOfItem}`);
             break
         case "flowers":
             integers = extractTextDisplayNumbers();
             if (integers.length === 2) bot.chat(`!Могила заполнена цветами на ${integers[0]} из ${integers[1]}`);
 
             break
-        case "brokeness":
-            const items = bot.inventory.items();
-
-            if (items.length === 0) {
-                bot.chat(`/msg ${username} У тебя нет предметов в инвентаре.`);
-            } else {
-                items.forEach(item => {
-                    if (item.durability !== undefined) {
-                        bot.chat(`/msg ${username} Предмет: ${item.name}, Прочность: ${item.durability}/${item.maxDurability}`);
-                    } else {
-                        bot.chat(`/msg ${username} Предмет: ${item.name}, Прочность: Нет данных о прочности.`);
-                    }
-                });
-            }
-
-            const armorSlots = ['helmet', 'chestplate', 'leggings', 'boots'];
-            armorSlots.forEach(slot => {
-                const item = bot.armorInventory[slot];
-                if (item) {
-                    if (item.durability !== undefined) {
-                        bot.chat(`/msg ${username} Броня (${slot}): ${item.name}, Прочность: ${item.durability}/${item.maxDurability}`);
-                    } else {
-                        bot.chat(`/msg ${username} Броня (${slot}): ${item.name}, Прочность: Нет данных о прочности.`);
-                    }
-                } else {
-                    bot.chat(`/msg ${username} Броня (${slot}): Нет предмета.`);
-                }
-            });
-
-            const offhandItem = bot.inventory.slots[40];
-            if (offhandItem) {
-                if (offhandItem.durability !== undefined) {
-                    bot.chat(`/msg ${username} Во второй руке: ${offhandItem.name}, Прочность: ${offhandItem.durability}/${offhandItem.maxDurability}`);
-                } else {
-                    bot.chat(`/msg ${username} Во второй руке: ${offhandItem.name}, Прочность: Нет данных о прочности.`);
-                }
-            } else {
-                bot.chat(`/msg ${username} Во второй руке: Нет предмета.`);
-            }
-            break;
-
-
         case "attacknotme":
             const targetsToAttackNotMe = Object.values(bot.players)
                 .filter(p => p.entity)
