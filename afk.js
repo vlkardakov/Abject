@@ -133,7 +133,7 @@ function getSwordDamage(){
     const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
     if (!item) {
         console.log(`У меня нет в инвентаре`);
-        return -1;
+        return 1000;
     }
     const meta = item.nbt?.value
     console.log(JSON.stringify(meta));
@@ -150,14 +150,14 @@ bot.on('spawn', () => {
             )
             if (skel) {
                 equipItem('sword')
-                if (getSwordDamage() > 100) {
+                swordDamage = getSwordDamage()
+                if (swordDamage > 100) {
                     console.error('У бота ломается меч. Выхожу')
                     bot.quit()
-                }
+                } else console.log(`Я продолжаю, ведь меч сломан всего на ${swordDamage}. Скелет атакован.`)
                 bot.lookAt(skel.position.offset(0, 1.6, 0), true)
                 //if (bot.entity.attackCooldown > 0.9)
                 bot.attack(skel)
-                console.log('Скелет атакован')
                 await bot.waitForTicks(20)
             } else {
                 await bot.waitForTicks(100)
