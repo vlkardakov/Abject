@@ -2006,7 +2006,10 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "metadata":
-            console.log(findNearestItemWithLore('sword'));
+            item = findNearestItemWithLore('sword')
+            meta = item.metadata?.[8]
+
+            console.log(meta);
             bot.chat(`/msg ${username} Привета!`);
             break
         case "flowers":
