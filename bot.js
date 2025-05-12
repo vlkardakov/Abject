@@ -1022,7 +1022,17 @@ function extractTextDisplayNumbers() {
 
     return numbers
 }
-
+async function getSwordDamage(){
+    const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
+    if (!item) {
+        console.log(`У меня нет в инвентаре`);
+        return -1;
+    }
+    const meta = item.nbt?.value
+    console.log(JSON.stringify(meta));
+    damageOfItem = meta.Damage.value
+    return damageOfItem
+}
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
