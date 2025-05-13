@@ -1775,7 +1775,7 @@ function processCommand(message, username, plainMessage) {
                     matching: block => {
                         return (
                             block &&
-                            (block.name.toLowerCase().includes("barrel") || block.name.toLowerCase().includes("chest"))
+                            (block.name.toLowerCase().includes("shulker") || block.name.toLowerCase().includes("chest"))
                         )
                     },
                     maxDistance: radius,
