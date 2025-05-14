@@ -146,10 +146,15 @@ function getSwordDamage(){
 bot.on('spawn', () => {
     const attackLoop = async () => {
         while (true) {
-            const skel = bot.nearestEntity(e =>
+            const skeletonsInRange = bot.entitiesArray().filter(e =>
                 e.name === 'skeleton' &&
-                e.position.distanceTo(bot.entity.position) <= 6
+                e.position.distanceTo(bot.entity.position) <= 3
             )
+
+            const skel = skeletonsInRange.sort((a, b) =>
+                b.position.distanceTo(bot.entity.position) - a.position.distanceTo(bot.entity.position)
+            )[0] || null
+
             if (skel && !isEating) {
                 equipItem('sword')
                 swordDamage = getSwordDamage()
