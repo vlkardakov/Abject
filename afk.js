@@ -216,12 +216,18 @@ bot.on('error', (err) => {
 bot.on('end', (reason) => {
     console.log(`Бот отключился. Причина: ${reason}`);
     isInitialSpawn = true;
+    console.error("Ашипка! 😭")
+    process.exit(1)
 });
 
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    console.error("Ашипка! 😭")
+    process.exit(1)
 });
 
 process.on('uncaughtException', (err) => {
+    console.error("Ашипка! 😭")
+    process.exit(1)
     console.error('Неперехваченное исключение:', err);
 });
