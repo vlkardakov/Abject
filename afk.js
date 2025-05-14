@@ -146,7 +146,7 @@ function getSwordDamage(){
 bot.on('spawn', () => {
     const attackLoop = async () => {
         while (true) {
-            const skeletonsInRange = bot.entitiesArray().filter(e =>
+            const skeletonsInRange = Object.values(bot.entities).filter(e =>
                 e.name === 'skeleton' &&
                 e.position.distanceTo(bot.entity.position) <= 3
             )
