@@ -892,9 +892,10 @@ async function takeItem(blockPos, itemName, count = 1) {
             const takeCount = Math.min(item.count, count)
             count = count - takeCount
             await chest.withdraw(item.type, null, takeCount)
-            chest.close()
+
             sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
         }
+        chest.close()
     // } catch (err) {
     //     sendFeedback(`Не получилось взять предмет: ${err.message}`)
     // }
