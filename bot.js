@@ -884,7 +884,7 @@ async function takeItem(blockPos, itemName, count = 1) {
         const chest = await bot.openContainer(block)
         const items = chest.containerItems().find(i => i.name === itemName)
 
-        if (!item) {
+        if (!items) {
             chest.close()
             return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
         }
