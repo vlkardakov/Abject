@@ -879,27 +879,33 @@ async function takeItem(blockPos, itemName, count = 1) {
     const block = bot.blockAt(blockPos)
     if (!block) return sendFeedback('Блок не найден по координатам')
 
-    // try {
+    try {
         await bot.lookAt(blockPos, true)
         const chest = await bot.openContainer(block)
         const items = chest.containerItems().filter(item => item?.name === itemName)
 
-        if (!items) {
+        if (!items.length) {
             chest.close()
             return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
         }
+
         for (const item of items) {
             const takeCount = Math.min(item.count, count)
-            count = count - takeCount
-            await chest.withdraw(item.type, null, takeCount)
+            if (takeCount <= 0) break
 
+            await chest.withdraw(item.type, item.metadata, takeCount)
             sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+            count -= takeCount
+
+            if (count <= 0) break
         }
+
         chest.close()
-    // } catch (err) {
-    //     sendFeedback(`Не получилось взять предмет: ${err.message}`)
-    // }
+    } catch (err) {
+        sendFeedback(`Не получилось взять предмет: ${err.message}`)
+    }
 }
+
 async function craftItem(itemName, count = 1) {
     const item = bot.registry.itemsByName[itemName]
     if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
