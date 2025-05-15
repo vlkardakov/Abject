@@ -882,7 +882,7 @@ async function takeItem(blockPos, itemName, count = 1) {
     // try {
         await bot.lookAt(blockPos, true)
         const chest = await bot.openContainer(block)
-        const items = chest.containerItems().filter(i => i && i.name === itemName)
+        const items = chest.containerItems().filter(item => item?.name === itemName)
 
         if (!items) {
             chest.close()
