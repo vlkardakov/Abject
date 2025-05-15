@@ -2020,7 +2020,9 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "restart":
-            bot.chat(`/msg ${username} Привета!`);
+            console.error("Ашипка! 😭")
+            replyFeedback(username, "Ашипка! 😭")
+            process.exit(1)
             break
 
         case "flowers":
