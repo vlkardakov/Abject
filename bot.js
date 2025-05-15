@@ -882,18 +882,19 @@ async function takeItem(blockPos, itemName, count = 1) {
     try {
         await bot.lookAt(blockPos, true)
         const chest = await bot.openContainer(block)
-        const item = chest.containerItems().find(i => i.name === itemName)
+        const items = chest.containerItems().find(i => i.name === itemName)
 
         if (!item) {
             chest.close()
             return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
         }
-
-        const takeCount = Math.min(item.count, count)
-
-        await chest.withdraw(item.type, null, takeCount)
-        chest.close()
-        sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+        for (const item of items) {
+            const takeCount = Math.min(item.count, count)
+            count = count - takeCount
+            await chest.withdraw(item.type, null, takeCount)
+            chest.close()
+            sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+        }
     } catch (err) {
         sendFeedback(`Не получилось взять предмет: ${err.message}`)
     }
