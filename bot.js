@@ -1113,7 +1113,7 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/m ${username} Блок не найден 😢`)
             }
             break;
-        case 'restart':
+        case 'reload':
             initializeBotState();
 
             if (isInitialSpawn) {
@@ -2017,6 +2017,9 @@ function processCommand(message, username, plainMessage) {
         }
             break;
         case "hi":
+            bot.chat(`/msg ${username} Привета!`);
+            break
+        case "restart":
             bot.chat(`/msg ${username} Привета!`);
             break
 
