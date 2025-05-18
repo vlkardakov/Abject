@@ -693,10 +693,9 @@ async function depositItems() {
         } catch (err) {
             console.log(`Не смог положить ${item.name}: ${err.message}`);
 
-            // Пытаемся переключиться на следующую мусорку и начать заново
             chest.close();
             MUSOR_INDEX = (MUSOR_INDEX + 1) % MUSOR_CHESTS.length;
-            await depositItems(); // рекурсия 👀
+            await depositItems();
             return;
         }
     }
@@ -1006,7 +1005,7 @@ function debugTextDisplayMetadata() {
 
         for (const meta of entity.metadata) {
             console.log(`key: ${meta?.key}, type: ${meta?.type}, value:`)
-            console.dir(meta?.value, { depth: null }) // глубоко распарсит объекты
+            console.dir(meta?.value, { depth: null })
         }
 
         console.log('=============================\n')
@@ -1125,8 +1124,6 @@ function processCommand(message, username, plainMessage) {
             initializeBotState();
 
             if (isInitialSpawn) {
-                // console.log("Первый спавн: Запуск процесса входа...");
-
             } else {
                 bot.setControlState('sprint', true);
             }
@@ -1238,7 +1235,8 @@ function processCommand(message, username, plainMessage) {
 //                            bot.pathfinder.setMovements(defaultMove);
 //                            bot.pathfinder.setGoal(null)
 //                            bot.pathfinder.setGoal(new goals.GoalFollow(nearestEntity, 0));
-//                            bot.pvp.attack(nearestEntity);  // Атакуем сущность
+//                            bot.pvp.attack(nearestEntity);
+
 //
 //
 //
@@ -1832,7 +1830,7 @@ function processCommand(message, username, plainMessage) {
                         await bot.pathfinder.goto(new GoalNear(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z), 3))
 
                         const container = await bot.openContainer(block)
-                        const items = container.slots.filter(slot => slot && slot.name) // Получаем предметы из контейнера
+                        const items = container.slots.filter(slot => slot && slot.name)
                         const itemsData = items.map(item => ({
                             name: item.name,
                             count: item.count

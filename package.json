@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@nxg-org/mineflayer-custom-pvp": "^1.7.6",
     "dotenv": "^16.5.0",
     "mineflayer": "^4.27.0",
     "mineflayer-armor-manager": "^2.0.1",
