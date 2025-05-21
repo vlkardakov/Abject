@@ -938,11 +938,13 @@ async function craftSet(count = 1) {
     const stickBarrel = new vec3({x:2, y:85, z:6})
     const chickenBarrel = new vec3({x:2, y:85, z:5})
 
+    await bot.pathfinder.goto(new GoalNear(new vec3({x:1, y:87, z:6})))
+
     await takeItem(ironBarrel, 'iron_ingot', count=26)
     await takeItem(stickBarrel, 'stick', count=2)
     await takeItem(chickenBarrel, 'cooked_chicken', count=count*9)
     await takeItem(chickenBarrel, 'shield', count=1)
-    
+
     await craftItem('iron_helmet', count = 1)
     await craftItem('iron_chestplate', count = 1)
     await craftItem('iron_leggings', count = 1)
