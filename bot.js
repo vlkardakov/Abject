@@ -1052,6 +1052,11 @@ function processCommand(message, username, plainMessage) {
 
     // console.log(`username: '${username}', command: '${command}'`);
 
+    if (!WATCHED_PLAYERS.includes(username)) {
+        replyFeedback(username, 'Отстань.')
+        return;
+    }
+
     switch (command) {
         case "exec":
             if (!WATCHED_PLAYERS.includes(username)) {
