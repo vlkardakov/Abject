@@ -928,9 +928,9 @@ async function craftItem(itemName, count = 1) {
 
     try {
         await bot.craft(recipe, count, craftingTable)
-        sendFeedback(`Скрафтил ${count} x ${itemName}`)
+        // sendFeedback(`Скрафтил ${count} x ${itemName}`)
     } catch (err) {
-        sendFeedback(`Ошибка при крафте: ${err.message}`)
+        // sendFeedback(`Ошибка при крафте: ${err.message}`)
     }
 }
 async function craftSet(count = 1) {
@@ -1588,7 +1588,7 @@ function processCommand(message, username, plainMessage) {
                     if (newTarget && newTarget !== targetEntity) {
                         startCampAttack(newTarget);
                     } else if (!newTarget) {
-                        
+
                     }
                 }
                 bot.on('message', (jsonMsg, position) => {
