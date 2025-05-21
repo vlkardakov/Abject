@@ -941,8 +941,8 @@ async function craftSet(count = 1) {
     await takeItem(ironBarrel, 'iron_ingot', count=26)
     await takeItem(stickBarrel, 'stick', count=2)
     await takeItem(chickenBarrel, 'cooked_chicken', count=count*9)
-    await takeItem(chickenBarrel, 'totem_of_undying', count=1)
-
+    await takeItem(chickenBarrel, 'shield', count=1)
+    
     await craftItem('iron_helmet', count = 1)
     await craftItem('iron_chestplate', count = 1)
     await craftItem('iron_leggings', count = 1)
