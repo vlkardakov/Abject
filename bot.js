@@ -1587,9 +1587,9 @@ function processCommand(message, username, plainMessage) {
                     const newTarget = findNewTarget();
                     if (newTarget && newTarget !== targetEntity) {
                         startCampAttack(newTarget);
+                    } else if (!newTarget) {
+                        
                     }
-                    task = null;
-                    return;
                 }
                 bot.on('message', (jsonMsg, position) => {
                     if (jsonMsg.toString().includes('stop')) {
