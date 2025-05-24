@@ -1054,7 +1054,9 @@ function processCommand(message, username, plainMessage) {
 
     // console.log(`username: '${username}', command: '${command}'`);
 
-    if (!WATCHED_PLAYERS.includes(username)) {
+    commands =
+
+    if ( !WATCHED_PLAYERS.includes(username)) {
         replyFeedback(username, 'Отстань.')
         return;
     }
