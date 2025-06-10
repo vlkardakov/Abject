@@ -1042,8 +1042,8 @@ const degToRad = degrees => degrees * Math.PI / 180;
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
 
-    const yaw = targetEntity.yaw || 0;
-    const pitch = targetEntity.pitch || 0;
+    const yaw = targetEntity.yaw 
+    const pitch = targetEntity.pitch
 
     const radYaw = degToRad(yaw);
     const radPitch = degToRad(pitch);
