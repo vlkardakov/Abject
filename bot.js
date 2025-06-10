@@ -2294,7 +2294,7 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} ${bot.health}`);
             break
         case "bounce":
-            if (parts.length > 0) BOUNCE_POWER = parseInt(parts[1])
+            if (parts.length > 0) BOUNCE_POWER = parseFloat(parts[1])
             else BOUNCE_POWER = 0
             replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
             break
