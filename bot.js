@@ -585,7 +585,7 @@ function findEntityWithName(bot, query, visible=true) {
         const matchesCriteria = (
             (entity.type === 'player' && entity.username?.toLowerCase().includes(targetQuery)) ||
             (entity.type === 'mob' && entity.displayName?.toLowerCase().includes(targetQuery)) ||
-            (entity.name?.toLowerCase().includes(targetQuery)) ||
+            (entity.name && (entity.name?.toLowerCase().includes(targetQuery))) ||
             (entity.displayName?.toLowerCase().includes(targetQuery))
         );
         return visible ? (matchesCriteria && isEntityVisible(entity)) : matchesCriteria;
@@ -788,7 +788,7 @@ function findNearestItem(searchName = '') {
         if (!entity?.metadata?.[8]?.present) return false
         if (!isEntityVisible(entity)) return false
         const {x, y , z} = entity.position
-        
+
         if (searchName) {
             return wanted_ids.includes(entity?.metadata?.[8]?.itemId);
         }
