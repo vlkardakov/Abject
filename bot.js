@@ -1044,9 +1044,29 @@ async function boostBot(speed) {
     bot.entity.velocity.y = (bot.entity.velocity.y) * speed
     bot.entity.velocity.z = (bot.entity.velocity.z) * speed
 }
+async function boostBot(speed, targetEntity) {
+    await bot.waitForTicks(3);
+
+    const playerPosition = bot.entity.position;
+    const entityPosition = targetEntity.position;
+
+    let directionVector = new Vec3(
+        entityPosition.x - playerPosition.x,
+        entityPosition.y - playerPosition.y,
+        entityPosition.z - playerPosition.z
+    );
+
+    directionVector.normalize();
+
+    bot.entity.velocity.x += directionVector.x * speed;
+    bot.entity.velocity.y += directionVector.y * speed;
+    bot.entity.velocity.z += directionVector.z * speed;
+
+    console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
+}
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
-        boostBot(7)
+        boostBot(7, bot.players['vlkardakov'].entity)
     }
 })
 function processCommand(message, username, plainMessage) {
