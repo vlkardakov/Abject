@@ -8,7 +8,7 @@ from PIL import Image
 
 load_dotenv()
 API_KEY = os.getenv("OPENROUTER_API_KEY")
-
+print(f"{API_KEY=}")
 app = Flask(__name__)
 chat_history = []
 
@@ -104,7 +104,7 @@ messages = [
 ]
 
 def ask_gemini(prompt: str):
-    global messages
+    global messages, API_KEY
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
