@@ -2373,12 +2373,12 @@ function processCommand(message, username, plainMessage) {
 
             bot.on('entityHurt', async (entity) => {
                 if (entity === bot.entity) {
-                    bot.entity.velocity.x *= speed
-                    bot.entity.velocity.z *= speed
-                    bot.entity.velocity.y *= speed
+                    bot.entity.velocity.x = (bot.entity.velocity.x + 1) * speed
+                    bot.entity.velocity.y = (bot.entity.velocity.x + 1) * speed
+                    bot.entity.velocity.z = (bot.entity.velocity.x + 1) * speed
                 }
             })
-            return;
+            return; 
         case "сосал?":
             bot.chat(`!Да.`);
             return;
