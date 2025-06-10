@@ -1441,7 +1441,7 @@ function processCommand(message, username, plainMessage) {
                         bot.pvp.attack(targetEnemy)
                         }
                     } else {
-                        if (distanceToPofikBase(bot.entity) > 2 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
+                        if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(16, 108, -3);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
