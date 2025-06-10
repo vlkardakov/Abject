@@ -1054,12 +1054,10 @@ function processCommand(message, username, plainMessage) {
 
     // console.log(`username: '${username}', command: '${command}'`);
 
-    commands =
-
-    if ( !WATCHED_PLAYERS.includes(username)) {
-        replyFeedback(username, 'Отстань.')
-        return;
-    }
+    // if ( !WATCHED_PLAYERS.includes(username)) {
+    //     // replyFeedback(username, 'Отстань.')
+    //     return;
+    // }
 
     switch (command) {
         case "exec":
