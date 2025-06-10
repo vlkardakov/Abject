@@ -1046,7 +1046,7 @@ async function boostBot(speed) {
 }
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
-        boostBot(3)
+        boostBot(7)
     }
 })
 function processCommand(message, username, plainMessage) {
