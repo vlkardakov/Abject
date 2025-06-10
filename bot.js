@@ -1039,8 +1039,10 @@ function getSwordDamage(){
 }
 async function boostBot(player, speed) {
     await bot.waitForTicks(3);
-    const yaw = player.getYaw();
-    const pitch = player.getPitch();
+    const nbtData = await player.getNBT();
+    const rotation = nbtData.value.Rotation.value;
+    const yaw = rotation[0];
+    const pitch = rotation[1];
     const x = Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI);
     const y = -Math.sin(pitch / 180 * Math.PI);
     const z = Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI);
