@@ -1041,21 +1041,15 @@ async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
 
     const playerPosition = bot.entity.position;
-    const entityPosition = targetEntity.position;
+    const lookDirection = targetEntity.getLookVector();
 
-    let directionVector = new vec3(
-        entityPosition.x - playerPosition.x,
-        entityPosition.y - playerPosition.y,
-        entityPosition.z - playerPosition.z
-    );
+    lookDirection.normalize();
 
-    directionVector.normalize();
+    bot.entity.velocity.x += lookDirection.x * speed;
+    bot.entity.velocity.y += lookDirection.y * speed;
+    bot.entity.velocity.z += lookDirection.z * speed;
 
-    bot.entity.velocity.x -= directionVector.x * speed;
-    bot.entity.velocity.y -= directionVector.y * speed;
-    bot.entity.velocity.z -= directionVector.z * speed;
-
-    console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
+    console.log(`Ускоряюсь в направлении взгляда ${targetEntity.name}!`);
 }
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
