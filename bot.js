@@ -808,15 +808,8 @@ function findNearestItemWithLore(searchName = '') {
     }
     return bot.nearestEntity(entity => {
         loreItem = getLore(entity);
-        if (searchName) {
-            if (wanted_ids.includes(entity?.metadata?.[8]?.itemId) && entity?.metadata?.[8]?.present && entity.name === 'item' && (isItemOnSpawn(entity)  || isEntityVisible(entity)) && !getUsedIds().includes(entity.id)) {// && loreItem === BOT_USERNAME) {
-                return true;
-            } else return false
-        } else {
             // console.log(`Подпись предмета: ${loreItem}`)
-            return entity.name === 'item' && entity?.metadata?.[8]?.present && !getUsedIds().includes(entity.id) && loreItem === BOT_USERNAME;
-
-        }
+            return entity.name === 'item' && entity?.metadata?.[8]?.present && loreItem === BOT_USERNAME;
     });
 }
 
