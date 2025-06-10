@@ -1425,7 +1425,7 @@ function processCommand(message, username, plainMessage) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
-                        bot.pathfinder.setGoal(new GoalNear(my_item.pos, 0));
+                        bot.pathfinder.setGoal(new GoalFollow(my_item, 0));
                     } else if (targetEnemy ) {
                         if (targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
