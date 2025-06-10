@@ -824,7 +824,7 @@ function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
 
-        const name = entity.name.toLowerCase() + (entity.displayName.toLowerCase() || entity.username.toLowerCase())
+        const name = entity.name.toLowerCase()
         const isHostile = (
             name.includes('zombie') ||
             name.includes('skeleton') ||
@@ -835,7 +835,13 @@ function findNearestEnemy() {
             // name.includes('phantom')
         );
 
-        return isHostile && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
+        const isBadPlayer = (
+            entity.name = 'player' && (
+                ['vlkardakov'].includes(entity.username)
+            )
+        )
+
+        return (isHostile || isBadPlayer) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
     });
 }
 function getFreeInventorySlots() {
