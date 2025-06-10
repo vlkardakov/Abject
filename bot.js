@@ -1426,7 +1426,7 @@ function processCommand(message, username, plainMessage) {
                         name = targetEnemy.name
                         console.log(`name: ${name}`);
                         // console.log(JSON.stringify(targetItem.metadata, null, 2));
-                        sendFeedback(`Иду защищать!`)
+                        sendFeedback(`Иду атаковать моба!`)
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
                         equipItem('axe')
@@ -1435,7 +1435,7 @@ function processCommand(message, username, plainMessage) {
                         }
                     } else {
                         if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target) {
-                            sendFeedback(`на базу пофика..`)
+                            // sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(16, 108, -3);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
                         } else if (!bot.pathfinder.goal) {
