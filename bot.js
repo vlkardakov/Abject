@@ -837,7 +837,7 @@ function findNearestEnemy() {
 
         const isBadPlayer = (
             entity.name = 'player' && (
-                ['vlkardakov'].includes(entity.username)
+                [].includes(entity.username)
             )
         )
 
