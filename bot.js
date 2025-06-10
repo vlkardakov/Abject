@@ -1043,7 +1043,7 @@ async function boostBot(speed, targetEntity) {
     const playerPosition = bot.entity.position;
     const entityPosition = targetEntity.position;
 
-    let directionVector = new Vec3(
+    let directionVector = new vec3(
         entityPosition.x - playerPosition.x,
         entityPosition.y - playerPosition.y,
         entityPosition.z - playerPosition.z
