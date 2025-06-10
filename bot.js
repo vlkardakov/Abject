@@ -820,13 +820,13 @@ function findNearestEnemy() {
             // name.includes('phantom')
         );
 
-        const isBadPlayer = (
-            entity.name = 'player' && (
-                [].includes(entity.username)
-            )
-        )
+        // const isBadPlayer = (
+        //     entity.name = 'player' && (
+        //         [].includes(entity.username)
+        //     )
+        // )
 
-        return (isHostile || isBadPlayer) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
+        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 30;
     });
 }
 function getFreeInventorySlots() {
