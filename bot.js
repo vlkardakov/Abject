@@ -1043,6 +1043,11 @@ async function boostBot(speed) {
     bot.entity.velocity.y = (bot.entity.velocity.y) * speed
     bot.entity.velocity.z = (bot.entity.velocity.z) * speed
 }
+bot.on('entityHurt', async (entity) => {
+    if (entity === bot.entity) {
+        boostBot(speed)
+    }
+})
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
@@ -2373,14 +2378,6 @@ function processCommand(message, username, plainMessage) {
             equipItem()
             // bot.chat(`/msg ${username} Привета!`);
             break
-        case "speed":
-            speed = args[1] || 1.5
-            bot.on('entityHurt', async (entity) => {
-                if (entity === bot.entity) {
-                    boostBot(speed)
-                }
-            })
-            return;
         case "сосал?":
             bot.chat(`!Да.`);
             return;
