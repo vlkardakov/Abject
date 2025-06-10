@@ -1037,6 +1037,12 @@ function getSwordDamage(){
     damageOfItem = meta.Damage.value
     return damageOfItem
 }
+function boostBot(speed) {
+    console.log(`Ускоряюсь в ${speed}!`)
+    bot.entity.velocity.x = (bot.entity.velocity.x + 1) * speed
+    bot.entity.velocity.y = (bot.entity.velocity.x + 1) * speed
+    bot.entity.velocity.z = (bot.entity.velocity.x + 1) * speed
+}
 function processCommand(message, username, plainMessage) {
 
     const parts = message.trim().toLowerCase().split(" ");
@@ -2370,13 +2376,9 @@ function processCommand(message, username, plainMessage) {
             break
         case "speed":
             speed = 2
-
             bot.on('entityHurt', async (entity) => {
                 if (entity === bot.entity) {
-                    console.log(`Ускоряюсь в ${speed}!`)
-                    bot.entity.velocity.x = (bot.entity.velocity.x + 1) * speed
-                    bot.entity.velocity.y = (bot.entity.velocity.x + 1) * speed
-                    bot.entity.velocity.z = (bot.entity.velocity.x + 1) * speed
+                    boostBot()
                 }
             })
             return;
