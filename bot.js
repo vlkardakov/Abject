@@ -1040,23 +1040,22 @@ function getSwordDamage(){
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
 
-    const playerPosition = bot.entity.position;
-    const entityPosition = targetEntity.position;
+    const yaw = targetEntity.yaw;
+    const pitch = targetEntity.pitch;
 
-    let directionVector = new vec3(
-        entityPosition.x - playerPosition.x,
-        entityPosition.y - playerPosition.y,
-        entityPosition.z - playerPosition.z
-    );
+    const directionVector = new vec3(
+        -Math.sin(yaw) * Math.cos(pitch),
+        -Math.sin(pitch),
+        -Math.cos(yaw) * Math.cos(pitch)
+    ).normalize();
 
-    directionVector.normalize();
+    bot.entity.velocity.x += directionVector.x * speed;
+    bot.entity.velocity.y += directionVector.y * speed;
+    bot.entity.velocity.z += directionVector.z * speed;
 
-    bot.entity.velocity.x -= directionVector.x * speed;
-    bot.entity.velocity.y -= directionVector.y * speed;
-    bot.entity.velocity.z -= directionVector.z * speed;
-
-    console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
+    console.log(`Отскакиваю по направлению взгляда ${targetEntity.name}!`);
 }
+
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
         boostBot(1.5, bot.players['vlkardakov'].entity)
