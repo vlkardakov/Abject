@@ -1037,13 +1037,6 @@ function getSwordDamage(){
     damageOfItem = meta.Damage.value
     return damageOfItem
 }
-async function boostBot(speed) {
-    await bot.waitForTicks(3)
-    console.log(`Ускоряюсь в ${speed}!`)
-    bot.entity.velocity.x = (bot.entity.velocity.x) * speed
-    bot.entity.velocity.y = (bot.entity.velocity.y) * speed
-    bot.entity.velocity.z = (bot.entity.velocity.z) * speed
-}
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(3);
 
