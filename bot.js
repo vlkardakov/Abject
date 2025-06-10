@@ -830,6 +830,7 @@ function findNearestEnemy() {
             name.includes('skeleton') ||
             name.includes('spider') ||
             name.includes('creeper') ||
+            name.includes('vlkardakov') ||
             name.includes('drowned') //||
             // name.includes('phantom')
         );
