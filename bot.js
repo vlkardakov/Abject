@@ -797,15 +797,11 @@ function findNearestItem(searchName = '') {
     });
 }
 
-function findNearestItemWithLore(searchName = '') {
-    wanted_ids = []
-    if (searchName) {
-        wanted_ids = selectIdsWithName(searchName);
-    }
+function findNearestItemWithLore() {
     return bot.nearestEntity(entity => {
         loreItem = getLore(entity);
             // console.log(`Подпись предмета: ${loreItem}`)
-            return entity.name === 'item' && entity?.metadata?.[8]?.present && loreItem === BOT_USERNAME;
+            return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
 
