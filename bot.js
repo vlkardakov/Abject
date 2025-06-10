@@ -824,7 +824,7 @@ function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
 
-        const name = entity.name.toLowerCase();
+        const name = entity.name.toLowerCase() + (entity.displayName.toLowerCase() || entity.username.toLowerCase())
         const isHostile = (
             name.includes('zombie') ||
             name.includes('skeleton') ||
