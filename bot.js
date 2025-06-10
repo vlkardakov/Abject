@@ -1037,35 +1037,25 @@ function getSwordDamage(){
     damageOfItem = meta.Damage.value
     return damageOfItem
 }
-const degToRad = degrees => degrees * Math.PI / 180;
-
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
 
-    const yaw = targetEntity.yaw 
-    const pitch = targetEntity.pitch
+    const playerPosition = bot.entity.position;
+    const entityPosition = targetEntity.position;
 
-    const radYaw = degToRad(yaw);
-    const radPitch = degToRad(pitch);
+    let directionVector = new vec3(
+        entityPosition.x - playerPosition.x,
+        entityPosition.y - playerPosition.y,
+        entityPosition.z - playerPosition.z
+    );
 
-    const x = Math.cos(radPitch) * Math.sin(radYaw);
-    const y = Math.sin(radPitch);
-    const z = Math.cos(radPitch) * Math.cos(radYaw);
+    directionVector.normalize();
 
-    const lookDirection = {x, y, z};
+    bot.entity.velocity.x -= directionVector.x * speed;
+    bot.entity.velocity.y -= directionVector.y * speed;
+    bot.entity.velocity.z -= directionVector.z * speed;
 
-    const length = Math.sqrt(x*x + y*y + z*z);
-    if(length !== 0){
-        lookDirection.x /= length;
-        lookDirection.y /= length;
-        lookDirection.z /= length;
-    }
-
-    bot.entity.velocity.x += lookDirection.x * speed;
-    bot.entity.velocity.y += lookDirection.y * speed;
-    bot.entity.velocity.z += lookDirection.z * speed;
-
-    console.log(`Ускоряюсь в направлении взгляда ${targetEntity.name}!`);
+    console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
 }
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
