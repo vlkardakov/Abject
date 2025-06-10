@@ -1051,9 +1051,9 @@ async function boostBot(speed, targetEntity) {
 
     directionVector.normalize();
 
-    bot.entity.velocity.x += directionVector.x * speed;
-    bot.entity.velocity.y += directionVector.y * speed;
-    bot.entity.velocity.z += directionVector.z * speed;
+    bot.entity.velocity.x -= directionVector.x * speed;
+    bot.entity.velocity.y -= directionVector.y * speed;
+    bot.entity.velocity.z -= directionVector.z * speed;
 
     console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
 }
