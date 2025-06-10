@@ -1039,12 +1039,11 @@ function getSwordDamage(){
 }
 function boostBot(speed) {
     console.log(`Ускоряюсь в ${speed}!`)
-    bot.entity.velocity.x = (bot.entity.velocity.x + 1) * speed
-    bot.entity.velocity.y = (bot.entity.velocity.x + 1) * speed
-    bot.entity.velocity.z = (bot.entity.velocity.x + 1) * speed
+    bot.entity.velocity.x = (bot.entity.velocity.x + 0.1) * speed
+    bot.entity.velocity.y = (bot.entity.velocity.y + 0.1) * speed
+    bot.entity.velocity.z = (bot.entity.velocity.z + 0.1) * speed
 }
 function processCommand(message, username, plainMessage) {
-
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
     const args = parts.slice(1);
