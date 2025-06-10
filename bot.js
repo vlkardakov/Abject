@@ -1040,7 +1040,7 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function boostBot(speed, targetEntity) {
-    await bot.waitForTicks(1);
+    // await bot.waitForTicks(1);
 
     const yaw = targetEntity.yaw;
     const pitch = targetEntity.pitch;
