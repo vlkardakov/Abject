@@ -1037,17 +1037,25 @@ function getSwordDamage(){
     damageOfItem = meta.Damage.value
     return damageOfItem
 }
-async function boostBot(player, speed) {
+async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(3);
-    const nbtData = await player.getNBT();
-    const rotation = nbtData.value.Rotation.value;
-    const yaw = rotation[0];
-    const pitch = rotation[1];
-    const x = Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI);
-    const y = -Math.sin(pitch / 180 * Math.PI);
-    const z = Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI);
-    const lookDirection = new vec3(x, y, z);
-    bot.entity.velocity.add(lookDirection.multiply(speed));
+
+    const playerPosition = bot.entity.position;
+    const entityPosition = targetEntity.position;
+
+    let directionVector = new vec3(
+        entityPosition.x - playerPosition.x,
+        entityPosition.y - playerPosition.y,
+        entityPosition.z - playerPosition.z
+    );
+
+    directionVector.normalize();
+
+    bot.entity.velocity.x -= directionVector.x * speed;
+    bot.entity.velocity.y -= directionVector.y * speed;
+    bot.entity.velocity.z -= directionVector.z * speed;
+
+    console.log(`Ускоряюсь в направлении ${targetEntity.name}!`);
 }
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
