@@ -2781,7 +2781,7 @@ bot.on('message', (jsonMsg, position) => {
 
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
-        } else if (username === BOT_USERNAME) {
+        } else if (username === BOT_USERNAME && BOT_USERNAME === 'Abject12') {
             infoGemini(plainMessage);
         }
 
