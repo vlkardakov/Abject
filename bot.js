@@ -1412,7 +1412,7 @@ function processCommand(message, username, plainMessage) {
                     const targetEnemy = findNearestEnemy();
 
                     // console.log('targetItem ', targetItem);
-                    console.log(bot.pathfinder.goal);
+                    // console.log(bot.pathfinder.goal);
 
                     my_item = findNearestItemWithLore();
                     if (my_item) {
@@ -1425,7 +1425,8 @@ function processCommand(message, username, plainMessage) {
                         bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
-                        bot.pathfinder.setGoal(new GoalFollow(my_item, 0));
+                        mp = my_item.position
+                        bot.pathfinder.setGoal(new GoalNear(mp.x, mp.y, mp.z, 0));
                     } else if (targetEnemy ) {
                         if (targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
