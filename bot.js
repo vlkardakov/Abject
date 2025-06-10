@@ -1444,7 +1444,7 @@ function processCommand(message, username, plainMessage) {
                         if (distanceToPofikBase(bot.entity) > 2 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
                             pofikPos = vec3(16, 108, -3);
-                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 0));
+                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
                             // blockToLookAfterDeposit = bot.findBlock({
