@@ -77,8 +77,15 @@ const MUSOR_CHESTS = [
 let MUSOR_INDEX = 0;
 
 const POFIK_POSITIONS = [
+    new vec3(-9, 111, -18),
+    new vec3(0, 106, 0),
+    new vec3(8, 110, -1),
+    new vec3(19, 112, -7),
+    new vec3(22, 115, -32),
+    new vec3(57, 117, -23),
+    new vec3(31, 102, 0),
+    new vec3(-21, 106, 14),
 ];
-
 console.log(process.argv)
 
 const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
