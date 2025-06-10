@@ -77,14 +77,6 @@ const MUSOR_CHESTS = [
 let MUSOR_INDEX = 0;
 
 const POFIK_POSITIONS = [
-    new vec3(620, 63, -516),
-    new vec3(622, 68, -516),
-    new vec3(635, 63, -501),
-    new vec3(644, 63, -510),
-    new vec3(652, 67, -515),
-    new vec3(659, 65, -532),
-    new vec3(666, 69, -542),
-    new vec3(679, 64, -519),
 ];
 
 console.log(process.argv)
@@ -763,8 +755,8 @@ async function downloadMusic(username, songName, fileName) {
 function distanceToPofikBase(entity) {
     const pos = entity.position;
     if (!pos) return 1000
-    const dx = pos.x - 648;
-    const dz = pos.z + 515;
+    const dx = pos.x - 16;
+    const dz = pos.z + 3;
     return Math.sqrt(dx * dx + dz * dz);
 }
 function getLore(itemEntity) {
@@ -1444,7 +1436,7 @@ function processCommand(message, username, plainMessage) {
                     } else {
                         if (distanceToPofikBase(bot.entity) > 2 && !targetEnemy && !bot.pvp.target && !bot.pathfinder.goal) {
                             sendFeedback(`на базу пофика..`)
-                            pofikPos = vec3(648, 64, -515);
+                            pofikPos = vec3(16, 108, -3);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 0));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
