@@ -1037,13 +1037,29 @@ function getSwordDamage(){
     damageOfItem = meta.Damage.value
     return damageOfItem
 }
+const degToRad = degrees => degrees * Math.PI / 180;
+
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
 
-    const playerPosition = bot.entity.position;
-    const lookDirection = targetEntity.getLookVector();
+    const yaw = targetEntity.yaw || 0;
+    const pitch = targetEntity.pitch || 0;
 
-    lookDirection.normalize();
+    const radYaw = degToRad(yaw);
+    const radPitch = degToRad(pitch);
+
+    const x = Math.cos(radPitch) * Math.sin(radYaw);
+    const y = Math.sin(radPitch);
+    const z = Math.cos(radPitch) * Math.cos(radYaw);
+
+    const lookDirection = {x, y, z};
+
+    const length = Math.sqrt(x*x + y*y + z*z);
+    if(length !== 0){
+        lookDirection.x /= length;
+        lookDirection.y /= length;
+        lookDirection.z /= length;
+    }
 
     bot.entity.velocity.x += lookDirection.x * speed;
     bot.entity.velocity.y += lookDirection.y * speed;
