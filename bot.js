@@ -2369,11 +2369,11 @@ function processCommand(message, username, plainMessage) {
             // bot.chat(`/msg ${username} Привета!`);
             break
         case "speed":
-            speed = args[0] || 1
+            speed = 2
 
             bot.on('entityHurt', async (entity) => {
                 if (entity === bot.entity) {
-                    console.log('Ускоряюсь!')
+                    console.log(`Ускоряюсь в ${speed}!`)
                     bot.entity.velocity.x = (bot.entity.velocity.x + 1) * speed
                     bot.entity.velocity.y = (bot.entity.velocity.x + 1) * speed
                     bot.entity.velocity.z = (bot.entity.velocity.x + 1) * speed
