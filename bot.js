@@ -1050,7 +1050,7 @@ async function boostBot(speed, targetEntity) {
     ).normalize();
 
     bot.entity.velocity.x += directionVector.x * speed;
-    bot.entity.velocity.y += directionVector.y * speed;
+    bot.entity.velocity.y -= directionVector.y * speed;
     bot.entity.velocity.z += directionVector.z * speed;
 
     console.log(`Отскакиваю по направлению взгляда ${targetEntity.name}!`);
