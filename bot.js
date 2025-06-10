@@ -1060,7 +1060,7 @@ async function boostBot(speed, targetEntity) {
 
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
-        boostBot(BOUNCE_POWER, bot.players['vlkardakov'].entity)
+        boostBot(BOUNCE_POWER, findEntityWithName(bot, 'e', false))
     }
 })
 function processCommand(message, username, plainMessage) {
