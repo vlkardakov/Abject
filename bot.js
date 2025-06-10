@@ -1058,7 +1058,7 @@ async function boostBot(speed, targetEntity) {
 
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
-        boostBot(1.5, bot.players['vlkardakov'].entity)
+        boostBot(1, bot.players['vlkardakov'].entity)
     }
 })
 function processCommand(message, username, plainMessage) {
