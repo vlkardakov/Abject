@@ -1038,7 +1038,7 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function boostBot(speed, targetEntity) {
-    await bot.waitForTicks(3);
+    await bot.waitForTicks(1);
 
     const playerPosition = bot.entity.position;
     const entityPosition = targetEntity.position;
