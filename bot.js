@@ -786,13 +786,9 @@ function findNearestItem(searchName = '') {
     return bot.nearestEntity(entity => {
         if (entity.name !== 'item') return false
         if (!entity?.metadata?.[8]?.present) return false
-        if (getUsedIds().includes(entity.id)) return false
-        if (!isItemOnSpawn(entity) && !isEntityVisible(entity)) return false
+        if (!isEntityVisible(entity)) return false
         const {x, y , z} = entity.position
-
-        const tooClosePlayer = Object.values(bot.entities).find(e => e.type === 'player' && e.username !== bot.username && e.position.distanceTo(entity.position) <= 3);
-        if (tooClosePlayer || !((-243 > x > -287) && (382 < z < 416))) return false;
-
+        
         if (searchName) {
             return wanted_ids.includes(entity?.metadata?.[8]?.itemId);
         }
