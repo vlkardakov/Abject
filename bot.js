@@ -33,6 +33,7 @@ const { exec } = require('child_process')
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
+let BOUNCE_POWER = 0
 let protectedPlayer = null;
 let following = false;
 let miningSand = false;
@@ -42,6 +43,7 @@ let collecting = false;
 let collectingId = null
 let task = null;
 let isInitialSpawn = true;
+
 let collecting_paused = false
 let mcData;
 let isEating = false;
@@ -1058,7 +1060,7 @@ async function boostBot(speed, targetEntity) {
 
 bot.on('entityHurt', async (entity) => {
     if (entity === bot.entity) {
-        boostBot(0.5, bot.players['vlkardakov'].entity)
+        boostBot(BOUNCE_POWER, bot.players['vlkardakov'].entity)
     }
 })
 function processCommand(message, username, plainMessage) {
@@ -2291,6 +2293,12 @@ function processCommand(message, username, plainMessage) {
         case "health":
             bot.chat(`/msg ${username} ${bot.health}`);
             break
+        case "bounce":
+            if (parts.length > 0) BOUNCE_POWER = parseInt(parts[1])
+            else BOUNCE_POWER = 0
+            replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
+            break
+
         case "cords":
             if (args.length < 1) {
                 entityThatIHaveToFind = bot.entity;
