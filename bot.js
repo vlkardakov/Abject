@@ -34,6 +34,7 @@ const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofi
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
 let BOUNCE_POWER = 0
+let ANTIFALL = false
 let protectedPlayer = null;
 let following = false;
 let miningSand = false;
@@ -1072,6 +1073,9 @@ bot.on('entityHurt', async (entity) => {
         boostBot(BOUNCE_POWER, findEntityWithName(bot, 'e', false))
     }
 })
+bot.on('physicsTick', () => {
+    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.5
+}) 
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
@@ -1996,10 +2000,8 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "antifall":
-            bot.on('physicsTick', () => {
-                console.log(`Увеличиваю ${bot.entity.velocity.y}`)
-                if (bot.entity.velocity.y < -0.6) bot.entity.velocity.y += 0.5
-            })            
+                if (ANTIFALL) ANTIFALL = false
+                else ANTIFALL = true           
             break
         case "restart":
             console.error("Ашипка! 😭")
