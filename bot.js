@@ -2264,6 +2264,10 @@ function processCommand(message, username, plainMessage) {
             }
             break
         case "quit":
+            if (!WATCHED_PLAYERS.includes(username)) {
+                replyFeedback(username, 'Отстань!')
+                return
+            }
             bot.chat(`/msg ${username} Самоуничтожение...`);
             bot.quit()
             break
