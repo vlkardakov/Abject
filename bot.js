@@ -818,6 +818,7 @@ function findNearestEnemy() {
             name.includes('spider') ||
             name.includes('creeper') ||
             name.includes('piglin') ||
+            name.includes('enderm') ||
             name.includes('drowned') //||
             // name.includes('phantom')
         );
