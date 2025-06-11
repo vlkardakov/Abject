@@ -1059,7 +1059,7 @@ async function boostBot(speed, targetEntity) {
 }
 
 bot.on('entityHurt', async (entity) => {
-    if (entity === bot.entity) {
+    if (entity === bot.entity && BOUNCE_POWER !== 0) {
         boostBot(BOUNCE_POWER, findEntityWithName(bot, 'e', false))
     }
 })
@@ -1444,7 +1444,7 @@ function processCommand(message, username, plainMessage) {
                         bot.pathfinder.setGoal(null)
                         mp = my_item.position
                         bot.pathfinder.setGoal(new GoalNear(mp.x, mp.y, mp.z, 0));
-                    } else if (targetEnemy ) {
+                    } else if (targetEnemy) {
                         if (targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
                         bot.pathfinder.setMovements(defaultMove);
@@ -2236,6 +2236,12 @@ function processCommand(message, username, plainMessage) {
             if (parts.length > 0) BOUNCE_POWER = parseFloat(parts[1])
             else BOUNCE_POWER = 0
             replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
+            break
+        case "jump":
+            if (parts.length > 0) power_1 = parseFloat(parts[1])
+            else power_1 = 0.7
+            replyFeedback(username, `Прыгаю с силой ${BOUNCE_POWER}!`);
+            boostBot(power_1, bot.players[username].entity)
             break
 
         case "cords":
