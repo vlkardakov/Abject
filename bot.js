@@ -1074,7 +1074,7 @@ bot.on('entityHurt', async (entity) => {
     }
 })
 bot.on('physicsTick', () => {
-    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.3
+    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4
 }) 
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
