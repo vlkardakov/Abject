@@ -2238,7 +2238,7 @@ function processCommand(message, username, plainMessage) {
             replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
             break
         case "jump":
-            if (parts.length > 0) power_1 = parseFloat(parts[1])
+            if (parts.length > 1) power_1 = parseFloat(parts[1])
             else power_1 = 1.0
             replyFeedback(username, `Прыгаю с силой ${power_1}!`);
             boostBot(power_1, bot.players[username].entity)
