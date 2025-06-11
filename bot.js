@@ -972,7 +972,7 @@ function digPacket(block) {
         sequence: bot._client.sequence ?? 0
     })
 
-    }, 300)
+    }, 1000)
 }
 function getAllTextDisplaysTexts() {
     const texts = []
