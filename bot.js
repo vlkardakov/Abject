@@ -1996,8 +1996,9 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`/msg ${username} Привета!`);
             break
         case "antifall":
-            bot.on('physicTick', () => {
-                if (bot.entity.velocity.y < -3) bot.entity.velocity.y += 0.5
+            bot.on('physicsTick', () => {
+                console.log(`Увеличиваю ${bot.entity.velocity.y}`)
+                if (bot.entity.velocity.y < -0.6) bot.entity.velocity.y += 0.5
             })            
             break
         case "restart":
