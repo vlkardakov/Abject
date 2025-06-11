@@ -1487,67 +1487,6 @@ function processCommand(message, username, plainMessage) {
             startProtecting();
             break;
 
-        case "piglins":
-            if (task) {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                return;
-            }
-
-            if (MODE === "мирный") {
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
-                return;
-            }
-
-            bot.chat(`/msg ${username} начинаю раздражать пиглинов :)))`);
-
-            task = "piglins";
-
-            const PIGLIN_ATTACK_INTERVAL = 400;
-            const MAX_PIGLIN_ATTEMPTS = 100;
-            let piglinAttempts = 0;
-            let piglinInterval = null;
-
-        function findNearestPiglin() {
-            const mobs = Object.values(bot.entities).filter(e =>
-                e.name?.includes("piglin") && e.type === "mob" && e.isValid
-            );
-
-            if (mobs.length === 0) return null;
-
-            mobs.sort((a, b) =>
-                bot.entity.position.distanceTo(a.position) - bot.entity.position.distanceTo(b.position)
-            );
-
-            return mobs[0];
-        }
-
-        function stopPiglinTask() {
-            if (piglinInterval) clearInterval(piglinInterval);
-            bot.chat(`/msg ${username} Пиглины отмучились`);
-            task = null;
-        }
-
-            piglinInterval = setInterval(() => {
-                const target = findNearestPiglin();
-
-                if (!target || piglinAttempts >= MAX_PIGLIN_ATTEMPTS) {
-                    stopPiglinTask();
-                    return;
-                }
-
-                if (bot.entity.position.distanceTo(target.position) <= 4 && target.isValid) {
-                    bot.lookAt(target.position.offset(0, 1.5, 0), true).then(() => {
-                        bot.attack(target);
-                    }).catch(() => {});
-                }
-
-                piglinAttempts++;
-            }, PIGLIN_ATTACK_INTERVAL);
-
-            break;
-
-
         case "camp":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
