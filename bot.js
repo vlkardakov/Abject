@@ -2462,6 +2462,33 @@ function processCommand(message, username, plainMessage) {
                 sendFeedback('Не вижу цель.')
             }
             break;
+        case "flyto":
+            if (task) {
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                return;
+            }
+
+            let playerToFly;
+
+            if (args.length < 1) {
+                playerToFly = bot.players[username]?.entity;
+                console.log('Аргументов нет')
+            } else {
+                let targetname = args[0];
+                console.log('Аргументы ест')
+                playerToFly = findEntityWithName(bot, targetname);
+            }
+
+
+
+            if (playerToFly) {
+                poss = playerToFly.position
+                moveToPosition(poss.x, poss.z, 2.5, 3)
+            } else {
+                sendFeedback('Не вижу цель.')
+            }
+            break;
         case "teleport":
             if (task) {
                 bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
