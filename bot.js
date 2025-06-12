@@ -949,6 +949,31 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
+async function moveToPosition(targetX, targetZ) {
+    let velocityX = 0;
+    let velocityZ = 0;
+    const deltaX = targetX - bot.entity.position.x;
+    const deltaZ = targetZ - bot.entity.position.z;
+    const distance = Math.sqrt(deltaX**2 + deltaZ**2);
+    const speedFactor = 0.1;
+
+    if (distance > 0.1) {
+        velocityX = (deltaX / distance) * speedFactor;
+        velocityZ = (deltaZ / distance) * speedFactor;
+    }
+
+    await new Promise(resolve => {
+        const movementInterval = setInterval(() => {
+            const pos = bot.entity.position;
+            if (Math.abs(pos.x - targetX) < 0.1 && Math.abs(pos.z - targetZ) < 0.1) {
+                clearInterval(movementInterval);
+                resolve();
+            } else {
+                bot.entity.setVelocity({ x: velocityX, y: 0, z: velocityZ });
+            }
+        }, 50);
+    });
+}
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
     bot._client.write('block_dig', {
