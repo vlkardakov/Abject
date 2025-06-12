@@ -975,6 +975,8 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
         }, 50);
     });
     bot.entity.velocity.y -= 4
+    bot.entity.velocity.x = 0
+    bot.entity.velocity.z = 0
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
