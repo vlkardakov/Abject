@@ -957,6 +957,7 @@ function findDistanceToBlockBelow() {
     return playerY - blockHeight;
 }
 async function getDistanceToBlockBelow() {
+  const pos = bot.entity.position
   const posy = parseInt(bot.entity.position.y)
   for(let y = posy; y >= 0; y--) {
     const blockBelow = bot.blockAt({ x: Math.floor(pos.x), y, z: Math.floor(pos.z) });
