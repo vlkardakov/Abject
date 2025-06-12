@@ -964,7 +964,7 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6) {
+async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     task = 'flying'
     bot.entity.velocity.y += jumpPower
     await bot.waitForTicks(10)
@@ -993,7 +993,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    
+    if (safe) {
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
             if (getHeightAboveGround() < 20 || task !== 'flying') {
@@ -1032,7 +1032,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6) {
                 ANTIFALL = true;
                 await bot.waitForTicks(10);
                 ANTIFALL = false;
-
+    }
     task = null;
 }
 function digPacket(block) {
