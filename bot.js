@@ -984,6 +984,17 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
     
+    let isFalling = true;
+
+    setInterval(() => {
+        if (isFalling && findDistanceToBlockBelow() > 1 && bot.entity.velocity.y < -0.2) {
+            bot.entity.velocity += 0.11;
+        }
+    }, 50);
+
+    bot.once("step", () => {
+        isFalling = false;
+    });
 
 }
 function digPacket(block) {
@@ -1012,69 +1023,8 @@ function digPacket(block) {
 
     }, 1000)
 }
-function getAllTextDisplaysTexts() {
-    const texts = []
 
-    for (const entity of Object.values(bot.entities)) {
-        if (entity?.name !== 'text_display') continue
 
-        const metadata = entity?.metadata
-        if (!Array.isArray(metadata)) {
-            texts.push('(нет metadata 😭)')
-            continue
-        }
-
-        const metaText = metadata.find(m => m?.key === 23)
-        if (metaText?.value?.text) {
-            texts.push(metaText.value.text)
-        } else {
-            texts.push('(нет текста 😢)')
-        }
-    }
-
-    return texts
-}
-function debugTextDisplayMetadata() {
-    for (const entity of Object.values(bot.entities)) {
-        if (entity?.name !== 'text_display') continue
-
-        console.log(`=== TextDisplay ID: ${entity.id} ===`)
-
-        if (!Array.isArray(entity.metadata)) {
-            console.log('metadata отсутствует или не массив')
-            continue
-        }
-
-        for (const meta of entity.metadata) {
-            console.log(`key: ${meta?.key}, type: ${meta?.type}, value:`)
-            console.dir(meta?.value, { depth: null })
-        }
-
-        console.log('=============================\n')
-    }
-}
-function extractTextDisplayNumbers() {
-    const numbers = []
-
-    for (const entity of Object.values(bot.entities)) {
-        if (entity?.name !== 'text_display') continue
-
-        const meta = entity?.metadata?.find(m => m?.type === 'compound' && m?.value?.extra)
-        if (!meta) continue
-
-        const textChunks = meta.value.extra?.value?.value
-        if (!Array.isArray(textChunks)) continue
-
-        for (const chunk of textChunks) {
-            const raw = chunk?.text?.value
-            if (typeof raw === 'string' && /\d/.test(raw)) {
-                numbers.push(raw.trim())
-            }
-        }
-    }
-
-    return numbers
-}
 function getSwordDamage(){
     const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
     if (!item) {
