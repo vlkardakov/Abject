@@ -994,19 +994,21 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
     
-    checkHeightInterval = setInterval(() => {
-       if (getHeightAboveGround() < 20 || task !== 'flying') {
-          task = null
-          clearInterval(checkHeightInterval)
-          return
-       }
-       console.log('ждем...')
-    }, 10)
-    console.log('Торможение!')
-    ANTIFALL = true
-    await bot.waitForTicks(20)
-    ANTIFALL = false
-    task = null
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
+            if (getHeightAboveGround() < 20 || task !== 'flying') {
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+
+
+    console.log('Торможение!');
+    ANTIFALL = true;
+    await bot.waitForTicks(20);
+    ANTIFALL = false;
+    task = null;
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
