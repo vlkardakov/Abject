@@ -957,6 +957,7 @@ function findDistanceToBlockBelow() {
     return playerY - blockHeight;
 }
 async function moveToPosition(targetX, targetZ, speedFactor) {
+    task = 'flying'
     bot.entity.velocity.y += 6
     await bot.waitForTicks(10)
     let velocityX = 0;
@@ -973,7 +974,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
                 clearInterval(movementInterval);
                 resolve();
             } else {
