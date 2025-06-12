@@ -949,6 +949,12 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
+function findDistanceToBlockBelow() {
+    const playerY = bot.entity.position.y;
+    const blockHeight = Math.floor(playerY);
+
+    return playerY - blockHeight;
+}
 async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y += 4
     await bot.waitForTicks(5)
@@ -977,6 +983,17 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 4
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
+
+    let isFalling = true;
+
+    setInterval(() => {
+        if (isFalling && findDistanceToBlockBelow() > 1 && bot.entity.velocity.y < -0.2) {
+            bot.entity.velocity += 0.11,
+    }, 50);
+
+    bot.once("step", () => {
+        isFalling = false;
+    });
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
@@ -1103,7 +1120,7 @@ bot.on('entityHurt', async (entity) => {
     }
 })
 bot.on('physicsTick', () => {
-    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4
+    `if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4
 }) 
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
