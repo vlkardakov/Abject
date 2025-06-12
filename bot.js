@@ -950,6 +950,8 @@ async function craftSet(count = 1) {
     equipItem('sword')
 }
 async function moveToPosition(targetX, targetZ, speedFactor) {
+    bot.entity.velocity.y += 4
+    await bot.waitForTicks(5)
     let velocityX = 0;
     let velocityZ = 0;
     const deltaX = targetX - bot.entity.position.x;
@@ -972,6 +974,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
             }
         }, 50);
     });
+    bot.entity.velocity.y -= 4
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
