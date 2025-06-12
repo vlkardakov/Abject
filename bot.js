@@ -964,9 +964,9 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-async function moveToPosition(targetX, targetZ, speedFactor) {
+async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6) {
     task = 'flying'
-    bot.entity.velocity.y += 6
+    bot.entity.velocity.y += jumpPower
     await bot.waitForTicks(10)
     let velocityX = 0;
     let velocityZ = 0;
