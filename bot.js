@@ -35,6 +35,7 @@ const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr
 const RANGE_GOAL = 0;
 let BOUNCE_POWER = 0
 let ANTIFALL = false
+let ANTIFALL_CORRECTION = 0
 let protectedPlayer = null;
 let following = false;
 let miningSand = false;
@@ -983,7 +984,12 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-
+    ANTIFALL_CORRECTION = -0.1
+    ANTIFALL = true
+    bot.once("step", () => {
+        ANTIFALL = false;
+        ANTIFALL_CORRECTION = 0
+    });
 
 }
 function digPacket(block) {
@@ -1050,7 +1056,7 @@ bot.on('entityHurt', async (entity) => {
     }
 })
 bot.on('physicsTick', () => {
-    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4
+    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
 }) 
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
@@ -1983,12 +1989,6 @@ function processCommand(message, username, plainMessage) {
             console.error("Ашипка! 😭")
             replyFeedback(username, "Ашипка! 😭")
             process.exit(1)
-            break
-
-        case "flowers":
-            integers = extractTextDisplayNumbers();
-            if (integers.length === 2) bot.chat(`!Могила заполнена цветами на ${integers[0]} из ${integers[1]}`);
-
             break
         case "attacknotme":
             const targetsToAttackNotMe = Object.values(bot.players)
