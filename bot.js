@@ -956,6 +956,14 @@ function findDistanceToBlockBelow() {
 
     return playerY - blockHeight;
 }
+async function getDistanceToBlockBelow() {
+  for(let y = Math.floor(pos.y); y >= 0; y--) {
+    const blockBelow = bot.blockAt({ x: Math.floor(pos.x), y, z: Math.floor(pos.z) });
+    if(blockBelow && !blockBelow.isAir()) {
+      return y
+    }
+  }
+}
 async function moveToPosition(targetX, targetZ, speedFactor) {
     task = 'flying'
     bot.entity.velocity.y += 6
