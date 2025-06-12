@@ -996,7 +996,8 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     if (safe) {
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 30 || task !== 'flying') {
+            height = getHeightAboveGround()
+            if ((height < 20 && height !== -1) || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
@@ -1009,7 +1010,8 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
 
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 10 || task !== 'flying') {
+            height = getHeightAboveGround()
+            if ((height < 10 && height !== -1) || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
@@ -1022,7 +1024,8 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
 
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 3 || task !== 'flying') {
+            height = getHeightAboveGround()
+            if ((height < 3 && height !== -1) || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
