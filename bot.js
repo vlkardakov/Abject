@@ -950,12 +950,6 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
-function findDistanceToBlockBelow() {
-    const playerY = bot.entity.position.y;
-    const blockHeight = Math.floor(playerY);
-
-    return playerY - blockHeight;
-}
 function getHeightAboveGround() {
     const pos = bot.entity.position;
     const minY = bot.world.minY || 0;
@@ -1000,10 +994,16 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
     
-    
+    checkHeightInterval = setInterval(() => {
+       if (getHeightAboveGround() < 3 || task !== 'flying') {
+          task = null
+          clearInterval(checkHeightInterval)
+       }
+    }, 10)
     ANTIFALL = true
     await bot.waitForTicks(20)
     ANTIFALL = false
+    task = null
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
