@@ -972,7 +972,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < 2 && Math.abs(pos.z - targetZ) < 2) {
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
@@ -983,6 +983,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
+
 
 }
 function digPacket(block) {
