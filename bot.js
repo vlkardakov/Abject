@@ -988,7 +988,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
 
     setInterval(() => {
         if (isFalling && findDistanceToBlockBelow() > 1 && bot.entity.velocity.y < -0.2) {
-            bot.entity.velocity += 0.11,
+            bot.entity.velocity += 0.11
     }, 50);
 
     bot.once("step", () => {
