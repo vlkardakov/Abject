@@ -963,6 +963,7 @@ async function getDistanceToBlockBelow() {
       return y
     }
   }
+  return 0
 }
 async function moveToPosition(targetX, targetZ, speedFactor) {
     task = 'flying'
