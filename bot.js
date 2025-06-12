@@ -969,7 +969,7 @@ async function moveToPosition(targetX, targetZ) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
-                bot.entity.setVelocity({ x: velocityX, y: 0, z: velocityZ });
+                bot.entity.velocity = { x: velocityX, y: 0, z: velocityZ };
             }
         }, 50);
     });
