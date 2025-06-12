@@ -972,7 +972,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
+            if (Math.abs(pos.x - targetX) < 2 && Math.abs(pos.z - targetZ) < 2) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
