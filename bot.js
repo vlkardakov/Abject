@@ -996,7 +996,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 6 || task !== 'flying') {
+            if (getHeightAboveGround() < 10 || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
