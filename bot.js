@@ -983,18 +983,6 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    
-    let isFalling = true;
-
-    async function noFall() {
-
-            console.log('смягчаем скорость!')
-            bot.entity.velocity.y += 0.1;
-    };
-    bot.on('phisicsTick', noFall);
-    bot.once("step", () => {
-        bot.off('phisicsTick', noFall);
-    });
 
 }
 function digPacket(block) {
