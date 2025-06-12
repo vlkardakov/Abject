@@ -955,7 +955,7 @@ async function moveToPosition(targetX, targetZ) {
     const deltaX = targetX - bot.entity.position.x;
     const deltaZ = targetZ - bot.entity.position.z;
     const distance = Math.sqrt(deltaX**2 + deltaZ**2);
-    const speedFactor = 0.2;
+    const speedFactor = 0.5;
 
     if (distance > 0.1) {
         velocityX = (deltaX / distance) * speedFactor;
@@ -965,7 +965,7 @@ async function moveToPosition(targetX, targetZ) {
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < 0.1 && Math.abs(pos.z - targetZ) < 0.1) {
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
