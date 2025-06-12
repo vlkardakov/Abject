@@ -949,13 +949,12 @@ async function craftSet(count = 1) {
     await bot.armorManager.equipAll()
     equipItem('sword')
 }
-async function moveToPosition(targetX, targetZ) {
+async function moveToPosition(targetX, targetZ, speedFactor) {
     let velocityX = 0;
     let velocityZ = 0;
     const deltaX = targetX - bot.entity.position.x;
     const deltaZ = targetZ - bot.entity.position.z;
     const distance = Math.sqrt(deltaX**2 + deltaZ**2);
-    const speedFactor = 0.5;
 
     if (distance > 0.1) {
         velocityX = (deltaX / distance) * speedFactor;
