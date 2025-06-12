@@ -984,7 +984,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    ANTIFALL_CORRECTION = -0.5
+    ANTIFALL_CORRECTION = -0.3
     ANTIFALL = true
     bot.once("step", () => {
         ANTIFALL = false;
