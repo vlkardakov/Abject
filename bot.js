@@ -986,13 +986,13 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     
     let isFalling = true;
 
-    setInterval(() => {
+    async function noFall {
         if (isFalling && bot.entity.velocity.y < -0.2) {
             console.log('смягчаем скорость!')
-            bot.entity.velocity.y += 0.2;
+            bot.entity.velocity.y += 0.1;
         }
-    }, 50);
-
+    };
+    bot.on("phisicsTick", () => noFall
     bot.once("step", () => {
         isFalling = false;
     });
