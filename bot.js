@@ -1002,7 +1002,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
             }
         }, 10);
     });
-                console.log('Торможение!');
+                console.log('Торможение! ${getHeightAboveGround()}');
                 ANTIFALL = true;
                 await bot.waitForTicks(10);
                 ANTIFALL = false;
