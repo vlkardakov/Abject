@@ -995,11 +995,13 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.z = 0
     
     checkHeightInterval = setInterval(() => {
-       if (getHeightAboveGround() < 3 || task !== 'flying') {
+       if (getHeightAboveGround() < 10 || task !== 'flying') {
           task = null
           clearInterval(checkHeightInterval)
        }
+       console.log('ждем...')
     }, 10)
+    console.log('Торможение!')
     ANTIFALL = true
     await bot.waitForTicks(20)
     ANTIFALL = false
