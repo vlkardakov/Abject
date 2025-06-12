@@ -996,7 +996,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 20 || task !== 'flying') {
+            if (getHeightAboveGround() < 6 || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
@@ -1006,7 +1006,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
 
     console.log('Торможение!');
     ANTIFALL = true;
-    await bot.waitForTicks(20);
+    await bot.waitForTicks(10);
     ANTIFALL = false;
     task = null;
 }
