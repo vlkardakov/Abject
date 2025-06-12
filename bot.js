@@ -996,7 +996,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     if (safe) {
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
-            if (getHeightAboveGround() < 20 || task !== 'flying') {
+            if (getHeightAboveGround() < 30 || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
@@ -1004,7 +1004,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     });
                 console.log('Торможение!');
                 ANTIFALL = true;
-                await bot.waitForTicks(10);
+                await bot.waitForTicks(5);
                 ANTIFALL = false;
 
     await new Promise((resolve) => {
@@ -1017,7 +1017,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     });
                 console.log('Торможение!');
                 ANTIFALL = true;
-                await bot.waitForTicks(10);
+                await bot.waitForTicks(5);
                 ANTIFALL = false;
 
     await new Promise((resolve) => {
@@ -1030,7 +1030,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     });
                 console.log('Торможение!');
                 ANTIFALL = true;
-                await bot.waitForTicks(10);
+                await bot.waitForTicks(5);
                 ANTIFALL = false;
     }
     task = null;
