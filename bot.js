@@ -995,9 +995,10 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.z = 0
     
     checkHeightInterval = setInterval(() => {
-       if (getHeightAboveGround() < 10 || task !== 'flying') {
+       if (getHeightAboveGround() < 20 || task !== 'flying') {
           task = null
           clearInterval(checkHeightInterval)
+          return
        }
        console.log('ждем...')
     }, 10)
