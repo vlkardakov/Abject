@@ -992,7 +992,7 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
             bot.entity.velocity.y += 0.1;
         }
     };
-    bot.on("phisicsTick", () => noFall
+    bot.on("phisicsTick", () => noFall)
     bot.once("step", () => {
         isFalling = false;
     });
