@@ -955,7 +955,7 @@ async function moveToPosition(targetX, targetZ) {
     const deltaX = targetX - bot.entity.position.x;
     const deltaZ = targetZ - bot.entity.position.z;
     const distance = Math.sqrt(deltaX**2 + deltaZ**2);
-    const speedFactor = 0.1;
+    const speedFactor = 0.2;
 
     if (distance > 0.1) {
         velocityX = (deltaX / distance) * speedFactor;
