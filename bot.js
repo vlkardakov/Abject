@@ -961,11 +961,11 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     await bot.waitForTicks(10)
     let velocityX = 0;
     let velocityZ = 0;
-    const deltaX = (targetX - bot.entity.position.x) - speedFactor;
-    const deltaZ = (targetZ - bot.entity.position.z) - speedFactor;
+    const deltaX = (targetX - bot.entity.position.x)// - speedFactor;
+    const deltaZ = (targetZ - bot.entity.position.z)// - speedFactor;
     const distance = Math.sqrt(deltaX**2 + deltaZ**2);
 
-    if (distance > 0.1) {
+    if (distance > speedFactor) {
         velocityX = (deltaX / distance) * speedFactor;
         velocityZ = (deltaZ / distance) * speedFactor;
     }
