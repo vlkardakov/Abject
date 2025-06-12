@@ -2477,7 +2477,7 @@ function processCommand(message, username, plainMessage) {
             } else {
                 let targetname = args[0];
                 console.log('Аргументы ест')
-                playerToFly = findEntityWithName(bot, targetname);
+                playerToFly = findEntityWithName(bot, targetname, false);
             }
 
 
