@@ -1004,7 +1004,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     });
                 console.log('Торможение!');
                 ANTIFALL = true;
-                await bot.waitForTicks(5);
+                await bot.waitForTicks(10);
                 ANTIFALL = false;
 
     await new Promise((resolve) => {
