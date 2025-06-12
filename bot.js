@@ -982,7 +982,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
+            if (Math.abs(pos.x - targetX) < Math.sqrt(speedFactor) && Math.abs(pos.z - targetZ) < Math.sqrt(speedFactor) || task !== 'flying') {
                 clearInterval(movementInterval);
                 resolve();
             } else {
