@@ -956,8 +956,8 @@ function findDistanceToBlockBelow() {
     return playerY - blockHeight;
 }
 async function moveToPosition(targetX, targetZ, speedFactor) {
-    bot.entity.velocity.y += 4
-    await bot.waitForTicks(5)
+    bot.entity.velocity.y += 6
+    await bot.waitForTicks(10)
     let velocityX = 0;
     let velocityZ = 0;
     const deltaX = targetX - bot.entity.position.x;
