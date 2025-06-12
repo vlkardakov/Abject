@@ -956,16 +956,19 @@ function findDistanceToBlockBelow() {
 
     return playerY - blockHeight;
 }
-async function getDistanceToBlockBelow() {
-  const pos = bot.entity.position
-  const posy = parseInt(bot.entity.position.y)
-  for(let y = posy; y >= 0; y--) {
-    const blockBelow = bot.blockAt({ x: Math.floor(pos.x), y, z: Math.floor(pos.z) });
-    if(blockBelow && !blockBelow.isAir()) {
-      return y
+function getHeightAboveGround() {
+    const pos = bot.entity.position;
+    const minY = bot.world.minY || 0;
+    let y = Math.floor(pos.y) - 1;
+    const x = Math.floor(pos.x);
+    const z = Math.floor(pos.z);
+    while (y >= minY) {
+        const block = bot.blockAt(new Vec3(x, y, z));
+        if (!block) break;
+        if (block.name !== 'air') return pos.y - (y + 1);
+        y--;
     }
-  }
-  return 0
+    return -1;
 }
 async function moveToPosition(targetX, targetZ, speedFactor) {
     task = 'flying'
@@ -996,12 +999,12 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    ANTIFALL_CORRECTION = -0.3
-    ANTIFALL = true
-    bot.once("step", () => {
-        ANTIFALL = false;
-        ANTIFALL_CORRECTION = 0
-    });
+//    ANTIFALL_CORRECTION = -0.3
+//    ANTIFALL = true
+//    bot.once("step", () => {
+//        ANTIFALL = false;
+//        ANTIFALL_CORRECTION = 0
+//    });
 
 }
 function digPacket(block) {
