@@ -999,13 +999,11 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-//    ANTIFALL_CORRECTION = -0.3
-//    ANTIFALL = true
-//    bot.once("step", () => {
-//        ANTIFALL = false;
-//        ANTIFALL_CORRECTION = 0
-//    });
-
+    
+    
+    ANTIFALL = true
+    await bot.waitForTicks(20)
+    ANTIFALL = false
 }
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
