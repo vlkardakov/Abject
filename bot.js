@@ -996,18 +996,41 @@ async function moveToPosition(targetX, targetZ, speedFactor) {
     
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
+            if (getHeightAboveGround() < 30 || task !== 'flying') {
+                console.log('Торможение!');
+                ANTIFALL = true;
+                await bot.waitForTicks(10);
+                ANTIFALL = false;
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
+            if (getHeightAboveGround() < 20 || task !== 'flying') {
+                console.log('Торможение!');
+                ANTIFALL = true;
+                await bot.waitForTicks(10);
+                ANTIFALL = false;
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
             if (getHeightAboveGround() < 10 || task !== 'flying') {
+                console.log('Торможение!');
+                ANTIFALL = true;
+                await bot.waitForTicks(10);
+                ANTIFALL = false;
                 clearInterval(checkHeightInterval);
                 resolve();
             }
         }, 10);
     });
 
-
-    console.log('Торможение!');
-    ANTIFALL = true;
-    await bot.waitForTicks(10);
-    ANTIFALL = false;
     task = null;
 }
 function digPacket(block) {
