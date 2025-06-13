@@ -1134,24 +1134,8 @@ function processCommand(message, username, plainMessage) {
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
             return;
-        case "activate":
+        case "activate": if (args.length < 1) return; const target = findEntityWithName(bot, args[0]); if (target) bot.lookAt(target.position.offset(0, target.height * 0.9, 0)).then(() => (bot.swingArm(), bot.activateEntity(target))); return;
 
-            if (args.length < 1) {
-                // bot.chat("Укажи цель: activate <ник_игрока | тип_моба>");
-                return;
-            }
-            let targetname = args[0];
-
-            sendFeedback(`Ищу цель для пкм: ${targetname}`);
-            bot.chat(`/msg ${username} Ищу цель: ${targetname}`);
-
-            const entityToActivate = findEntityWithName(bot, targetname);
-            if (entityToActivate) {
-                const headPosition = entityToActivate.position.offset(0, entityToActivate.height * 0.9, 0);
-                bot.lookAt(headPosition);
-                bot.activateEntity(entityToActivate);
-            }
-            return;
         case "activateblock":
             const blockToActivate = bot.findBlock({
                 matching: block => {
