@@ -992,27 +992,27 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 50);
     });
-
-    speedFactor2 = 0.5    
-        
-    const deltaX2 = (targetX - bot.entity.position.x)// - speedFactor;
-    const deltaZ2 = (targetZ - bot.entity.position.z)// - speedFactor;
-    const distance2 = Math.sqrt(deltaX2**2 + deltaZ2**2);
-
-    if (distance > speedFactor) {
-        velocityX = (deltaX2 / distance2) * speedFactor2;
-        velocityZ = (deltaZ2 / distance2) * speedFactor2;
-    }
-
     await new Promise(resolve => {
-        const movementInterval2 = setInterval(() => {
-            const pos2 = bot.entity.position;
-            if (Math.abs(pos2.x - targetX) < speedFactor && Math.abs(pos2.z - targetZ) < speedFactor2 || task !== 'flying') {
-                clearInterval(movementInterval2);
+        const slowMovement = setInterval(() => {
+            const pos = bot.entity.position;
+            const dx = targetX - pos.x;
+            const dz = targetZ - pos.z;
+            const dist = Math.sqrt(dx ** 2 + dz ** 2);
+
+            if (dist < 0.2 || task !== 'flying') {
+                bot.entity.velocity.x = 0;
+                bot.entity.velocity.z = 0;
+                clearInterval(slowMovement);
                 resolve();
-            } else {
-                bot.entity.velocity.x = velocityX; bot.entity.velocity.y = 0; bot.entity.velocity.z = velocityZ;
+                return;
             }
+
+            const velX = (dx / dist) * 0.5;
+            const velZ = (dz / dist) * 0.5;
+
+            bot.entity.velocity.x = velX;
+            bot.entity.velocity.y = 0;
+            bot.entity.velocity.z = velZ;
         }, 50);
     });
 
