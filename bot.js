@@ -815,13 +815,15 @@ function findNearestEnemy() {
 
         const name = entity.name.toLowerCase() || ''
         const isHostile = (
+            (
             name.includes('zombie') ||
             name.includes('skeleton') ||
             name.includes('spider') ||
             name.includes('creeper') ||
             name.includes('piglin') ||
             name.includes('enderm') ||
-            name.includes('drowned') //||
+            name.includes('drowned')
+            ) && (!name.includes('horse'))//||
             // name.includes('phantom')
         );
 
