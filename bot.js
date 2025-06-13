@@ -994,7 +994,7 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
     if (safe) {
-    await new Promise((resolve) => {
+    /*await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
             height = getHeightAboveGround()
             if ((height < 20 && height !== -1) || task !== 'flying') {
@@ -1020,12 +1020,12 @@ async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=t
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
                 await bot.waitForTicks(5);
-                ANTIFALL = false;
+                ANTIFALL = false; */
 
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
             height = getHeightAboveGround()
-            if ((height < 3 && height !== -1) || task !== 'flying') {
+            if ((height < 5 && height !== -1) || task !== 'flying') {
                 clearInterval(checkHeightInterval);
                 resolve();
             }
