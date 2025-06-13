@@ -966,7 +966,7 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
+async function tp(targetX, targetZ, speedFactor=6, jumpPower=6, safe=true) {
     task = 'flying'
     bot.entity.velocity.y += jumpPower
     await bot.waitForTicks(10)
