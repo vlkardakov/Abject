@@ -2514,7 +2514,7 @@ function processCommand(message, username, plainMessage) {
 
             if (playerToFly) {
                 poss = playerToFly.position
-                tp(poss.x, poss.z, 2.5, 3)
+                tp(poss.x, poss.z, 20, 6)
             } else {
                 sendFeedback('Не вижу цель.')
             }
