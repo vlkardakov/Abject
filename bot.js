@@ -966,7 +966,7 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-async function moveToPosition(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
+async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     task = 'flying'
     bot.entity.velocity.y += jumpPower
     await bot.waitForTicks(10)
@@ -2514,7 +2514,7 @@ function processCommand(message, username, plainMessage) {
 
             if (playerToFly) {
                 poss = playerToFly.position
-                moveToPosition(poss.x, poss.z, 2.5, 3)
+                tp(poss.x, poss.z, 2.5, 3)
             } else {
                 sendFeedback('Не вижу цель.')
             }
