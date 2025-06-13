@@ -1134,8 +1134,24 @@ function processCommand(message, username, plainMessage) {
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
             return;
-        case "activate": if (args.length < 1) return; const t = findEntityWithName(bot, args[0]); if (t) bot.lookAt(t.position.offset(0, t.height * 0.9, 0)).then(() => { bot.swingArm(); bot._client.write('use_entity', { target: t.id, type: 'interact', hand: 'main_hand', sneaking: false }); }); return;
+        case "activate":
 
+            if (args.length < 1) {
+                // bot.chat("Укажи цель: activate <ник_игрока | тип_моба>");
+                return;
+            }
+            let targetname = args[0];
+
+            sendFeedback(`Ищу цель для пкм: ${targetname}`);
+            bot.chat(`/msg ${username} Ищу цель: ${targetname}`);
+
+            const entityToActivate = findEntityWithName(bot, targetname);
+            if (entityToActivate) {
+                const headPosition = entityToActivate.position.offset(0, entityToActivate.height * 0.9, 0);
+                bot.lookAt(headPosition);
+                bot.activateEntity(entityToActivate);
+            }
+            return;
         case "activateblock":
             const blockToActivate = bot.findBlock({
                 matching: block => {
