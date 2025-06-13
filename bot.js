@@ -1134,7 +1134,7 @@ function processCommand(message, username, plainMessage) {
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
             return;
-        case "activate": if (args.length < 1) return; const target = findEntityWithName(bot, args[0]); if (target) bot.lookAt(target.position.offset(0, target.height * 0.9, 0)).then(() => { bot.swingArm(); bot._client.write('use_entity', { target: target.id, type: 0, hand: 0, sneaking: false }); }); return;
+        case "activate": if (args.length < 1) return; const t = findEntityWithName(bot, args[0]); if (t) bot.lookAt(t.position.offset(0, t.height * 0.9, 0)).then(() => { bot.swingArm(); bot._client.write('use_entity', { target: t.id, type: 'interact', hand: 'main_hand', sneaking: false }); }); return;
 
         case "activateblock":
             const blockToActivate = bot.findBlock({
