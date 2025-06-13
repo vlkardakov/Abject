@@ -108,7 +108,7 @@ const bot = mineflayer.createBot({
     // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
-    version: '1.21.4'
+    version: '1.21.1'
 });
 
 console.log("Запуск бота...");
