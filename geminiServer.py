@@ -125,9 +125,9 @@ def ask_gemini(prompt: str):
             json={
                 # "model": "google/gemini-pro-1.5",
 #                 "model": "openai/chatgpt-4o-latest",
-#                "model": "google/gemini-flash-1.5",
+                "model": "google/gemini-flash-1.5",
                 # "model": "google/gemini-2.5-pro-preview",
-                "model": "deepseek/deepseek-v3-base:free",
+                #"model": "deepseek/deepseek-v3-base:free",
                 "messages": messages,
                 "conversation_id": CONVERSATION_ID
             }
