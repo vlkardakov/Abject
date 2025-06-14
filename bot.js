@@ -1034,7 +1034,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
                 ANTIFALL = true;
                 await bot.waitForTicks(10);
                 ANTIFALL = false;
-
+                replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.')
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
             height = getHeightAboveGround()
