@@ -92,9 +92,9 @@ def ask_gemini(prompt: str):
             "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json={
-                # "model": "google/gemini-pro-1.5",
+                 "google/gemini-2.5-flash-preview",
 #                 "model": "openai/chatgpt-4o-latest",
-                "model": "google/gemini-flash-1.5",
+#                "model": "google/gemini-flash-1.5",
                 # "model": "google/gemini-2.5-pro-preview",
 #                "model": "meta-llama/llama-4-scout",
                 "messages": messages,
