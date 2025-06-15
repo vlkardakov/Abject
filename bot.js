@@ -1015,11 +1015,14 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             bot.entity.velocity.z = velZ;
         }, 50);
     });
-
+    
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-
+    if (task === "flying") {
+        bot.entity.position.x = Math.round(targetX) + 0.5
+        bot.entity.position.z = Math.round(targetZ) + 0.5
+    }
     if (safe) {
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
