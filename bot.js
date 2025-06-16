@@ -998,10 +998,12 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 50);
     });
-    if (task !== 'flying') return
-    bot.entity.velocity.y = -0.7
+    
+    
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
+    if (task !== 'flying') return
+    bot.entity.velocity.y = -0.7
     const offsetX = targetX >= 0 ? 0.5 : -0.5;
     const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
         
