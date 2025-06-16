@@ -967,11 +967,9 @@ function getHeightAboveGround() {
     return -1;
 }
 
-async function slowBrake() {
+async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.position.z, ) {
     task = "flying"
 
-    targetX = bot.entity.position.x
-    targetZ = bot.entity.position.z
     const offsetX = targetX >= 0 ? 0.5 : -0.5;
     const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
         
@@ -1065,7 +1063,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     bot.entity.velocity.y = -0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    await slowBrake()
+    await slowBrake(targetX, targetZ)
 
     task = null;
 }
