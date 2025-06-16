@@ -992,30 +992,30 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 50);
     });
-    await new Promise(resolve => {
-        const slowMovement = setInterval(() => {
-            const pos = bot.entity.position;
-            const dx = targetX - pos.x;
-            const dz = targetZ - pos.z;
-            const dist = Math.sqrt(dx ** 2 + dz ** 2);
-
-            if (dist < 0.5 || task !== 'flying') {
-                bot.entity.velocity.x = 0;
-                bot.entity.velocity.z = 0;
-                clearInterval(slowMovement);
-                resolve();
-                return;
-            }
-
-            const velX = (dx / dist) * 0.5;
-            const velZ = (dz / dist) * 0.5;
-
-            bot.entity.velocity.x = velX;
-            bot.entity.velocity.y = 0;
-            bot.entity.velocity.z = velZ;
-        }, 50);
-    });
-    
+//    await new Promise(resolve => {
+//        const slowMovement = setInterval(() => {
+//            const pos = bot.entity.position;
+//            const dx = targetX - pos.x;
+//            const dz = targetZ - pos.z;
+//            const dist = Math.sqrt(dx ** 2 + dz ** 2);
+//
+//            if (dist < 0.5 || task !== 'flying') {
+//                bot.entity.velocity.x = 0;
+//                bot.entity.velocity.z = 0;
+//                clearInterval(slowMovement);
+//                resolve();
+//                return;
+//            }
+//
+//            const velX = (dx / dist) * 0.5;
+//            const velZ = (dz / dist) * 0.5;
+//
+//            bot.entity.velocity.x = velX;
+//            bot.entity.velocity.y = 0;
+//            bot.entity.velocity.z = velZ;
+//        }, 50);
+//    });
+//    
     bot.entity.velocity.y -= 0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
