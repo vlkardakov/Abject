@@ -968,12 +968,13 @@ function getHeightAboveGround() {
 }
 
 async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.position.z, ) {
-    task = "flying"
-
+    if (task === "flying") {
     const offsetX = targetX >= 0 ? 0.5 : -0.5;
     const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
     bot.entity.position.x = Math.round(targetX) + offsetX;
     bot.entity.position.z = Math.round(targetZ) + offsetZ;
+    }
+    task = "flying"
 
     if (bot.entity.position.y > 200) {
         await new Promise((resolve) => {
