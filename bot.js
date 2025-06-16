@@ -1062,7 +1062,9 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 50);
     });
-
+    bot.entity.velocity.y = -0.7
+    bot.entity.velocity.x = 0
+    bot.entity.velocity.z = 0
     await slowBrake()
 
     task = null;
