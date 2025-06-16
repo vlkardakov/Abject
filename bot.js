@@ -1020,8 +1020,11 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
     if (task === "flying") {
-        bot.entity.position.x = Math.round(targetX) + 0.5
-        bot.entity.position.z = Math.round(targetZ) + 0.5
+        const offsetX = targetX >= 0 ? 0.5 : -0.5;
+        const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
+        
+        bot.entity.position.x = Math.round(targetX) + offsetX;
+        bot.entity.position.z = Math.round(targetZ) + offsetZ;
     }
     if (safe) {
     await new Promise((resolve) => {
