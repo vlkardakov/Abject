@@ -966,67 +966,14 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
-    task = 'flying'
-    bot.entity.velocity.y += jumpPower
-    await bot.waitForTicks(10)
-    let velocityX = 0;
-    let velocityZ = 0;
-    const deltaX = (targetX - bot.entity.position.x)// - speedFactor;
-    const deltaZ = (targetZ - bot.entity.position.z)// - speedFactor;
-    const distance = Math.sqrt(deltaX**2 + deltaZ**2);
 
-    if (distance > speedFactor) {
-        velocityX = (deltaX / distance) * speedFactor;
-        velocityZ = (deltaZ / distance) * speedFactor;
-    }
-
-    await new Promise(resolve => {
-        const movementInterval = setInterval(() => {
-            const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
-                clearInterval(movementInterval);
-                resolve();
-            } else {
-                bot.entity.velocity.x = velocityX; bot.entity.velocity.y = 0; bot.entity.velocity.z = velocityZ;
-            }
-        }, 50);
-    });
-//    await new Promise(resolve => {
-//        const slowMovement = setInterval(() => {
-//            const pos = bot.entity.position;
-//            const dx = targetX - pos.x;
-//            const dz = targetZ - pos.z;
-//            const dist = Math.sqrt(dx ** 2 + dz ** 2);
-//
-//            if (dist < 0.5 || task !== 'flying') {
-//                bot.entity.velocity.x = 0;
-//                bot.entity.velocity.z = 0;
-//                clearInterval(slowMovement);
-//                resolve();
-//                return;
-//            }
-//
-//            const velX = (dx / dist) * 0.5;
-//            const velZ = (dz / dist) * 0.5;
-//
-//            bot.entity.velocity.x = velX;
-//            bot.entity.velocity.y = 0;
-//            bot.entity.velocity.z = velZ;
-//        }, 50);
-//    });
-//    
-    bot.entity.velocity.y -= 0.7
-    bot.entity.velocity.x = 0
-    bot.entity.velocity.z = 0
-    if (task === "flying") {
-        const offsetX = targetX >= 0 ? 0.5 : -0.5;
-        const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
+async function slowBrake() {
+    const offsetX = targetX >= 0 ? 0.5 : -0.5;
+    const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
         
-        bot.entity.position.x = Math.round(targetX) + offsetX;
-        bot.entity.position.z = Math.round(targetZ) + offsetZ;
-    }
-    if (safe) {
+    bot.entity.position.x = Math.round(targetX) + offsetX;
+    bot.entity.position.z = Math.round(targetZ) + offsetZ;
+
     if (bot.entity.position.y > 200) {
         await new Promise((resolve) => {
             const checkHeightInterval = setInterval(() => {
@@ -1083,7 +1030,41 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
                 ANTIFALL = true;
                 await bot.waitForTicks(5);
                 ANTIFALL = false;
+}
+
+async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
+    task = 'flying'
+    bot.entity.velocity.y += jumpPower
+    await bot.waitForTicks(10)
+    let velocityX = 0;
+    let velocityZ = 0;
+    const deltaX = (targetX - bot.entity.position.x)// - speedFactor;
+    const deltaZ = (targetZ - bot.entity.position.z)// - speedFactor;
+    const distance = Math.sqrt(deltaX**2 + deltaZ**2);
+
+    if (distance > speedFactor) {
+        velocityX = (deltaX / distance) * speedFactor;
+        velocityZ = (deltaZ / distance) * speedFactor;
     }
+
+    await new Promise(resolve => {
+        const movementInterval = setInterval(() => {
+            const pos = bot.entity.position;
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
+                clearInterval(movementInterval);
+                resolve();
+            } else {
+                bot.entity.velocity.x = velocityX; bot.entity.velocity.y = 0; bot.entity.velocity.z = velocityZ;
+            }
+        }, 50);
+    });
+
+    bot.entity.velocity.y -= 0.7
+    bot.entity.velocity.x = 0
+    bot.entity.velocity.z = 0
+
+    await slowBrake()
+
     task = null;
 }
 function digPacket(block) {
