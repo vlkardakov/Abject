@@ -968,7 +968,7 @@ function getHeightAboveGround() {
 }
 
 async function slowBrake() {
-    bot.entity.velocity.y -= 0.7
+    bot.entity.velocity.y = -0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
 
