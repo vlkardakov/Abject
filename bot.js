@@ -1027,6 +1027,21 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
         bot.entity.position.z = Math.round(targetZ) + offsetZ;
     }
     if (safe) {
+    if (bot.entity.position.y > 200) {
+        await new Promise((resolve) => {
+            const checkHeightInterval = setInterval(() => {
+                height = getHeightAboveGround()
+                if ((height < 20 && height !== -1) || task !== 'flying') {
+                    clearInterval(checkHeightInterval);
+                    resolve();
+                }
+            }, 10);
+        });
+    }
+                console.log(`Торможение! ${getHeightAboveGround()}`);
+                ANTIFALL = true;
+                await bot.waitForTicks(5);
+                ANTIFALL = false;
     await new Promise((resolve) => {
         const checkHeightInterval = setInterval(() => {
             height = getHeightAboveGround()
