@@ -1002,7 +1002,7 @@ async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.posit
     });
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
-                await bot.waitForTicks(10);
+                await bot.waitForTicks(4);
                 ANTIFALL = false;
                 replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.')
     await new Promise((resolve) => {
@@ -1016,7 +1016,7 @@ async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.posit
     });
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
-                await bot.waitForTicks(5);
+                await bot.waitForTicks(3);
                 ANTIFALL = false;
 
     await new Promise((resolve) => {
@@ -1030,7 +1030,7 @@ async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.posit
     });
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
-                await bot.waitForTicks(5);
+                await bot.waitForTicks(2);
                 ANTIFALL = false;
 }
 
