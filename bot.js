@@ -968,6 +968,9 @@ function getHeightAboveGround() {
 }
 
 async function slowBrake() {
+    
+    targetX = bot.entity.position.x
+    targetZ = bot.entity.position.z
     const offsetX = targetX >= 0 ? 0.5 : -0.5;
     const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
         
