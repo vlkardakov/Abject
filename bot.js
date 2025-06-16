@@ -1051,7 +1051,11 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
+            if (task !== "flying") {
+            resolve()
+            return;            
+            }
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
