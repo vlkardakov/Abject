@@ -1031,7 +1031,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
         await new Promise((resolve) => {
             const checkHeightInterval = setInterval(() => {
                 height = getHeightAboveGround()
-                if ((height < 20 && height !== -1) || task !== 'flying') {
+                if ((height < 50 && height !== -1) || task !== 'flying') {
                     clearInterval(checkHeightInterval);
                     resolve();
                 }
