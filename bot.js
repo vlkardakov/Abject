@@ -998,6 +998,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 50);
     });
+    if (task !== 'flying') return
     bot.entity.velocity.y = -0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
@@ -1006,7 +1007,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
         
     bot.entity.position.x = Math.round(targetX) + offsetX;
     bot.entity.position.z = Math.round(targetZ) + offsetZ;
-
+    
     if (bot.entity.position.y > 200) {
         await new Promise((resolve) => {
             const checkHeightInterval = setInterval(() => {
@@ -1017,7 +1018,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
                 }
             }, 10);
         });
-    }
+    };          if (task !== 'flying') return
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
                 await bot.waitForTicks(5);
@@ -1030,7 +1031,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
                 resolve();
             }
         }, 10);
-    });
+    });         if (task !== 'flying') return
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
                 await bot.waitForTicks(10);
@@ -1059,6 +1060,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
             }
         }, 10);
     });
+                if (task !== 'flying') return
                 console.log(`Торможение! ${getHeightAboveGround()}`);
                 ANTIFALL = true;
                 await bot.waitForTicks(5);
