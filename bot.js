@@ -984,8 +984,13 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
 
     await new Promise(resolve => {
         const movementInterval = setInterval(() => {
+            if (task !== 'flying') {
+                clearInterval(movementInterval);
+                resolve();
+                return;
+            }
             const pos = bot.entity.position;
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor || task !== 'flying') {
+            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
                 clearInterval(movementInterval);
                 resolve();
             } else {
@@ -996,7 +1001,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     bot.entity.velocity.y = -0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-        const offsetX = targetX >= 0 ? 0.5 : -0.5;
+    const offsetX = targetX >= 0 ? 0.5 : -0.5;
     const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
         
     bot.entity.position.x = Math.round(targetX) + offsetX;
