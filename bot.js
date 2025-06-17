@@ -823,7 +823,7 @@ function findNearestEnemy() {
             name.includes('creeper') ||
             name.includes('piglin') ||
             name.includes('enderm') ||
-            name.includes('drowned') || username?.includes("Yohu")
+            name.includes('drowned') || username?.includes("vlka")
             ) && (!name.includes('horse'))//||
             // name.includes('phantom')
         );
