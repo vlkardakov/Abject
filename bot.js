@@ -814,6 +814,7 @@ function findNearestEnemy() {
         if (!entity.name) return false;
 
         const name = entity.name.toLowerCase() || ''
+        const username = entity.username
         const isHostile = (
             (
             name.includes('zombie') ||
@@ -822,7 +823,7 @@ function findNearestEnemy() {
             name.includes('creeper') ||
             name.includes('piglin') ||
             name.includes('enderm') ||
-            name.includes('drowned')
+            name.includes('drowned') || username?.includes("Yohu")
             ) && (!name.includes('horse'))//||
             // name.includes('phantom')
         );
