@@ -115,7 +115,8 @@ const bot = mineflayer.createBot({
 
 console.log("Запуск бота...");
 
-const EmoteBot = new MineflayerEmoteCraft(bot);
+console.log(MineflayerEmoteCraft)
+//const EmoteBot = new MineflayerEmoteCraft(bot);
 
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(pvp);
