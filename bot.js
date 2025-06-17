@@ -767,8 +767,8 @@ async function downloadMusic(username, songName, fileName) {
 function distanceToPofikBase(entity) {
     const pos = entity.position;
     if (!pos) return 1000
-    const dx = pos.x - 16;
-    const dz = pos.z + 3;
+    const dx = pos.x - 0;
+    const dz = pos.z + 0;
     return Math.sqrt(dx * dx + dz * dz);
 }
 function getLore(itemEntity) {
@@ -1535,7 +1535,7 @@ function processCommand(message, username, plainMessage) {
                         }
                     } else {
                         if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target) {
-                            pofikPos = vec3(16, 108, -3);
+                            pofikPos = vec3(0, 105, -8);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
