@@ -16,7 +16,6 @@ const armorManager = require('mineflayer-armor-manager');
 const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
-const elytrafly = require("mineflayer-elytrafly");
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
@@ -125,7 +124,6 @@ bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
 bot.loadPlugin(plasmo.plugin)
 // console.log(plasmo)
-bot.loadPlugin(elytrafly.elytrafly)
 // console.log(elytrafly)
 // console.log(customPVP)
 bot.loadPlugin(customPVP.default)
