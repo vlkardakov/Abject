@@ -6,6 +6,7 @@
 require('dotenv').config()
 const mineflayer = require('mineflayer')
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
+const { MineflayerEmoteCraft } = require('mineflayer-emotecraft');
 const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
@@ -113,6 +114,8 @@ const bot = mineflayer.createBot({
 });
 
 console.log("Запуск бота...");
+
+const EmoteBot = new MineflayerEmoteCraft(bot);
 
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(pvp);
