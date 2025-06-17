@@ -835,7 +835,7 @@ function findNearestEnemy() {
         //     )
         // )
 
-        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 1;
+        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 15;
     });
 }
 function getFreeInventorySlots() {
