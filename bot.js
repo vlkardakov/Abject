@@ -6,7 +6,6 @@
 require('dotenv').config()
 const mineflayer = require('mineflayer')
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
-const { MineflayerEmoteCraft } = require('mineflayer-emotecraft');
 const { GoalNear, GoalFollow, GoalBlock } = goals;
 const collectBlock = require('mineflayer-collectblock').plugin;
 const toolPlugin = require('mineflayer-tool').plugin;
