@@ -1529,8 +1529,9 @@ function processCommand(message, username, plainMessage) {
                         // console.log(JSON.stringify(targetItem.metadata, null, 2));
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
-                        equipItem('axe')
-                        equipItem('sword')
+//                        equipItem('axe')
+//                        equipItem('sword')
+                        equipItem('wheat')
                         bot.pvp.attack(targetEnemy)
                         }
                     } else {
