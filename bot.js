@@ -972,7 +972,34 @@ function getHeightAboveGround() {
     }
     return -1;
 }
+async function slowBrake() {
+    const brakeStages = [
+        { height: 50, ticks: 5 },
+        { height: 20, ticks: 3 },
+        { height: 10, ticks: 2 },
+        { height: 3, ticks: 5 }
+    ];
 
+    for (const stage of brakeStages) {
+        await new Promise(resolve => {
+            const checkHeightInterval = setInterval(() => {
+                const height = getHeightAboveGround();
+                if (task !== 'flying' || (height < stage.height && height !== -1)) {
+                    clearInterval(checkHeightInterval);
+                    resolve();
+                }
+            }, 10);
+        });
+
+        if (task !== 'flying') break;
+
+        console.log(`Торможение на высоте ${getHeightAboveGround()}!`);
+        ANTIFALL = true;
+        await bot.waitForTicks(stage.ticks);
+        ANTIFALL = false;
+    }
+
+}
 async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
     let movementInterval;
     try {
@@ -1009,7 +1036,6 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
             clearInterval(movementInterval);
         }
     }
-
     if (task !== 'flying') {
         console.log('Полет прерван, приземление не выполняется.');
         bot.entity.velocity.x = 0;
@@ -1023,31 +1049,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
     bot.entity.position.x = Math.floor(targetX) + offsetX;
     bot.entity.position.z = Math.floor(targetZ) + offsetZ;
 
-    const brakeStages = [
-        { height: 50, ticks: 5 },
-        { height: 20, ticks: 3 },
-        { height: 10, ticks: 2 },
-        { height: 3, ticks: 5 }
-    ];
-
-    for (const stage of brakeStages) {
-        await new Promise(resolve => {
-            const checkHeightInterval = setInterval(() => {
-                const height = getHeightAboveGround();
-                if (task !== 'flying' || (height < stage.height && height !== -1)) {
-                    clearInterval(checkHeightInterval);
-                    resolve();
-                }
-            }, 10);
-        });
-
-        if (task !== 'flying') break;
-
-        console.log(`Торможение на высоте ${getHeightAboveGround()}!`);
-        ANTIFALL = true;
-        await bot.waitForTicks(stage.ticks);
-        ANTIFALL = false;
-    }
+    await slowBrake()
 
     if (WATCHED_PLAYERS && WATCHED_PLAYERS.length > 0) {
         replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
