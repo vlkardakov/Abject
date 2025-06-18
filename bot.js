@@ -812,17 +812,17 @@ function findNearestItemWithLore() {
 }
 async function signAll(bot) {
     const initialEquipment = bot.armorManager.getWorn();
-    try {
+    //try {
         await bot.armorManager.unequipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
-            try {
+            //try {
                 await bot.equip(item, 'hand');
                 bot.chat('/signitem');
                 await bot.waitForTicks(6);
-            } catch (e) {}
-        }
-    } finally {
+            //} catch (e) {}
+    //     }
+    // } finally {
         const itemsToReequip = Object.values(initialEquipment).filter(Boolean);
         await Promise.all(itemsToReequip.map(item => bot.armorManager.equip(item).catch(() => {})));
     }
