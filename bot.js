@@ -1125,7 +1125,12 @@ bot.on('death', () => {
 });
 bot.on('physicsTick', () => {
     if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
-}) 
+})
+function parseCoordinates(command) {
+    const [, x, z] = command.match(/tp\s+\S+\s+(-?\d+)\S*\s+\S*\s+(-?\d+)/) || [];
+    return x && z ? { x: parseInt(x), z: parseInt(z) } : null;
+}
+
 function processCommand(message, username, plainMessage) {
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
@@ -1139,6 +1144,14 @@ function processCommand(message, username, plainMessage) {
     // }
 
     switch (command) {
+        case "/execute":
+            const result = parseCoordinates(message);
+            if (result) {
+                const {x, z} = result;
+                sendFeedback(`${username} телепортирует на ${x} ${z}`)
+                tp(x,z,16,20)
+            } else replyFeedback(username, 'Неверный синтаксис')
+            return;
         case "exec":
             if (!WATCHED_PLAYERS.includes(username)) {
                 sendFeedback(`${username} хочет выполнить ${plainMessage}`)
