@@ -967,7 +967,7 @@ function getHeightAboveGround() {
     while (y >= minY) {
         const block = bot.blockAt(new vec3(x, y, z));
         if (!block) break;
-        if (block.name !== 'air') return parseInt(pos.y - (y + 1));
+        if (!['air', 'grass', 'grass_block'].includes(block.name)) return parseInt(pos.y - (y + 1));
         y--;
     }
     return -1;
