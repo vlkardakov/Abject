@@ -30,7 +30,7 @@ const rl = readline.createInterface({
 const { exec } = require('child_process')
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
-const BAD_PLAYERS = ['YohuMiner42']
+const BAD_PLAYERS = ['YohuMiner42', 'rery1248']
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
 let BOUNCE_POWER = 0
