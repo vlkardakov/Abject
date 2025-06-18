@@ -1119,6 +1119,10 @@ bot.on('entityHurt', async (entity) => {
         boostBot(BOUNCE_POWER, findEntityWithName(bot, 'e', false))
     }
 })
+bot.on('death', () => {
+    console.log('Dead');
+    if (['flying'].includes(task)) {task=null}
+});
 bot.on('physicsTick', () => {
     if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
 }) 
