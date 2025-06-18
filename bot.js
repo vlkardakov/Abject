@@ -973,73 +973,6 @@ function getHeightAboveGround() {
     return -1;
 }
 
-async function slowBrake(targetX=bot.entity.position.x, targetZ=bot.entity.position.z, ) {
-    if (task === "flying") {
-    const offsetX = targetX >= 0 ? 0.5 : -0.5;
-    const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
-    bot.entity.position.x = Math.round(targetX) + offsetX;
-    bot.entity.position.z = Math.round(targetZ) + offsetZ;
-    }
-    task = "flying"
-
-    if (bot.entity.position.y > 200) {
-        await new Promise((resolve) => {
-            const checkHeightInterval = setInterval(() => {
-                height = getHeightAboveGround()
-                if ((height < 50 && height !== -1) || task !== 'flying') {
-                    clearInterval(checkHeightInterval);
-                    resolve();
-                }
-            }, 10);
-        });
-    }
-                console.log(`Торможение! ${getHeightAboveGround()}`);
-                ANTIFALL = true;
-                await bot.waitForTicks(5);
-                ANTIFALL = false;
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 20 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-                console.log(`Торможение! ${getHeightAboveGround()}`);
-                ANTIFALL = true;
-                await bot.waitForTicks(3);
-                ANTIFALL = false;
-                replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.')
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 10 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-                console.log(`Торможение! ${getHeightAboveGround()}`);
-                ANTIFALL = true;
-                await bot.waitForTicks(2);
-                ANTIFALL = false;
-
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 3 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-                console.log(`Торможение! ${getHeightAboveGround()}`);
-                ANTIFALL = true;
-                await bot.waitForTicks(5);
-                ANTIFALL = false;
-}
-
 async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     task = 'flying'
     bot.entity.velocity.y += jumpPower
@@ -1073,7 +1006,67 @@ async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
     bot.entity.velocity.y = -0.7
     bot.entity.velocity.x = 0
     bot.entity.velocity.z = 0
-    await slowBrake(targetX, targetZ)
+        const offsetX = targetX >= 0 ? 0.5 : -0.5;
+        const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
+        bot.entity.position.x = Math.round(targetX) + offsetX;
+        bot.entity.position.z = Math.round(targetZ) + offsetZ;
+
+    if (bot.entity.position.y > 200) {
+        await new Promise((resolve) => {
+            const checkHeightInterval = setInterval(() => {
+                height = getHeightAboveGround()
+                if ((height < 50 && height !== -1) || task !== 'flying') {
+                    clearInterval(checkHeightInterval);
+                    resolve();
+                }
+            }, 10);
+        });
+    }
+    console.log(`Торможение! ${getHeightAboveGround()}`);
+    ANTIFALL = true;
+    await bot.waitForTicks(5);
+    ANTIFALL = false;
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
+            height = getHeightAboveGround()
+            if ((height < 20 && height !== -1) || task !== 'flying') {
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+    console.log(`Торможение! ${getHeightAboveGround()}`);
+    ANTIFALL = true;
+    await bot.waitForTicks(3);
+    ANTIFALL = false;
+    replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.')
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
+            height = getHeightAboveGround()
+            if ((height < 10 && height !== -1) || task !== 'flying') {
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+    console.log(`Торможение! ${getHeightAboveGround()}`);
+    ANTIFALL = true;
+    await bot.waitForTicks(2);
+    ANTIFALL = false;
+
+    await new Promise((resolve) => {
+        const checkHeightInterval = setInterval(() => {
+            height = getHeightAboveGround()
+            if ((height < 3 && height !== -1) || task !== 'flying') {
+                clearInterval(checkHeightInterval);
+                resolve();
+            }
+        }, 10);
+    });
+    console.log(`Торможение! ${getHeightAboveGround()}`);
+    ANTIFALL = true;
+    await bot.waitForTicks(5);
+    ANTIFALL = false;
 
     task = null;
 }
