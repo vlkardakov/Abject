@@ -810,7 +810,16 @@ function findNearestItemWithLore() {
             return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
-
+async function signAllItems(bot) {
+    for (const item of bot.inventory.items()) {
+        try {
+            await bot.equip(item, 'hand');
+            bot.chat('/signitem');
+            await bot.waitForTicks(6);
+        } catch (e) {}
+    }
+    console.log('готово');
+}
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
@@ -830,13 +839,7 @@ function findNearestEnemy() {
             // name.includes('phantom')
         );
 
-        // const isBadPlayer = (
-        //     entity.name = 'player' && (
-        //         [].includes(entity.username)
-        //     )
-        // )
-
-        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 15;
+        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 50;
     });
 }
 function getFreeInventorySlots() {
@@ -1475,13 +1478,10 @@ function processCommand(message, username, plainMessage) {
             break;
         case "protect":
             if (task) {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
                 bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
                 return;
             }
-
-
-
 
             let protectInterval = null;
 
@@ -1530,9 +1530,9 @@ function processCommand(message, username, plainMessage) {
                         // console.log(JSON.stringify(targetItem.metadata, null, 2));
                         bot.pathfinder.setMovements(defaultMove);
                         bot.pathfinder.setGoal(null)
-//                        equipItem('axe')
-//                        equipItem('sword')
-                        equipItem('wheat')
+                        equipItem('axe')
+                        equipItem('sword')
+                        // equipItem('wheat')
                         bot.pvp.attack(targetEnemy)
                         }
                     } else {
