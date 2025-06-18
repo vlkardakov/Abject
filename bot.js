@@ -810,16 +810,24 @@ function findNearestItemWithLore() {
             return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
-async function signAllItems(bot) {
-    for (const item of bot.inventory.items()) {
-        try {
-            await bot.equip(item, 'hand');
-            bot.chat('/signitem');
-            await bot.waitForTicks(6);
-        } catch (e) {}
+async function signAll(bot) {
+    const initialEquipment = bot.armorManager.getWorn();
+    try {
+        await bot.armorManager.unequipAll();
+        await bot.waitForTicks(10);
+        for (const item of bot.inventory.items()) {
+            try {
+                await bot.equip(item, 'hand');
+                bot.chat('/signitem');
+                await bot.waitForTicks(6);
+            } catch (e) {}
+        }
+    } finally {
+        const itemsToReequip = Object.values(initialEquipment).filter(Boolean);
+        await Promise.all(itemsToReequip.map(item => bot.armorManager.equip(item).catch(() => {})));
     }
-    console.log('готово');
 }
+
 function findNearestEnemy() {
     return bot.nearestEntity(entity => {
         if (!entity.name) return false;
