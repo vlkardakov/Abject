@@ -973,103 +973,89 @@ function getHeightAboveGround() {
     return -1;
 }
 
-async function tp(targetX, targetZ, speedFactor, jumpPower=6, safe=true) {
-    task = 'flying'
-    bot.entity.velocity.y += jumpPower
-    await bot.waitForTicks(10)
-    let velocityX = 0;
-    let velocityZ = 0;
-    const deltaX = (targetX - bot.entity.position.x)// - speedFactor;
-    const deltaZ = (targetZ - bot.entity.position.z)// - speedFactor;
-    const distance = Math.sqrt(deltaX**2 + deltaZ**2);
+async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
+    let movementInterval;
+    try {
+        task = 'flying';
+        bot.entity.velocity.y += jumpPower;
+        await bot.waitForTicks(10);
 
-    if (distance > speedFactor) {
-        velocityX = (deltaX / distance) * speedFactor;
-        velocityZ = (deltaZ / distance) * speedFactor;
+        const deltaX = targetX - bot.entity.position.x;
+        const deltaZ = targetZ - bot.entity.position.z;
+        const distance = Math.sqrt(deltaX ** 2 + deltaZ ** 2);
+
+        let velocityX = 0;
+        let velocityZ = 0;
+        if (distance > speedFactor) {
+            velocityX = (deltaX / distance) * speedFactor;
+            velocityZ = (deltaZ / distance) * speedFactor;
+        }
+
+        await new Promise(resolve => {
+            movementInterval = setInterval(() => {
+                const pos = bot.entity.position;
+                if (task !== "flying" || (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor)) {
+                    resolve();
+                } else {
+                    bot.entity.velocity.x = velocityX;
+                    bot.entity.velocity.y = 0;
+                    bot.entity.velocity.z = velocityZ;
+                }
+            }, 50);
+        });
+
+    } finally {
+        if (movementInterval) {
+            clearInterval(movementInterval);
+        }
     }
 
-    await new Promise(resolve => {
-        const movementInterval = setInterval(() => {
-            const pos = bot.entity.position;
-            if (task !== "flying") {
-            resolve()
-            return;            
-            }
-            if (Math.abs(pos.x - targetX) < speedFactor && Math.abs(pos.z - targetZ) < speedFactor) {
-                clearInterval(movementInterval);
-                resolve();
-            } else {
-                bot.entity.velocity.x = velocityX; bot.entity.velocity.y = 0; bot.entity.velocity.z = velocityZ;
-            }
-        }, 50);
-    });
-    bot.entity.velocity.y = -0.7
-    bot.entity.velocity.x = 0
-    bot.entity.velocity.z = 0
-        const offsetX = targetX >= 0 ? 0.5 : -0.5;
-        const offsetZ = targetZ >= 0 ? 0.5 : -0.5;
-        bot.entity.position.x = Math.round(targetX) + offsetX;
-        bot.entity.position.z = Math.round(targetZ) + offsetZ;
+    if (task !== 'flying') {
+        console.log('Полет прерван, приземление не выполняется.');
+        bot.entity.velocity.x = 0;
+        bot.entity.velocity.z = 0;
+        return;
+    }
 
-    if (bot.entity.position.y > 200) {
-        await new Promise((resolve) => {
+    bot.entity.velocity.set(0, -0.7, 0);
+    const offsetX = Math.sign(targetX) * 0.5 || 0.5;
+    const offsetZ = Math.sign(targetZ) * 0.5 || 0.5;
+    bot.entity.position.x = Math.floor(targetX) + offsetX;
+    bot.entity.position.z = Math.floor(targetZ) + offsetZ;
+
+    const brakeStages = [
+        { height: 50, ticks: 5 },
+        { height: 20, ticks: 3 },
+        { height: 10, ticks: 2 },
+        { height: 3, ticks: 5 }
+    ];
+
+    for (const stage of brakeStages) {
+        await new Promise(resolve => {
             const checkHeightInterval = setInterval(() => {
-                height = getHeightAboveGround()
-                if ((height < 50 && height !== -1) || task !== 'flying') {
+                const height = getHeightAboveGround();
+                if (task !== 'flying' || (height < stage.height && height !== -1)) {
                     clearInterval(checkHeightInterval);
                     resolve();
                 }
             }, 10);
         });
-    }
-    console.log(`Торможение! ${getHeightAboveGround()}`);
-    ANTIFALL = true;
-    await bot.waitForTicks(5);
-    ANTIFALL = false;
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 20 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-    console.log(`Торможение! ${getHeightAboveGround()}`);
-    ANTIFALL = true;
-    await bot.waitForTicks(3);
-    ANTIFALL = false;
-    replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.')
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 10 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-    console.log(`Торможение! ${getHeightAboveGround()}`);
-    ANTIFALL = true;
-    await bot.waitForTicks(2);
-    ANTIFALL = false;
 
-    await new Promise((resolve) => {
-        const checkHeightInterval = setInterval(() => {
-            height = getHeightAboveGround()
-            if ((height < 3 && height !== -1) || task !== 'flying') {
-                clearInterval(checkHeightInterval);
-                resolve();
-            }
-        }, 10);
-    });
-    console.log(`Торможение! ${getHeightAboveGround()}`);
-    ANTIFALL = true;
-    await bot.waitForTicks(5);
-    ANTIFALL = false;
+        if (task !== 'flying') break;
+
+        console.log(`Торможение на высоте ${getHeightAboveGround()}!`);
+        ANTIFALL = true;
+        await bot.waitForTicks(stage.ticks);
+        ANTIFALL = false;
+    }
+
+    if (WATCHED_PLAYERS && WATCHED_PLAYERS.length > 0) {
+        replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
+    }
 
     task = null;
 }
+
 function digPacket(block) {
     bot._client.write('arm_animation', {}) // чтоб махнул рукой
     bot._client.write('block_dig', {
