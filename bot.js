@@ -2888,7 +2888,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('uncaughtException', (err) => {
     if (err.message.includes('Invalid typed array length')) {
-    console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
+        console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
+        process.exit(1)
     } else {
         throw err
     }
