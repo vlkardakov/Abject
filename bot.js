@@ -824,7 +824,7 @@ function getDest(item) {
 async function signInventoryAndReequip(bot) {
     const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
-        await bot.armorManager.unequipAll();
+        await bot.armorManager.unEquipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
             await bot.equip(item, 'hand');
