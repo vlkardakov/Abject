@@ -837,11 +837,13 @@ async function signAll(bot) {
     const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
         await unequipAll();
+        await unequipAll();
+        await unequipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
             await bot.equip(item, 'hand');
             bot.chat('/signitem');
-            await bot.waitForTicks(6);
+            await bot.waitForTicks(10);
         }
     } finally {
         for (const item of initialGear) {
