@@ -811,23 +811,26 @@ function findNearestItemWithLore() {
     });
 }
 async function signAll() {
-    const initialEquipment = [5, 6, 7, 8, 45].map(slot => bot.inventory.slots[slot]).filter(Boolean);
+    const initialEquipment = [5, 6, 7, 8, 45]
+        .map(slot => bot.inventory.slots[slot])
+        .filter(Boolean);
+
     try {
         await bot.armorManager.unequipAll();
         await bot.waitForTicks(10);
+
         for (const item of bot.inventory.items()) {
-            try {
-                await bot.equip(item, 'hand');
-                bot.chat('/signitem');
-                await bot.waitForTicks(6);
-            } catch (e) {}
+            await bot.equip(item, 'hand');
+            bot.chat('/signitem');
+            await bot.waitForTicks(6);
         }
     } finally {
         for (const item of initialEquipment) {
-            try { await bot.armorManager.equip(item); } catch (e) {}
+            await bot.armorManager.equip(item);
         }
     }
 }
+
 
 
 function findNearestEnemy() {
