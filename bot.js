@@ -1008,6 +1008,20 @@ function getHeightAboveGround() {
     }
     return -1;
 }
+function getY(bot, height, speed = 20) {
+    return new Promise(resolve => {
+        const onTick = () => {
+            if (bot.entity.position.y < height) {
+                bot.entity.velocity.y = speed;
+            } else {
+                bot.removeListener('physicsTick', onTick);
+                resolve(true);
+            }
+        };
+        bot.on('physicsTick', onTick);
+    });
+}
+
 async function slowBrake() {
     const brakeStages = [
         { height: 50, ticks: 5 },
