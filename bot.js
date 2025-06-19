@@ -1012,9 +1012,9 @@ async function slowBrake() {
     const brakeStages = [
         { height: 50, ticks: 5 },
         { height: 20, ticks: 5 },
-        { height: 10, ticks: 8 },
-        { height: 3, ticks: 5},
-        { height: 1, ticks: 2 }
+        { height: 10, ticks: 3 },
+        { height: 6, ticks: 5},
+        { height: 2, ticks: 2 }
     ];
 
     task = 'flying'
