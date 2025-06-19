@@ -841,6 +841,7 @@ async function signAll(bot) {
         await unequipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
+            if (JSON.stringify(item.nbt?.value).includes('Подпись')) continue
             await bot.equip(item, 'hand');
             bot.chat('/signitem');
             await bot.waitForTicks(10);
