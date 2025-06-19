@@ -1010,12 +1010,16 @@ function getHeightAboveGround() {
 }
 function getY(height, speed = 20) {
     return new Promise(resolve => {
+        if (task) {
+            sendFeedback(`Я уже занят заданием ${task}`); return}
+        task = 'getY'
         const onTick = () => {
-            if (bot.entity.position.y < height) {
+            if (bot.entity.position.y < height && task === 'getY') {
                 bot.entity.velocity.y = speed;
             } else {
                 bot.removeListener('physicsTick', onTick);
                 bot.entity.velocity.y = 0
+                task = null
                 resolve(true);
             }
         };
