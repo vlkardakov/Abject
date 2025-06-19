@@ -1011,9 +1011,10 @@ function getHeightAboveGround() {
 async function slowBrake() {
     const brakeStages = [
         { height: 50, ticks: 5 },
-        { height: 20, ticks: 3 },
-        { height: 10, ticks: 2 },
-        { height: 3, ticks: 5 }
+        { height: 20, ticks: 5 },
+        { height: 10, ticks: 5 },
+        { height: 3, ticks: 2 },
+        { height: 1, ticks: 1 }
     ];
 
     task = 'flying'
