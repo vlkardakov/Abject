@@ -1037,6 +1037,7 @@ async function slowBrake() {
         await bot.waitForTicks(stage.ticks);
         ANTIFALL = false;
     }
+    task = null
 
 }
 async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
