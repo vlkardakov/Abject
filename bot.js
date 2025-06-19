@@ -1016,6 +1016,8 @@ async function slowBrake() {
         { height: 3, ticks: 5 }
     ];
 
+    task = 'flying'
+
     for (const stage of brakeStages) {
         await new Promise(resolve => {
             const checkHeightInterval = setInterval(() => {
