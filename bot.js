@@ -1008,7 +1008,7 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-function getY(bot, height, speed = 20) {
+function getY(height, speed = 20) {
     return new Promise(resolve => {
         const onTick = () => {
             if (bot.entity.position.y < height) {
