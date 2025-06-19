@@ -1015,6 +1015,7 @@ function getY(height, speed = 20) {
                 bot.entity.velocity.y = speed;
             } else {
                 bot.removeListener('physicsTick', onTick);
+                bot.entity.velocity.y = 0
                 resolve(true);
             }
         };
