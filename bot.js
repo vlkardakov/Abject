@@ -820,8 +820,20 @@ function getDest(item) {
     if (n.includes('shield') || item.slot === 45) return 'off-hand';
     return null;
 }
+async function unequipAll() {
+    for (let i = 0; i < 4; i++) {
+        const armorItem = bot.inventory.slots[i + 5];
+        if (armorItem) {
+            await bot.equip(armorItem, 'hand');
+        }
+    }
 
-async function signInventoryAndReequip(bot) {
+    const mainHandItem = bot.inventory.slots[36];
+    if (mainHandItem) {
+        await bot.equip(mainHandItem, 'hand');
+    }
+}
+async function signAll(bot) {
     const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
         await unequipAll();
@@ -1406,19 +1418,7 @@ function processCommand(message, username, plainMessage) {
             const dz = pos.z - 404;
             return Math.sqrt(dx * dx + dz * dz) > 15;
         }
-        async function unequipAll() {
-            for (let i = 0; i < 4; i++) {
-                const armorItem = bot.inventory.slots[i + 5];
-                if (armorItem) {
-                    await bot.equip(armorItem, 'hand');
-                }
-            }
 
-            const mainHandItem = bot.inventory.slots[36];
-            if (mainHandItem) {
-                await bot.equip(mainHandItem, 'hand');
-            }
-        }
 
             justCheckedBarrel = true;
             let collectInterval = null;
