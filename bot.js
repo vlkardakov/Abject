@@ -824,7 +824,7 @@ function getDest(item) {
 async function signInventoryAndReequip(bot) {
     const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
-        await bot.armorManager.unEquipAll();
+        await unequipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
             await bot.equip(item, 'hand');
@@ -1317,7 +1317,7 @@ function processCommand(message, username, plainMessage) {
             return;
         case "dropall":
             async function expunge() {
-                await unequipArmorAndMainHand()
+                await unequipAll()
                 var inventoryItemCount = bot.inventory.items().length;
                 if (inventoryItemCount === 0) return;
 
@@ -1406,7 +1406,7 @@ function processCommand(message, username, plainMessage) {
             const dz = pos.z - 404;
             return Math.sqrt(dx * dx + dz * dz) > 15;
         }
-        async function unequipArmorAndMainHand() {
+        async function unequipAll() {
             for (let i = 0; i < 4; i++) {
                 const armorItem = bot.inventory.slots[i + 5];
                 if (armorItem) {
@@ -2179,7 +2179,7 @@ function processCommand(message, username, plainMessage) {
                         chest.close()
                         return
                     }
-                    unequipArmorAndMainHand()
+                    unequipAll()
                     const depositNext = () => {
                         const item = items.shift()
                         if (!item) {
