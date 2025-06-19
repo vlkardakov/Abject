@@ -810,23 +810,31 @@ function findNearestItemWithLore() {
             return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
-async function signAll() {
-    const initialEquipment = [5, 6, 7, 8, 45]
-        .map(slot => bot.inventory.slots[slot])
-        .filter(Boolean);
+function getDest(item) {
+    if (!item) return null;
+    const n = item.name;
+    if (n.includes('helmet')) return 'head';
+    if (n.includes('chestplate') || n.includes('elytra')) return 'torso';
+    if (n.includes('leggings')) return 'legs';
+    if (n.includes('boots')) return 'feet';
+    if (n.includes('shield') || item.slot === 45) return 'off-hand';
+    return null;
+}
 
+async function signInventoryAndReequip(bot) {
+    const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
         await bot.armorManager.unequipAll();
         await bot.waitForTicks(10);
-
         for (const item of bot.inventory.items()) {
             await bot.equip(item, 'hand');
             bot.chat('/signitem');
             await bot.waitForTicks(6);
         }
     } finally {
-        for (const item of initialEquipment) {
-            await bot.armorManager.equip(item);
+        for (const item of initialGear) {
+            const dest = getDest(item);
+            if (dest) await bot.equip(item, dest);
         }
     }
 }
