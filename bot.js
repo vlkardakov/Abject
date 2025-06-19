@@ -810,7 +810,7 @@ function findNearestItemWithLore() {
             return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
-async function signInventoryAndReequip() {
+async function signAll() {
     const initialEquipment = [5, 6, 7, 8, 45].map(slot => bot.inventory.slots[slot]).filter(Boolean);
     try {
         await bot.armorManager.unequipAll();
