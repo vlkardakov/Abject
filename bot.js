@@ -833,7 +833,7 @@ async function unequipAll() {
         await bot.equip(mainHandItem, 'hand');
     }
 }
-async function signAll(bot) {
+async function signAll() {
     const initialGear = [5, 6, 7, 8, 45].map(s => bot.inventory.slots[s]).filter(Boolean);
     try {
         await unequipAll();
