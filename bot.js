@@ -1559,7 +1559,7 @@ function processCommand(message, username, plainMessage) {
                         }
                     } else {
                         if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target) {
-                            pofikPos = vec3(0, 109, -12);
+                            pofikPos = vec3(0, 104, -12);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
                         } else if (!bot.pathfinder.goal) {
                             // sendFeedback('Я на базе.')
