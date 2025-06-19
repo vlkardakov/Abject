@@ -875,7 +875,7 @@ function findNearestEnemy() {
             // name.includes('phantom')
         );
 
-        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 50;
+        return (isHostile) && isEntityVisibleFromPositions(entity, POFIK_POSITIONS) && distanceToPofikBase(entity) < 100;
     });
 }
 function getFreeInventorySlots() {
