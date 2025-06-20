@@ -1009,13 +1009,13 @@ function getHeightAboveGround() {
     }
     return -1;
 }
-function getY(height, speed = 20) {
+function getY(height, speed = 20, tasked=true) {
     return new Promise(resolve => {
-        if (task) {
-            sendFeedback(`Я уже занят заданием ${task}`); return}
-        task = 'getY'
+        if (tasked && task) {
+            sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
+
         const onTick = () => {
-            if (bot.entity.position.y < height && task === 'getY') {
+            if (bot.entity.position.y < height && (tasked && task !== "getY")) {
                 bot.entity.velocity.y = speed;
             } else {
                 bot.removeListener('physicsTick', onTick);
@@ -1199,7 +1199,7 @@ bot.on('physicsTick', () => {
     if (horizontalSpeed < MAX_SPEED) {
         console.log('Бустим бота')
         bot.lookAt(target.position)
-        getY(target.position.y, 0.8)
+        getY(target.position.y, 0.8, false)
         boostBot(BOUNCE_POWER, bot.entity);
     }
 });
