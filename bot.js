@@ -1020,7 +1020,7 @@ function getY(height, speed = 20, tasked=true) {
             } else {
                 bot.removeListener('physicsTick', onTick);
                 bot.entity.velocity.y = 0
-                task = null
+                if (tasked) task = null
                 resolve(true);
             }
         };
