@@ -1197,6 +1197,7 @@ bot.on('physicsTick', () => {
     const horizontalSpeed = Math.sqrt(vel.x ** 2 + vel.z ** 2);
 
     if (horizontalSpeed < MAX_SPEED) {
+        console.log('Бустим бота')
         boostBot(bot.entity);
     }
 });
