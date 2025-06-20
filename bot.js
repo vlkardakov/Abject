@@ -1199,7 +1199,7 @@ bot.on('physicsTick', () => {
     if (horizontalSpeed < MAX_SPEED) {
         console.log('Бустим бота')
         bot.lookAt(target.position)
-        if (target.position.y > bot.entity.position.y) getY(target.position.y + 1, 1, false)
+        if (target.position.y > bot.entity.position.y) getY(target.position.y + 2, 4, false)
         boostBot(BOUNCE_POWER, bot.entity);
     }
 });
