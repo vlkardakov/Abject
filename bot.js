@@ -34,6 +34,7 @@ const BAD_PLAYERS = ['YohuMiner42', 'rery1248']
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
 let BOUNCE_POWER = 0
+let MAX_SPEED = 0
 let ANTIFALL = false
 let ANTIFALL_CORRECTION = 0
 let protectedPlayer = null;
@@ -1185,8 +1186,20 @@ bot.on('death', () => {
     if (['flying'].includes(task)) {task = null}
 });
 bot.on('physicsTick', () => {
-    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
+    if (ANTIFALL < -0.2 && bot.entity.velocity.y) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
 })
+
+bot.on('physicsTick', () => {
+    if (!MAX_SPEED) return;
+    const target = bot.pvp?.target;
+    if (!target) return;
+    const vel = bot.entity.velocity;
+    const horizontalSpeed = Math.sqrt(vel.x ** 2 + vel.z ** 2);
+
+    if (horizontalSpeed < MAX_SPEED) {
+        boostBot(bot.entity);
+    }
+});
 function parseCoordinates(command) {
     const [, x, z] = command.match(/tp\s+\S+\s+(-?\d+)\S*\s+\S*\s+(-?\d+)/) || [];
     return x && z ? { x: parseInt(x), z: parseInt(z) } : null;
