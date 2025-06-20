@@ -1198,7 +1198,7 @@ bot.on('physicsTick', () => {
 
     if (horizontalSpeed < MAX_SPEED) {
         console.log('Бустим бота')
-        boostBot(bot.entity);
+        boostBot(BOUNCE_POWER, bot.entity);
     }
 });
 function parseCoordinates(command) {
