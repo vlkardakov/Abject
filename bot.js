@@ -841,7 +841,7 @@ async function signAll() {
         await unequipAll();
         await bot.waitForTicks(10);
         for (const item of bot.inventory.items()) {
-            if (JSON.stringify(item.nbt?.value).includes('Подпись')) continue
+            if (JSON.stringify(item.nbt?.value)?.includes('Подпись')) continue
             await bot.equip(item, 'hand');
             bot.chat('/signitem');
             await bot.waitForTicks(10);
@@ -1003,7 +1003,7 @@ function getHeightAboveGround() {
     while (y >= minY) {
         const block = bot.blockAt(new vec3(x, y, z));
         if (!block) break;
-        if (!['air', 'grass', 'grass_block'].includes(block.name)) return parseInt(pos.y - (y + 1));
+        if (!['air', 'grass'].includes(block.name)) return parseInt(pos.y - (y + 1));
         y--;
     }
     return -1;
