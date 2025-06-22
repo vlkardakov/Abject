@@ -1031,7 +1031,7 @@ function getY(height, speed = 20, tasked=true) {
 async function slowBrake() {
     const brakeStages = [
         { height: 50, ticks: 5 },
-        { height: 20, ticks: 2 },
+        { height: 20, ticks: 5 },
         { height: 10, ticks: 2 },
         { height: 6, ticks: 3},
         { height: 2, ticks: 4}
