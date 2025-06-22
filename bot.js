@@ -1019,7 +1019,7 @@ function getY(height, speed = 20, tasked=true) {
                 bot.entity.velocity.y = speed;
                 console.log('продолжаю')
             } else {
-                console.log('прекращаю')
+                console.log(`прекращаю ,task = ${task}`)
                 bot.removeListener('physicsTick', onTick);
                 bot.entity.velocity.y = 0
                 if (tasked) task = null
