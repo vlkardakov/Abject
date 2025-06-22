@@ -1015,7 +1015,7 @@ function getY(height, speed = 20, tasked=true) {
             sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
 
         const onTick = () => {
-            if (bot.entity.position.y < height && (tasked && task !== "getY")) {
+            if (bot.entity.position.y > height && (tasked && task !== "getY")) {
                 bot.entity.velocity.y = speed;
                 console.log('продолжаю')
             } else {
