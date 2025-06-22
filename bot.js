@@ -1186,7 +1186,7 @@ bot.on('death', () => {
     if (['flying'].includes(task)) {task = null}
 });
 bot.on('physicsTick', () => {
-    if (ANTIFALL < -0.2 && bot.entity.velocity.y) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
+    if (bot.entity.velocity.y < -0.2 && ANTIFALL) bot.entity.velocity.y += 0.4 + ANTIFALL_CORRECTION
 })
 
 bot.on('physicsTick', () => {
