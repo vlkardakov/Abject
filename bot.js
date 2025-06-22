@@ -1033,8 +1033,9 @@ async function slowBrake() {
         { height: 50, ticks: 5 },
         { height: 20, ticks: 5 },
         { height: 10, ticks: 2 },
-        { height: 6, ticks: 3},
-        { height: 2, ticks: 4}
+        { height: 6, ticks: 5},
+        { height: 2, ticks: 4},
+        { height: 1, ticks: 1}
     ];
 
     task = 'flying'
