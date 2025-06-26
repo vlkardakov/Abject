@@ -2757,16 +2757,7 @@ bot.once('login', () => {
 });
 
 bot.on("plasmovoice_audio_end", () => {
-    try {
-        SOUND = null
-    } catch (err) {
-        if (err.message.includes("Invalid typed array length")) {
-            console.warn("Ошибка в аудиоданных:", err.message)
-            return;
-        }
-        // throw err;
-    }
-
+    SOUND = null
 })
 
 bot.on('entitySpawn', (entity) => {
