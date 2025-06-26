@@ -1019,7 +1019,7 @@ function getY(height, speed = 20, tasked=true) {
                 bot.entity.velocity.y = speed;
                 console.log('продолжаю')
             } else {
-                console.log(`прекращаю ,task = ${task}`)
+                console.log(`прекращаю ,task = ${task}, `)
                 bot.removeListener('physicsTick', onTick);
                 bot.entity.velocity.y = 0
                 if (tasked) task = null
@@ -2757,7 +2757,16 @@ bot.once('login', () => {
 });
 
 bot.on("plasmovoice_audio_end", () => {
-    SOUND = null
+    try {
+        SOUND = null
+    } catch (err) {
+        if (err.message.includes("Invalid typed array length")) {
+            console.warn("Ошибка в аудиоданных:", err.message)
+            return;
+        }
+        // throw err;
+    }
+
 })
 
 bot.on('entitySpawn', (entity) => {
