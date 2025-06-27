@@ -2116,6 +2116,7 @@ function processCommand(message, username, plainMessage) {
                 .then(() => {
                     // console.log(`Отправлен сегмент ${index + 1}/${total}`);
                     setTimeout(() => {
+                        SOUND = args[0] || "vivalavida";
                         sendSegmentsSequentially(index + 1, total, tempDir);
                     }, 4000);
                 })
@@ -2716,7 +2717,7 @@ function processCommand(message, username, plainMessage) {
             playing = false;
             break;
         case "status":
-            replyFeedback(username, `task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()[3]['text']}`)
+            replyFeedback(username, `health:${health}, cords:${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}, food:${bot.food} task: ${task}, sound: ${SOUND}, playing: ${playing}, statusses: ${readStates()[3]['text']}`)
             break;
         default:
             break;
