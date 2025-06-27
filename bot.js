@@ -2721,7 +2721,7 @@ function processCommand(message, username, plainMessage) {
             playing = false;
             break;
         case "status":
-            replyFeedback(username, `health: ${bot.health},food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
+            replyFeedback(username, `health: ${bot.health}, food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
             break;
         default:
             break;
