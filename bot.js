@@ -123,8 +123,8 @@ bot.loadPlugin(armorManager);
 bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
-bot.loadPlugin(plasmo.plugin)
-// console.log(plasmo)
+//bot.loadPlugin(plasmo.plugin)
+console.log(JSON.stringify(plasmo))
 // console.log(elytrafly)
 // console.log(customPVP)
 bot.loadPlugin(customPVP.default)
