@@ -735,10 +735,10 @@ function isItemOnSpawn(itemEntity) {
 }
 
 async function downloadMusic(username, songName, fileName) {
-    if (!fileName) {
-        filename = songName.toLowerCase().replace(/ /g, '_')
-    }
-    filename = filename + '.mp3'
+//    if (!fileName) {
+//        filename = songName.toLowerCase().replace(/ /g, '_')filename = filename + '.mp3'
+//    }
+
     console.log('ищем на ютубчике...')
     const res = await yts(songName)
 
@@ -753,7 +753,7 @@ async function downloadMusic(username, songName, fileName) {
     replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
     console.log('Качаю..')
 
-    const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}" "${video.url}"`
+    const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}.mp3" "${video.url}"`
 
     exec(command, (error, stdout, stderr) => {
         if (error) {
