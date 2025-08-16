@@ -216,7 +216,6 @@ async function stealItems(itemName, user_name) {
         }
     }
 
-    const target = bot.players[user_name].entity;
     const target = bot.players[user_name]?.entity;
     if (!target) {
         replyFeedback(username,  `лут при мне 😏`);
