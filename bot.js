@@ -13,7 +13,7 @@ const { plugin: pvp } = require('mineflayer-pvp');
 const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const ShotPlanner = require('@nxg-org/mineflayer-custom-pvp/lib/bow/shotPlanner').ShotPlanner;
 const armorManager = require('mineflayer-armor-manager');
-//const plasmo = require("mineflayer-plasmovoice")
+const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
@@ -123,7 +123,7 @@ bot.loadPlugin(armorManager);
 bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
-//bot.loadPlugin(plasmo.plugin)
+bot.loadPlugin(plasmo.plugin)
 // console.log(plasmo)
 // console.log(elytrafly)
 // console.log(customPVP)
@@ -2029,103 +2029,103 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Смотри консоль`);
             }
             break;
-//        case "play":
-//            // console.log('Произведение музыки запрошено');
-//            if (SOUND || playing) {
-//                bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
-//                return;
-//            }
-//
-//            SOUND = args[0] || "vivalavida";
-//
-//
-//            const ffmpeg = require('fluent-ffmpeg');
-//            const fs = require('fs');
-//            const path = require('path');
-//
-//
-//            let audioFile;
-//            try {
-//                audioFile = path.join('/rusvan-bots/music', `${SOUND}.mp3`);
-//                if (!fs.existsSync(audioFile)) {
-//                    console.error('Файл не найден:', audioFile);
-//                    bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
-//                    SOUND = null;
-//                    playing = false;
-//                    return;
-//                }
-//            } catch (err) {
-//                console.error('Ошибка при проверке файла:', err);
-//                SOUND = null;
-//                playing = false;
-//                return;
-//            }
-//
-//            const tempDir = path.join('/rusvan-bots/music', `temp_audio${NUMBER}`);
-//            playing = true;
-//            ffmpeg.ffprobe(audioFile, (err, metadata) => {
-//                if (err) {
-//                    console.error('Ошибка при анализе аудиофайла:', err);
-//                    return;
-//                }
-//
-//                const duration = metadata.format.duration;
-//                const segmentCount = Math.ceil(duration) / 4;
-//
-//                // console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
-//
-//                ffmpeg(audioFile)
-//                    .outputOptions([
-//                        '-f segment',
-//                        '-segment_time 4',
-//                        '-c copy',
-//                        '-map 0:a'
-//                    ])
-//                    .output(`${tempDir}/segment-%03d.mp3`)
-//                    .on('end', () => {
-//                        console.log('Аудио успешно разделено');
-//
-//                        sendSegmentsSequentially(0, segmentCount, tempDir);
-//                    })
-//                    .on('error', (err) => {
-//                        console.error('Ошибка при разделении аудио:', err);
-//                    })
-//                    .run();
-//            });
-//
-//        function sendSegmentsSequentially(index, total, tempDir) {
-//            if (index >= total || !playing) {
-//                // console.log('Все сегменты отправлены');
-//                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
-//                sendFeedback('Я закончил играть!')
-//                SOUND = null;
-//                playing = false;
-//
-//                fs.readdirSync(tempDir).forEach(file => {
-//                    try {
-//                        fs.unlinkSync(path.join(tempDir, file));
-//                    } catch (e) {console.log('ыыыы ошибка в перелинковке файлов как обычно но зачем нам это?')}
-//                });
-//                playing = false;
-//                return;
-//            }
-//
-//            const segmentFile = path.join(tempDir, `segment-${index.toString().padStart(3, '0')}.mp3`);
-//
-//            bot.plasmovoice.sendAudio(segmentFile)
-//                .then(() => {
-//                    // console.log(`Отправлен сегмент ${index + 1}/${total}`);
-//                    setTimeout(() => {
-//                        SOUND = args[0] || "vivalavida";
-//                        sendSegmentsSequentially(index + 1, total, tempDir);
-//                    }, 4000);
-//                })
-//                .catch(err => {
-//                    console.error(`Ошибка при отправке сегмента ${index + 1}:`, err);
-//                    sendSegmentsSequentially(index + 1, total, tempDir);
-//                });
-//        }
-//            break;
+        case "play":
+            // console.log('Произведение музыки запрошено');
+            if (SOUND || playing) {
+                bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
+                return;
+            }
+
+            SOUND = args[0] || "vivalavida";
+
+
+            const ffmpeg = require('fluent-ffmpeg');
+            const fs = require('fs');
+            const path = require('path');
+
+
+            let audioFile;
+            try {
+                audioFile = path.join('/rusvan-bots/music', `${SOUND}.mp3`);
+                if (!fs.existsSync(audioFile)) {
+                    console.error('Файл не найден:', audioFile);
+                    bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
+                    SOUND = null;
+                    playing = false;
+                    return;
+                }
+            } catch (err) {
+                console.error('Ошибка при проверке файла:', err);
+                SOUND = null;
+                playing = false;
+                return;
+            }
+
+            const tempDir = path.join('/rusvan-bots/music', `temp_audio${NUMBER}`);
+            playing = true;
+            ffmpeg.ffprobe(audioFile, (err, metadata) => {
+                if (err) {
+                    console.error('Ошибка при анализе аудиофайла:', err);
+                    return;
+                }
+
+                const duration = metadata.format.duration;
+                const segmentCount = Math.ceil(duration) / 4;
+
+                // console.log(`Разделение аудио на ${segmentCount} сегментов по 1 секунде`);
+
+                ffmpeg(audioFile)
+                    .outputOptions([
+                        '-f segment',
+                        '-segment_time 4',
+                        '-c copy',
+                        '-map 0:a'
+                    ])
+                    .output(`${tempDir}/segment-%03d.mp3`)
+                    .on('end', () => {
+                        console.log('Аудио успешно разделено');
+
+                        sendSegmentsSequentially(0, segmentCount, tempDir);
+                    })
+                    .on('error', (err) => {
+                        console.error('Ошибка при разделении аудио:', err);
+                    })
+                    .run();
+            });
+
+        function sendSegmentsSequentially(index, total, tempDir) {
+            if (index >= total || !playing) {
+                // console.log('Все сегменты отправлены');
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
+                sendFeedback('Я закончил играть!')
+                SOUND = null;
+                playing = false;
+
+                fs.readdirSync(tempDir).forEach(file => {
+                    try {
+                        fs.unlinkSync(path.join(tempDir, file));
+                    } catch (e) {console.log('ыыыы ошибка в перелинковке файлов как обычно но зачем нам это?')}
+                });
+                playing = false;
+                return;
+            }
+
+            const segmentFile = path.join(tempDir, `segment-${index.toString().padStart(3, '0')}.mp3`);
+
+            bot.plasmovoice.sendAudio(segmentFile)
+                .then(() => {
+                    // console.log(`Отправлен сегмент ${index + 1}/${total}`);
+                    setTimeout(() => {
+                        SOUND = args[0] || "vivalavida";
+                        sendSegmentsSequentially(index + 1, total, tempDir);
+                    }, 4000);
+                })
+                .catch(err => {
+                    console.error(`Ошибка при отправке сегмента ${index + 1}:`, err);
+                    sendSegmentsSequentially(index + 1, total, tempDir);
+                });
+        }
+            break;
         case "hi":
             bot.chat(`/msg ${username} Привета!`);
             break
@@ -2761,18 +2761,18 @@ bot.once('login', () => {
 
 });
 
-//bot.on("plasmovoice_audio_end", () => {
-//    try {
-//        SOUND = null
-//    } catch (err) {
-//        if (err.message.includes("Invalid typed array length")) {
-//            console.warn("Ошибка в аудиоданных:", err.message)
-//            return;
-//        }
-//        // throw err;
-//    }
-//
-//})
+bot.on("plasmovoice_audio_end", () => {
+    try {
+        SOUND = null
+    } catch (err) {
+        if (err.message.includes("Invalid typed array length")) {
+            console.warn("Ошибка в аудиоданных:", err.message)
+            return;
+        }
+        // throw err;
+    }
+
+})
 
 bot.on('entitySpawn', (entity) => {
     if (entity.name !== 'item') {
