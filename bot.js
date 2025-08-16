@@ -216,26 +216,26 @@ async function stealItems(itemName, user_name) {
         }
     }
 
-    const target = bot.players[user_name]?.entity;
-    if (!target) {
-        replyFeedback(username,  `лут при мне 😏`);
-        return;
-    }
-
-//    bot.chat(`иду к ${username} с лутом`);
-    await bot.pathfinder.goto(new GoalNear(target.position.x, target.position.y, target.position.z, 2));
-
-    const items = bot.inventory.items();
-    for (const item of items) {
-        try {
-            await bot.toss(item.type, null, item.count);
-//            bot.chat(`выкинул ${item.name} x${item.count}`);
-        } catch (err) {
-            console.log(`не смог скинуть ${item.name}:`, err.message);
-        }
-    }
-
-    replyFeedback(username, "всё скинул, чекни!");
+//    const target = bot.players[user_name]?.entity;
+//    if (!target) {
+//        replyFeedback(username,  `лут при мне 😏`);
+//        return;
+//    }
+//
+////    bot.chat(`иду к ${username} с лутом`);
+//    await bot.pathfinder.goto(new GoalNear(target.position.x, target.position.y, target.position.z, 2));
+//
+//    const items = bot.inventory.items();
+//    for (const item of items) {
+//        try {
+//            await bot.toss(item.type, null, item.count);
+////            bot.chat(`выкинул ${item.name} x${item.count}`);
+//        } catch (err) {
+//            console.log(`не смог скинуть ${item.name}:`, err.message);
+//        }
+//    }
+//
+//    replyFeedback(username, "всё скинул, чекни!");
 }
 async function sborItems(user_name) {
     const containers = musorMemory;
