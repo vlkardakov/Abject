@@ -736,8 +736,9 @@ function isItemOnSpawn(itemEntity) {
 
 async function downloadMusic(username, songName, fileName) {
     if (!fileName) {
-        filename = songName.toLowerCase().replace(/ /g, '_') + '.mp3'
+        filename = songName.toLowerCase().replace(/ /g, '_')
     }
+    filename = filename + '.mp3'
     console.log('ищем на ютубчике...')
     const res = await yts(songName)
 
@@ -748,7 +749,7 @@ async function downloadMusic(username, songName, fileName) {
     }
 
     const video = res.videos[0]
-    console.log(`Нашёл: ${video.title}`)
+    console.log(`Нашел ${video.title}, сохраняю как ${fileName}`)
     replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
     console.log('Качаю..')
 

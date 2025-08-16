@@ -4,13 +4,24 @@
 
 `apt update`
 
-`apt install git nodejs npm`
+`apt install git`
 
-`npm install mineflayer mineflayer-pathfinder mineflayer-collectblock mineflayer-tool mineflayer-pvp mineflayer-armor-manager mineflayer-plasmovoice mineflayer-movement yt-search ytdl-core`
+`curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -`
 
+`curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
+
+`nvm install 20`
+`nvm use 20`
+
+`npm install mineflayer@4.29.0 mineflayer-pathfinder mineflayer-collectblock mineflayer-tool mineflayer-pvp mineflayer-armor-manager mineflayer-plasmovoice mineflayer-movement yt-search ytdl-core`
 
 
 Скачать репозиторий:
+
+`mkdir /rusvan-bots/ && cd /rusvan-bots`
+`mkdir states && mkdir music && cd music`
+`mkdir temp_audio12`
+
 `git clone https://github.com/vlkardakov/Abject.git && cd Abject12`
 
 
