@@ -13,7 +13,7 @@ const { plugin: pvp } = require('mineflayer-pvp');
 const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const ShotPlanner = require('@nxg-org/mineflayer-custom-pvp/lib/bow/shotPlanner').ShotPlanner;
 const armorManager = require('mineflayer-armor-manager');
-const plasmo = require("mineflayer-plasmovoice")
+const plasmo = require("mineflayer-plasmovoice");
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
@@ -123,7 +123,7 @@ bot.loadPlugin(armorManager);
 bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
-//bot.loadPlugin(plasmo.plugin)
+bot.loadPlugin(plasmo.plugin)
 console.log(JSON.stringify(plasmo))
 // console.log(elytrafly)
 // console.log(customPVP)
