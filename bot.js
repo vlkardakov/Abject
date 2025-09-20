@@ -2392,7 +2392,7 @@ function processCommand(message, username, plainMessage) {
         case "cords":
             if (args.length < 1) {
                 entityThatIHaveToFind = bot.entity;
-                console.log('[CORDS DEBUG] Цель — я');
+                console.log('[CORDS DEBUG] Цель — я!');
             } else {
                 const nameToFind = parts[1];
                 console.log('[CORDS DEBUG] Цель — по аргументу');
