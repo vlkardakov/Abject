@@ -1213,6 +1213,7 @@ function parseCoordinates(command) {
 }
 
 function processCommand(message, username, plainMessage) {
+    console.log(username)
     const parts = message.trim().toLowerCase().split(" ");
     const command = parts[0];
     const args = parts.slice(1);
