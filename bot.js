@@ -2878,10 +2878,11 @@ rl.on('line', (line) => {
         return;
     }
 
-    const fakeUsername = 'console';
-    processCommand(input, fakeUsername, input);
+    processCommand(input, 'console', input);
+    askGemini(input, 'console chat')
     rl.prompt();
 });
+
 bot.on('chat', (username, message) => {
     console.log(`I have got a message from ${username}: ${message}`);
 
