@@ -2403,7 +2403,7 @@ function processCommand(message, username, plainMessage) {
                 });
             }
             if (entityThatIHaveToFind) {
-                if (username === 'console') {`${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`} else {
+                if (username === 'console') { console.log(`${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`)} else {
                 bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`) }
             } else {
                 bot.chat(`/r не нашел`)
