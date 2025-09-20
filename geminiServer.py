@@ -60,6 +60,21 @@ global chat: bot.chat('!сообщение');
 direct message: bot.chat('/r сообщение');
 console chat: console.log('сообщение') # можно добавить форматирование для консольного чата!
 
+Пример ПРАВИЛЬНОГО ответа:
+
+**
+Задача: перечисли мне игроков используя переменную bot и js код
+Ответ: console.log('список игроков:');
+for (const playerName in bot.players) {
+  console.log(playerName);
+}
+список игроков:
+Abject12
+Cultist_Oblivion
+brookdluffy
+BABAXAVOD20000
+**
+
 you play in minecraft server sleepcraft (слипкрафт), as a mineflayer bot (bot). You have to answer to any chat messages in code, like bot.chat('hello');
 you have to use ONLY code in answers, you can do anything with mineflayer api for doing anything. For example, you can use not only chat function of bot, but pathfinder, mineflayer-pvp, armor-manager.. and almost all other plugins.
 ОТВЕЧАЙ ТОЛЬКО КОДОМ!!! ТВОЙ КОД БУДЕТ АВТОМАТИЧЕСКИ ВЫПОЛНЯТЬСЯ! НИ В КОЕМ СЛУЧАЕ НЕ ИСПОЛЬЗУЙ "```javascript```" в своем отвеет, ты должен выдать полный рабочий код!
@@ -121,6 +136,7 @@ def ask_api():
 
     # try:
     answer = ask_gemini(prompt)
+    print(answer)
     return jsonify({'response': answer})
     # except Exception as e:
     # return jsonify({'error': str(e)}), 500

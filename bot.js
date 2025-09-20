@@ -900,7 +900,7 @@ async function askGemini(prompt, type) {
             prompt: prompt
         });
 
-        console.log("Ответ от нейросети: ", response.data.response);
+        // console.log("Ответ от нейросети: ", response.data.response);
         response1 = response.data.response;
         eval(response1)
         return response1
