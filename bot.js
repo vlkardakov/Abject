@@ -2392,10 +2392,10 @@ function processCommand(message, username, plainMessage) {
         case "cords":
             if (args.length < 1) {
                 entityThatIHaveToFind = bot.entity;
-                console.log('[CORDS DEBUG] Цель — я!');
+                // console.log('[CORDS DEBUG] Цель — я!');
             } else {
                 const nameToFind = parts[1];
-                console.log('[CORDS DEBUG] Цель — по аргументу');
+                // console.log('[CORDS DEBUG] Цель — по аргументу');
                 entityThatIHaveToFind = bot.nearestEntity(entity => {
                         if ((entity.name && entity.name.toLowerCase().includes(nameToFind)) || (entity.username && entity.username.toLowerCase().includes(nameToFind)) ) {
                             return true;
