@@ -21,8 +21,7 @@ const { plugin: pvp } = require('mineflayer-pvp');
 const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const ShotPlanner = require('@nxg-org/mineflayer-custom-pvp/lib/bow/shotPlanner').ShotPlanner;
 const armorManager = require('mineflayer-armor-manager');
-if (VOICED) {const plasmo = require("mineflayer-plasmovoice")} else {const plasmo = {}}
-
+const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
