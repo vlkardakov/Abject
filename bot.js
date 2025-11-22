@@ -1330,8 +1330,8 @@ function processCommand(message, username, plainMessage) {
 
         case "drop":
             if (!WATCHED_PLAYERS.includes(username)) {
-                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                replyFeedback(username,`Я не буду этого делать!!!`)
+                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // replyFeedback(username,`Я не буду этого делать!!!`)
                 return;
             }
 
@@ -2732,8 +2732,8 @@ function processCommand(message, username, plainMessage) {
             return
         case "stop":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
             }
             sendFeedback(`Останавливаюсь.`)
@@ -2751,7 +2751,7 @@ function processCommand(message, username, plainMessage) {
             break;
         case "stop-music":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 return;
             }
             SOUND = null;
