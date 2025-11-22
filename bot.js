@@ -2605,7 +2605,7 @@ function processCommand(message, username, plainMessage) {
 
                 comePlayer();
             } else {
-                sendFeedback('Не вижу цель.')
+                sendFeedback('Не вижу цель ', username)
             }
             break;
         case "flyto":
