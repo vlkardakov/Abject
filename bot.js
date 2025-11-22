@@ -2756,13 +2756,13 @@ bot.on('spawn', () => {
     initializeBotState();
 });
 
-bot.on('message', (jsonMsg, position) => {
-    if (jsonMsg.toString() === 'работай') {
-        bot.chat('(')
-        console.log(jsonMsg.toString())
-    }
-    // else if (jsonMsg.toString()) {bot.chat(jsonMsg.toString())}
-})
+// bot.on('message', (jsonMsg, position) => {
+//     if (jsonMsg.toString() === 'работай') {
+//         bot.chat('(')
+//         console.log(jsonMsg.toString())
+//     }
+//     // else if (jsonMsg.toString()) {bot.chat(jsonMsg.toString())}
+// })
 
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
