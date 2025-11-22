@@ -2927,11 +2927,12 @@ rl.on('line', (line) => {
     rl.prompt();
 });
 
-bot.on('chat', (username, message) => {
-    console.log(`${username}: ${message}`);
-
-    processCommand(message, username, message)
-})
+// bot.on('chat', (username, message) => {
+//     username = username.split()
+//     console.log(`${username}: ${message}`);
+//
+//     processCommand(message, username, message)
+// })
 
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
