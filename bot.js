@@ -21,7 +21,6 @@ const { plugin: pvp } = require('mineflayer-pvp');
 const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const ShotPlanner = require('@nxg-org/mineflayer-custom-pvp/lib/bow/shotPlanner').ShotPlanner;
 const armorManager = require('mineflayer-armor-manager');
-const plasmo = require("mineflayer-plasmovoice")
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
@@ -36,6 +35,7 @@ const rl = readline.createInterface({
     prompt: '> '
 });
 const { exec } = require('child_process')
+const plasmo = require("mineflayer-plasmovoice");
 
 const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
 const BAD_PLAYERS = ['YohuMiner42', 'rery1248']
@@ -123,13 +123,17 @@ console.log("Запуск бота...");
 //console.log(MineflayerEmoteCraft)
 //const EmoteBot = new MineflayerEmoteCraft(bot);
 
+if (VOICED) {
+    const plasmo = require("mineflayer-plasmovoice")
+    bot.loadPlugin(plasmo.plugin)
+}
+
 bot.loadPlugin(pathfinder);
 bot.loadPlugin(pvp);
 bot.loadPlugin(armorManager);
 bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
-if (VOICED) {bot.loadPlugin(plasmo.plugin)}
 bot.loadPlugin(customPVP.default)
 
 function findFood(botInstance) {
