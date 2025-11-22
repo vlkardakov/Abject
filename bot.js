@@ -2541,6 +2541,26 @@ function processCommand(message, username, plainMessage) {
                 bot.chat(`/msg ${username} Не найдено сущностей типа ${entityType} поблизости.`);
             }
             break;
+        case 'spam':
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            bot.chat('meow')
+            break
         case "come":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
