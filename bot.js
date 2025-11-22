@@ -1024,6 +1024,7 @@ function getY(height, speed = 20, tasked=true) {
     return new Promise(resolve => {
         if (tasked && task) {
             // sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
+        }
 
         const onTick = () => {
             if (bot.entity.position.y > height && task === "getY") {
@@ -1999,9 +2000,9 @@ function processCommand(message, username, plainMessage) {
             break
         case "sbor":
             // replyFeedback(
-                username,
-                "Начинаю собирать мусор из мусорок"
-            )
+            //     username,
+            //     "Начинаю собирать мусор из мусорок"
+            // )
             sborItems(username)
             break
         case "addspawnpos":
