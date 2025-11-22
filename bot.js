@@ -2947,7 +2947,7 @@ bot.on('message', (jsonMsg, position) => {
             username = plainMessage.split('')[1].split(' »')[0]
             typeOfMessage = 'direct message'
 
-        }
+        } else {console.log('ошибка в определении директ сообщений')}
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
         } else if (username === BOT_USERNAME && BOT_USERNAME === 'Abject12') {
