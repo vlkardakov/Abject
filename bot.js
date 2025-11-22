@@ -2801,7 +2801,7 @@ bot.once('login', () => {
     bot.chat(`/l ${PASSWORD}`);
     console.log('logged')
 });
-bot.once('windowOpen', (window) => {bot.closeWindow()});
+bot.once('windowOpen', (window) => {bot.closeWindow(window)});
 
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
@@ -2924,7 +2924,7 @@ rl.on('line', (line) => {
 });
 
 bot.on('chat', (username, message) => {
-    console.log(`I have got a message from ${username}: ${message}`);
+    console.log(`${username}: ${message}`);
 
     processCommand(message, username, message)
 })
@@ -2932,10 +2932,6 @@ bot.on('chat', (username, message) => {
 bot.on('message', (jsonMsg, position) => {
     console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
-
-    if (plainMessage === "Your login session has been continued." || plainMessage === "Your connection to sleepcraft encountered a problem." || plainMessage === "You have successfully logged.") {
-        connectToServer()
-    }
 
     if (plainMessage.includes(' » ')) {
         let typeOfMessage = null
@@ -2945,19 +2941,7 @@ bot.on('message', (jsonMsg, position) => {
             username = plainMessage.split('')[1].split(' »')[0]
             typeOfMessage = 'direct message'
 
-        }} else {
-            // come
-            message = plainMessage.split(' › ')[1]
-            username = plainMessage.split(' › ')[0]
-
-            player = Object.values(bot.entities).find(
-                (e) => e.type === 'player' && e.username === username
-            );
-
-            if (player) typeOfMessage = 'local chat'
-            else typeOfMessage = 'global chat'
         }
-
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
         } else if (username === BOT_USERNAME && BOT_USERNAME === 'Abject12') {
