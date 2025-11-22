@@ -2803,6 +2803,7 @@ bot.once('windowOpen', (window) => {
     bot.once('login', () => {
         bot.chat(`/login ${PASSWORD}`);
         console.log('logged')
+        connectToServer()
     });
 });
 
