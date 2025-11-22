@@ -455,7 +455,8 @@ async function breakBlockManually(block) {
 async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
-    bot.chat('/server sleepcraft');
+    // bot.chat('/server sleepcraft');
+    bot.chat('/server serenity');
 }
 async function sendFeedback(text) {
     for (const player of WATCHED_PLAYERS) {
@@ -2783,6 +2784,7 @@ bot.on('entitySwingArm', (entity) => {
 bot.on('spawn', () => {
     sendFeedback(`плюх!`);
     // console.log("Событие 'spawn' получено.");
+    
     initializeBotState();
 });
 
