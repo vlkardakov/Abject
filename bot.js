@@ -2759,6 +2759,7 @@ bot.on('spawn', () => {
 bot.on('message', (jsonMsg, position) => {
     if (jsonMsg.toString() === 'работай') {
         bot.chat('(')
+        console.log(jsonMsg.toString())
     }
     // else if (jsonMsg.toString()) {bot.chat(jsonMsg.toString())}
 })
