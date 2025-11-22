@@ -2732,6 +2732,7 @@ function processCommand(message, username, plainMessage) {
             return
         case "stop":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
+                console.log(`${username} не в списке уполномоченных на остановку`)
                 // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 // bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
