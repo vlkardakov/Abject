@@ -2944,10 +2944,10 @@ bot.on('message', (jsonMsg, position) => {
         if (plainMessage.includes(`${BOT_USERNAME}]: `)) {
             // ⌀ [vlkardakov » Abject12]: come
             message = plainMessage.split(`${BOT_USERNAME}]: `)[1]
-            username = plainMessage.split('')[1].split(' »')[0]
+            username = plainMessage.split('[')[1].split(' »')[0]
             typeOfMessage = 'direct message'
 
-        } else {console.log('ошибка в определении директ сообщений')}
+        } else
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
         } else if (username === BOT_USERNAME && BOT_USERNAME === 'Abject12') {
