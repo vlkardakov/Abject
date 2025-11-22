@@ -10,7 +10,7 @@ const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
 const PASSWORD = process.argv[3] || process.env.PASSWORD
 const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
 const VOICED_VALUE = process.argv[5] || process.env.PLASMOVOICE
-const VOICED = VOICED_VALUE === "true" ? true : false
+const VOICED = VOICED_VALUE === "true"
 
 const mineflayer = require('mineflayer')
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
