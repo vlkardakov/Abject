@@ -111,7 +111,8 @@ console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     // host: '212.80.7.178', //or
-    host: 'sleepcraft.ru', //or
+    // host: 'sleepcraft.ru', //or
+    host: 'serenity.outbreak.su', //or
     // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
@@ -2510,7 +2511,8 @@ function processCommand(message, username, plainMessage) {
             bot.chat(`!Да.`);
             return;
         case "server":
-            bot.chat("/server sleepcraft");
+            // bot.chat("/server sleepcraft");
+            connectToServer()
             return;
 
         case "break":
