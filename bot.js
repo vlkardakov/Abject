@@ -2799,11 +2799,10 @@ bot.on('message', (jsonMsg, position) => {
 bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
     bot.chat(`/l ${PASSWORD}`);
-    // console.log("Событие 'spawn' получено.");
-    // initializeBotState();
-//    bot.chat('/server sleepcraft');
-
+    console.log('logged')
 });
+bot.once('windowOpen', (window) => {bot.closeWindow()});
+
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
         try {
@@ -2938,27 +2937,16 @@ bot.on('message', (jsonMsg, position) => {
         connectToServer()
     }
 
-    if (plainMessage.includes(' › ') || plainMessage.startsWith('������ [ДС] ')) {
+    if (plainMessage.includes(' » ')) {
         let typeOfMessage = null
-        if (plainMessage.includes('Вам] › ')) {
-            // [vlkardakov -> Вам] › come
-            message = plainMessage.split('Вам] › ')[1]
-            username = plainMessage.split('[')[1].split(' ->')[0]
+        if (plainMessage.includes(`${BOT_USERNAME}]: `)) {
+            // ⌀ [vlkardakov » Abject12]: come
+            message = plainMessage.split(`${BOT_USERNAME}]: `)[1]
+            username = plainMessage.split('')[1].split(' »')[0]
             typeOfMessage = 'direct message'
 
-        } else if (plainMessage.startsWith('������ [ДС] ')) {
-            //������ [ДС] vlkardakov: сообщение из дискорда
-            plainMessage = plainMessage.replace('������ [ДС] ', '')
-            // vlkardakov: сообщение из дискорда
-            message = plainMessage.split(': ')[1]
-            // сообщение из дискорда
-            username = plainMessage.split(': ')[0]
-            // vlkardakov
-            typeOfMessage = 'global chat'
-
-
-        } else if (plainMessage.includes(' › ')) {
-            // vlkardakov › come
+        }} else {
+            // come
             message = plainMessage.split(' › ')[1]
             username = plainMessage.split(' › ')[0]
 
