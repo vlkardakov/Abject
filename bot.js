@@ -2799,8 +2799,9 @@ bot.on('message', (jsonMsg, position) => {
 
 bot.once('windowOpen', (window) => {
     bot.closeWindow(window)
+    console.log('closed')
     bot.once('login', () => {
-        bot.chat(`/l ${PASSWORD}`);
+        bot.chat(`/login ${PASSWORD}`);
         console.log('logged')
     });
 });
