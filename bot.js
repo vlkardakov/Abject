@@ -2921,7 +2921,7 @@ bot.on('message', (jsonMsg, position) => {
     let plainMessage = jsonMsg.toString();
 
     if (plainMessage === "Your login session has been continued." || plainMessage === "Your connection to sleepcraft encountered a problem." || plainMessage === "You have successfully logged.") {
-        connectToServer()
+        // connectToServer()
     }
 
     if (plainMessage.includes(' › ') || plainMessage.startsWith('������ [ДС] ')) {
