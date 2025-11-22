@@ -4,6 +4,13 @@
 // //не засоряя консоль
 
 require('dotenv').config()
+
+console.log(process.argv)
+const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
+const PASSWORD = process.argv[3] || process.env.PASSWORD
+const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
+const VOICED = parseInt(process.argv[5] || process.env.PLASMOVOICE)
+
 const mineflayer = require('mineflayer')
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
 const { GoalNear, GoalFollow, GoalBlock } = goals;
@@ -13,7 +20,8 @@ const { plugin: pvp } = require('mineflayer-pvp');
 const customPVP = require('@nxg-org/mineflayer-custom-pvp')
 const ShotPlanner = require('@nxg-org/mineflayer-custom-pvp/lib/bow/shotPlanner').ShotPlanner;
 const armorManager = require('mineflayer-armor-manager');
-const plasmo = require("mineflayer-plasmovoice");
+if (VOICED) {const plasmo = require("mineflayer-plasmovoice")}
+
 const vec3 = require('vec3');
 const movement = require("mineflayer-movement")
 const ffmpeg = require('fluent-ffmpeg');
@@ -91,11 +99,7 @@ const POFIK_POSITIONS = [
     new vec3(31, 102, 0),
     new vec3(-21, 106, 14),
 ];
-console.log(process.argv)
 
-const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
-const PASSWORD = process.argv[3] || process.env.PASSWORD
-const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
 
 console.log('----------------')
 console.log('Сведения о боте :')
@@ -124,10 +128,7 @@ bot.loadPlugin(armorManager);
 bot.loadPlugin(collectBlock);
 bot.loadPlugin(toolPlugin);
 bot.loadPlugin(movement.plugin)
-bot.loadPlugin(plasmo.plugin)
-console.log(JSON.stringify(plasmo))
-// console.log(elytrafly)
-// console.log(customPVP)
+if (VOICED) {bot.loadPlugin(plasmo.plugin)}
 bot.loadPlugin(customPVP.default)
 
 function findFood(botInstance) {
@@ -2034,6 +2035,7 @@ function processCommand(message, username, plainMessage) {
             }
             break;
         case "play":
+            if (!VOICED) {break}
             // console.log('Произведение музыки запрошено');
             if (SOUND || playing) {
                 bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
@@ -2792,19 +2794,20 @@ bot.once('login', () => {
 //    bot.chat('/server sleepcraft');
 
 });
-
-bot.on("plasmovoice_audio_end", () => {
-    try {
-        SOUND = null
-    } catch (err) {
-        if (err.message.includes("Invalid typed array length")) {
-            console.warn("Ошибка в аудиоданных:", err.message)
-            return;
+if (VOICED) {
+    bot.on("plasmovoice_audio_end", () => {
+        try {
+            SOUND = null
+        } catch (err) {
+            if (err.message.includes("Invalid typed array length")) {
+                console.warn("Ошибка в аудиоданных:", err.message)
+                return;
+            }
+            // throw err;
         }
-        // throw err;
-    }
 
-})
+    })
+}
 
 bot.on('entitySpawn', (entity) => {
     if (entity.name !== 'item') {
@@ -2998,7 +3001,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 
 process.on('uncaughtException', (err) => {
-    if (err.message.includes('Invalid typed array length')) {
+    if (err.message.includes('Invalid typed array length') && VOICED) {
         console.warn('Пойман баг в PlasmoVoice, пакет проигнорирован')
         process.exit(1)
     } else {
