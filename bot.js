@@ -1072,7 +1072,8 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
         task = 'flying';
         bot.entity.velocity.y += jumpPower;
         await bot.waitForTicks(10);
-
+        bot.entity.velocity.y = 0
+        ANTIFALL = true
         const deltaX = targetX - bot.entity.position.x;
         const deltaZ = targetZ - bot.entity.position.z;
         const distance = Math.sqrt(deltaX ** 2 + deltaZ ** 2);
@@ -1091,7 +1092,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
                     resolve();
                 } else {
                     bot.entity.velocity.x = velocityX;
-                    bot.entity.velocity.y = 0;
+                    // bot.entity.velocity.y = 0;
                     bot.entity.velocity.z = velocityZ;
                 }
             }, 50);
