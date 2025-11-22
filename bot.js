@@ -106,7 +106,7 @@ console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     // host: '212.80.7.178', //or
-    host: 'sleepraft.ru', //or
+    host: 'sleepcraft.ru', //or
     // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
