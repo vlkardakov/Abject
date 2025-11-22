@@ -9,7 +9,7 @@ console.log(process.argv)
 const BOT_USERNAME = process.argv[2] || process.env.BOT_USERNAME
 const PASSWORD = process.argv[3] || process.env.PASSWORD
 const NUMBER = parseInt(process.argv[4] || process.env.NUMBER)
-const VOICED_VALUE = process.argv[5] || process.env.PLASMOVOICE
+const VOICED_VALUE = process.argv[5] || process.env.VOICED
 const VOICED = VOICED_VALUE === "true"
 
 const mineflayer = require('mineflayer')
@@ -106,8 +106,8 @@ console.log('----------------')
 console.log('Сведения о боте :')
 console.log("Имя             :", BOT_USERNAME)
 console.log("Пароль          :", PASSWORD)
-console.log("Порядковый номер: ", NUMBER)
-console.log("Озвучивание     : ", VOICED)
+console.log("Порядковый номер:", NUMBER)
+console.log("Озвучивание     :", VOICED)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
