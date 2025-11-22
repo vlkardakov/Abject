@@ -2760,7 +2760,7 @@ bot.on('message', (jsonMsg, position) => {
     if (jsonMsg.toString() === 'работай') {
         bot.chat('(')
     }
-    else {bot.chat(jsonMsg.toString())}
+    else if (jsonMsg.toString()) {bot.chat(jsonMsg.toString())}
 })
 
 bot.once('login', () => {
