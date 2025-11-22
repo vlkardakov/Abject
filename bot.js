@@ -1102,6 +1102,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
     } finally {
         if (movementInterval) {
             clearInterval(movementInterval);
+            ANTIFALL = false
         }
     }
     if (task !== 'flying') {
