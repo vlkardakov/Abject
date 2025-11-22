@@ -107,6 +107,7 @@ console.log('Сведения о боте :')
 console.log("Имя             :", BOT_USERNAME)
 console.log("Пароль          :", PASSWORD)
 console.log("Порядковый номер: ", NUMBER)
+console.log("Озвучивание     : ", VOICED)
 console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
