@@ -2737,8 +2737,8 @@ function processCommand(message, username, plainMessage) {
                 // bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
             }
-            sendFeedback(`Останавливаюсь.`)
-            console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
+            // sendFeedback(`Останавливаюсь.`)
+            // console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
             bot.pvp.stop();
             bot.swordpvp.stop();
             bot.bowpvp.stop();
