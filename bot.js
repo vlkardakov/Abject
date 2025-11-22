@@ -2936,9 +2936,9 @@ rl.on('line', (line) => {
 // })
 
 bot.on('message', (jsonMsg, position) => {
-    console.log(jsonMsg.toAnsi());
+    // console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
-
+    console.log(plainMessage)
     if (plainMessage.includes(' » ')) {
         let typeOfMessage = null
         if (plainMessage.includes(`${BOT_USERNAME}]: `)) {
