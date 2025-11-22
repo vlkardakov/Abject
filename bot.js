@@ -173,12 +173,12 @@ function hasRichItems() {
 async function stealItems(itemName, user_name) {
     const containers = containerMemory;
     if (containers.length === 0) {
-        replyFeedback(username, "память пустая.");
+        // replyFeedback(username, "память пустая.");
         return;
         return;
     }
 
-    replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
+    // replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
 
     for (const container of containers) {
         const { name, x, y, z, items } = container;
@@ -226,7 +226,7 @@ async function stealItems(itemName, user_name) {
 
     const target = bot.players[user_name]?.entity;
     if (!target) {
-        replyFeedback(username,  `лут при мне 😏`);
+        // replyFeedback(username,  `лут при мне 😏`);
         return;
     }
 
@@ -243,17 +243,17 @@ async function stealItems(itemName, user_name) {
         }
     }
 
-    replyFeedback(username, "всё скинул, чекни!");
+    // replyFeedback(username, "всё скинул, чекни!");
 }
 async function sborItems(user_name) {
     const containers = musorMemory;
     if (containers.length === 0) {
-        replyFeedback(username, "память пустая.");
+        // replyFeedback(username, "память пустая.");
         return;
         return;
     }
 
-    replyFeedback(username, `вижу ${containers.length} мусорок, ща чекну чё в них`);
+    // replyFeedback(username, `вижу ${containers.length} мусорок, ща чекну чё в них`);
 
     for (const container of containers) {
         //пример: { name: 'barrel', x: 7, y: 92, z: 7 }
@@ -290,7 +290,7 @@ async function sborItems(user_name) {
 
     await depositItems()
 
-    replyFeedback(username, "Ну типа, весь мусор в 1 месте!)");
+    // replyFeedback(username, "Ну типа, весь мусор в 1 месте!)");
 }
 async function autoEat() {
     if (isEating || !mcData) return;
@@ -459,18 +459,18 @@ async function connectToServer() {
     // bot.chat('/server sleepcraft');
     bot.chat('/server serenity');
 }
-async function sendFeedback(text) {
-    for (const player of WATCHED_PLAYERS) {
-        if (bot.players[player]) {
-            await new Promise(resolve => setTimeout(resolve, 50));
-            bot.chat(`/msg ${player} ${text}`);
-        }
-    }
-}
-async function replyFeedback(username, text) {
-    if (username === 'console') {console.log(text)} else {
-    bot.chat(`/msg ${username} ${text}`)}
-}
+// async function // sendFeedback(text) {
+//     for (const player of WATCHED_PLAYERS) {
+//         if (bot.players[player]) {
+//             await new Promise(resolve => setTimeout(resolve, 50));
+//             bot.chat(`/msg ${player} ${text}`);
+//         }
+//     }
+// }
+// async function // replyFeedback(username, text) {
+//     if (username === 'console') {console.log(text)} else {
+//     bot.chat(`/msg ${username} ${text}`)}
+// }
 function equipItem(name) {
     const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
     if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
@@ -499,7 +499,7 @@ async function collectBlockType(blockName, count) {
     miningSand = true;
     async function mineNext() {
         if (collected >= count) {
-            sendFeedback(`Завершаю.`);
+            // sendFeedback(`Завершаю.`);
             miningSand = false;
             task = null
             return;
@@ -528,12 +528,12 @@ async function collectBlockType(blockName, count) {
                 console.log(`Добыто ${collected}/${count} ${blockName}.`);
                 setTimeout(mineNext, 100);
             } catch (err) {
-                sendFeedback(`Ошибка: ${err.message}`);
+                // sendFeedback(`Ошибка: ${err.message}`);
                 console.error(`Ошибка collectBlock:`, err);
                 miningSand = false;
             }
         } else {
-            sendFeedback(`Нет.`);
+            // sendFeedback(`Нет.`);
             miningSand = false;
         }
     }
@@ -696,7 +696,7 @@ async function depositItems() {
     }
 
     if (!chest) {
-        replyFeedback(username, `не удалось найти доступную мусорку 😓`);
+        // replyFeedback(username, `не удалось найти доступную мусорку 😓`);
         return;
     }
 
@@ -760,7 +760,7 @@ async function downloadMusic(username, songName, fileName) {
 
     const video = res.videos[0]
     console.log(`Нашел ${video.title}, сохраняю как ${fileName}`)
-    replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
+    // replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
     console.log('Качаю..')
 
     const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}.mp3" "${video.url}"`
@@ -770,7 +770,7 @@ async function downloadMusic(username, songName, fileName) {
             console.error(`ошибка: ${error.message}`)
         } else {
             console.log(`сохранено как ${fileName}`)
-            replyFeedback(username, 'Закончил скачивать.')
+            // replyFeedback(username, 'Закончил скачивать.')
         }
         rl.close()
     })
@@ -928,7 +928,7 @@ async function infoGemini(prompt) {
 }
 async function takeItem(blockPos, itemName, count = 1) {
     const block = bot.blockAt(blockPos)
-    if (!block) return sendFeedback('Блок не найден по координатам')
+    if (!block) return // sendFeedback('Блок не найден по координатам')
 
     try {
         await bot.lookAt(blockPos, true)
@@ -937,7 +937,7 @@ async function takeItem(blockPos, itemName, count = 1) {
 
         if (!items.length) {
             chest.close()
-            return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
+            return // sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
         }
 
         for (const item of items) {
@@ -945,7 +945,7 @@ async function takeItem(blockPos, itemName, count = 1) {
             if (takeCount <= 0) break
 
             await chest.withdraw(item.type, item.metadata, takeCount)
-            sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+            // sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
             count -= takeCount
 
             if (count <= 0) break
@@ -953,13 +953,13 @@ async function takeItem(blockPos, itemName, count = 1) {
 
         chest.close()
     } catch (err) {
-        sendFeedback(`Не получилось взять предмет: ${err.message}`)
+        // sendFeedback(`Не получилось взять предмет: ${err.message}`)
     }
 }
 
 async function craftItem(itemName, count = 1) {
     const item = bot.registry.itemsByName[itemName]
-    if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
+    if (!item) return // sendFeedback(`Неизвестный предмет: ${itemName}`)
 
     let recipes = bot.recipesFor(item.id, null, count, null)
 
@@ -970,19 +970,19 @@ async function craftItem(itemName, count = 1) {
             maxDistance: 10
         })
 
-        if (!craftingTable) return sendFeedback('Верстак не найден поблизости')
+        if (!craftingTable) return // sendFeedback('Верстак не найден поблизости')
 
         recipes = bot.recipesFor(item.id, null, count, craftingTable)
-        if (recipes.length === 0) return sendFeedback(`Нет рецептов даже с верстаком для: ${itemName}`)
+        if (recipes.length === 0) return // sendFeedback(`Нет рецептов даже с верстаком для: ${itemName}`)
     }
 
     const recipe = recipes[0]
 
     try {
         await bot.craft(recipe, count, craftingTable)
-        // sendFeedback(`Скрафтил ${count} x ${itemName}`)
+        // // sendFeedback(`Скрафтил ${count} x ${itemName}`)
     } catch (err) {
-        // sendFeedback(`Ошибка при крафте: ${err.message}`)
+        // // sendFeedback(`Ошибка при крафте: ${err.message}`)
     }
 }
 async function craftSet(count = 1) {
@@ -1023,7 +1023,7 @@ function getHeightAboveGround() {
 function getY(height, speed = 20, tasked=true) {
     return new Promise(resolve => {
         if (tasked && task) {
-            sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
+            // sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
 
         const onTick = () => {
             if (bot.entity.position.y > height && task === "getY") {
@@ -1128,7 +1128,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
     await slowBrake()
 
     if (WATCHED_PLAYERS && WATCHED_PLAYERS.length > 0) {
-        replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
+        // replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
     }
 
     task = null;
@@ -1233,7 +1233,7 @@ function processCommand(message, username, plainMessage) {
     // console.log(`username: '${username}', command: '${command}'`);
 
     // if ( !WATCHED_PLAYERS.includes(username)) {
-    //     // replyFeedback(username, 'Отстань.')
+    //     // // replyFeedback(username, 'Отстань.')
     //     return;
     // }
 
@@ -1242,14 +1242,14 @@ function processCommand(message, username, plainMessage) {
             const result = parseCoordinates(message);
             if (result) {
                 const {x, z} = result;
-                sendFeedback(`${username} телепортирует на ${x} ${z}`)
+                // sendFeedback(`${username} телепортирует на ${x} ${z}`)
                 tp(x,z,16,20)
-            } else replyFeedback(username, 'Неверный синтаксис')
+            } else // replyFeedback(username, 'Неверный синтаксис')
             return;
         case "exec":
             if (!WATCHED_PLAYERS.includes(username)) {
-                sendFeedback(`${username} хочет выполнить ${plainMessage}`)
-                replyFeedback(username, `Я не буду этого делать!!!`)
+                // sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                // replyFeedback(username, `Я не буду этого делать!!!`)
                 return;
             }
             eval(message.split('exec ')[1]);
@@ -1257,7 +1257,7 @@ function processCommand(message, username, plainMessage) {
             return;
         case "say":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                sendFeedback(`${username} хочет ${plainMessage}`)
+                // sendFeedback(`${username} хочет ${plainMessage}`)
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
             return;
@@ -1269,8 +1269,8 @@ function processCommand(message, username, plainMessage) {
             }
             let targetname = args[0];
 
-            sendFeedback(`Ищу цель для пкм: ${targetname}`);
-            replyFeedback(username, `Ищу цель: ${targetname}`);
+            // sendFeedback(`Ищу цель для пкм: ${targetname}`);
+            // replyFeedback(username, `Ищу цель: ${targetname}`);
 
             const entityToActivate = findEntityWithName(bot, targetname);
             if (entityToActivate) {
@@ -1309,7 +1309,7 @@ function processCommand(message, username, plainMessage) {
                 bot.pathfinder.setGoal(new goals.GoalBlock(blockToCome.position.x, blockToCome.position.y, blockToCome.position.z, 2))
                 console.log('Иду к блоку')
             } else {
-                replyFeedback(username, `Блок не найден 😢`)
+                // replyFeedback(username, `Блок не найден 😢`)
             }
             break;
         case 'reload':
@@ -1330,8 +1330,8 @@ function processCommand(message, username, plainMessage) {
 
         case "drop":
             if (!WATCHED_PLAYERS.includes(username)) {
-                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                // replyFeedback(username,`Я не буду этого делать!!!`)
+                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // // replyFeedback(username,`Я не буду этого делать!!!`)
                 return;
             }
 
@@ -1379,7 +1379,7 @@ function processCommand(message, username, plainMessage) {
                     }
                 } else {
                     bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
-                    replyFeedback(username, `у меня нет ничего типа '${itemName}'`)
+                    // replyFeedback(username, `у меня нет ничего типа '${itemName}'`)
                 }
             }
 
@@ -1405,7 +1405,7 @@ function processCommand(message, username, plainMessage) {
         case "collect":
             if (task) {
                 bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                replyFeedback(username, `Я уже занят заданием ${task}`);
+                // replyFeedback(username, `Я уже занят заданием ${task}`);
                 return;
             }
 
@@ -1617,7 +1617,7 @@ function processCommand(message, username, plainMessage) {
                             pofikPos = vec3(10 - NUMBER, 104, -12);
                             bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
                         } else if (!bot.pathfinder.goal) {
-                            // sendFeedback('Я на базе.')
+                            // // sendFeedback('Я на базе.')
                             // blockToLookAfterDeposit = bot.findBlock({
                             //     matching: block => {
                             //         const nameMatches = block.name.toLowerCase().includes('calcite')
@@ -1746,7 +1746,7 @@ function processCommand(message, username, plainMessage) {
             let targetUsernameh = Object.keys(bot.players).find(name => name.toLowerCase() === inputName)
 
             if (!targetUsernameh) {
-                sendFeedback("я не вижу такого чела")
+                // sendFeedback("я не вижу такого чела")
                 return
             }
 
@@ -1991,14 +1991,14 @@ function processCommand(message, username, plainMessage) {
         case "steal":
             const itemName = parts[1]
             if (!itemName) {
-                replyFeedback(username, "че воровать-то? введи чёт типа: steal diamond")
+                // replyFeedback(username, "че воровать-то? введи чёт типа: steal diamond")
                 return
             }
 
             stealItems(itemName, username)
             break
         case "sbor":
-            replyFeedback(
+            // replyFeedback(
                 username,
                 "Начинаю собирать мусор из мусорок"
             )
@@ -2111,7 +2111,7 @@ function processCommand(message, username, plainMessage) {
             if (index >= total || !playing) {
                 // console.log('Все сегменты отправлены');
                 // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
-                sendFeedback('Я закончил играть!')
+                // sendFeedback('Я закончил играть!')
                 SOUND = null;
                 playing = false;
 
@@ -2149,7 +2149,7 @@ function processCommand(message, username, plainMessage) {
             break
         case "restart":
             console.error("Ашипка! 😭")
-            replyFeedback(username, "Ашипка! 😭")
+            // replyFeedback(username, "Ашипка! 😭")
             process.exit(1)
             break
         case "attacknotme":
@@ -2219,7 +2219,7 @@ function processCommand(message, username, plainMessage) {
         case "enderchest":
         {
             if (!WATCHED_PLAYERS.includes(username)) {
-                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                // replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
                 return
             }
             const namePart = parts[1]?.toLowerCase()
@@ -2228,14 +2228,14 @@ function processCommand(message, username, plainMessage) {
                 maxDistance: 4
             })
             if (!chestBlock) {
-                replyFeedback(username, 'Не нашёл эндер-сундук поблизости')
+                // replyFeedback(username, 'Не нашёл эндер-сундук поблизости')
                 break
             }
             bot.openChest(chestBlock).then(chest => {
                 if (namePart === "all") {
                     const items = bot.inventory.items()
                     if (items.length === 0) {
-                        replyFeedback(username, 'У меня вообще пусто в инвентаре')
+                        // replyFeedback(username, 'У меня вообще пусто в инвентаре')
                         chest.close()
                         return
                     }
@@ -2244,11 +2244,11 @@ function processCommand(message, username, plainMessage) {
                         const item = items.shift()
                         if (!item) {
                             chest.close()
-                            replyFeedback(username, 'Сложил всё в эндер-сундук')
+                            // replyFeedback(username, 'Сложил всё в эндер-сундук')
                             return
                         }
                         chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
-                            replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                            // replyFeedback(username, `Ошибка при складывании: ${err.message}`)
                             chest.close()
                         })
                     }
@@ -2259,7 +2259,7 @@ function processCommand(message, username, plainMessage) {
 
                 const items = bot.inventory.items().filter(i => i.name.includes(namePart))
                 if (items.length === 0) {
-                    replyFeedback(username, `У меня нет предметов с "${namePart}"`)
+                    // replyFeedback(username, `У меня нет предметов с "${namePart}"`)
                     chest.close()
                     return
                 }
@@ -2268,25 +2268,25 @@ function processCommand(message, username, plainMessage) {
                     const item = items.shift()
                     if (!item) {
                         chest.close()
-                        replyFeedback(username, `Сложил все предметы с "${namePart}" в эндер-сундук ✅`)
+                        // replyFeedback(username, `Сложил все предметы с "${namePart}" в эндер-сундук ✅`)
                         return
                     }
                     chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
-                        replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                        // replyFeedback(username, `Ошибка при складывании: ${err.message}`)
                         chest.close()
                     })
                 }
                 depositNext()
 
             }).catch(err => {
-                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+                // replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
         }
             break
         case "unenderchest":
         {
             if (!WATCHED_PLAYERS.includes(username)) {
-                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                // replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
                 return
             }
             const namePart = parts[1]?.toLowerCase()
@@ -2295,14 +2295,14 @@ function processCommand(message, username, plainMessage) {
                 maxDistance: 4
             })
             if (!chestBlock) {
-                replyFeedback(username, 'Где сундук?')
+                // replyFeedback(username, 'Где сундук?')
                 break
             }
             bot.openChest(chestBlock).then(chest => {
                 if (namePart === "all") {
                     const items = chest.containerItems()
                     if (items.length === 0) {
-                        replyFeedback(username, 'Эндер-сундук пуст 👀')
+                        // replyFeedback(username, 'Эндер-сундук пуст 👀')
                         chest.close()
                         return
                     }
@@ -2311,11 +2311,11 @@ function processCommand(message, username, plainMessage) {
                         const item = items.shift()
                         if (!item) {
                             chest.close()
-                            replyFeedback(username, 'Забрал все предметы из эндер-сундука!')
+                            // replyFeedback(username, 'Забрал все предметы из эндер-сундука!')
                             return
                         }
                         chest.withdraw(item.type, null, item.count).then(takeNext).catch(err => {
-                            replyFeedback(username, `Ошибка: ${err.message}`)
+                            // replyFeedback(username, `Ошибка: ${err.message}`)
                             chest.close()
                         })
                     }
@@ -2325,7 +2325,7 @@ function processCommand(message, username, plainMessage) {
                 }
                 const items = chest.containerItems().filter(i => i.name.includes(namePart))
                 if (items.length === 0) {
-                    replyFeedback(username, `Нет предметов с "${namePart}" в эндер-сундуке`)
+                    // replyFeedback(username, `Нет предметов с "${namePart}" в эндер-сундуке`)
                     chest.close()
                     return
                 }
@@ -2334,18 +2334,18 @@ function processCommand(message, username, plainMessage) {
                     const item = items.shift()
                     if (!item) {
                         chest.close()
-                        replyFeedback(username, `Достал все предметы с "${namePart}" из эндер-сундука 👜`)
+                        // replyFeedback(username, `Достал все предметы с "${namePart}" из эндер-сундука 👜`)
                         return
                     }
                     chest.withdraw(item.type, null, item.count).then(withdrawNext).catch(err => {
-                        replyFeedback(username, `Ошибка при доставании: ${err.message}`)
+                        // replyFeedback(username, `Ошибка при доставании: ${err.message}`)
                         chest.close()
                     })
                 }
                 withdrawNext()
 
             }).catch(err => {
-                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+                // replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
         }
             break
@@ -2357,7 +2357,7 @@ function processCommand(message, username, plainMessage) {
                 return
             }
 
-            replyFeedback(username, 'ждать!')
+            // replyFeedback(username, 'ждать!')
 
             blocks = bot.findBlocks({
                 matching: block => {
@@ -2371,11 +2371,11 @@ function processCommand(message, username, plainMessage) {
             })
 
             if (blocks.length === 0) {
-                replyFeedback(username, "не нашёл ничё :(")
+                // replyFeedback(username, "не нашёл ничё :(")
                 return
             }
 
-            replyFeedback(username, `готово.`)
+            // replyFeedback(username, `готово.`)
             console.log("НАЙДЕННЫЕ БЛОКИ:")
             blocks.forEach((pos, i) => {
                 const block = bot.blockAt(pos)
@@ -2388,16 +2388,16 @@ function processCommand(message, username, plainMessage) {
         case "bounce":
             if (parts.length > 1) BOUNCE_POWER = parseFloat(parts[1])
             else BOUNCE_POWER = 0
-            replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
+            // replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
             break
         case "jump":
             if (!WATCHED_PLAYERS.includes(username)) {
-                sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                // sendFeedback(`${username} хочет выполнить ${plainMessage}`)
                 return;
             }
             if (parts.length > 1) power_1 = parseFloat(parts[1])
             else power_1 = 1.0
-            replyFeedback(username, `Прыгаю с силой ${power_1}!`);
+            // // replyFeedback(username, `Прыгаю с силой ${power_1}!`);
             boostBot(power_1, bot.players[username].entity)
             break
 
@@ -2424,7 +2424,7 @@ function processCommand(message, username, plainMessage) {
             break
         case "quit":
             if (!WATCHED_PLAYERS.includes(username)) {
-                replyFeedback(username, 'Отстань!')
+                // replyFeedback(username, 'Отстань!')
                 return
             }
             bot.chat(`/msg ${username} Самоуничтожение...`);
@@ -2589,6 +2589,7 @@ function processCommand(message, username, plainMessage) {
             } else {
                 let targetname = args[0];
                 console.log('Аргументы ест')
+                
                 playerToCome = findEntityWithName(bot, targetname);
             }
 
@@ -2605,7 +2606,7 @@ function processCommand(message, username, plainMessage) {
 
                 comePlayer();
             } else {
-                sendFeedback(`Не вижу цель ${username}`)
+                // sendFeedback(`Не вижу цель ${username}`)
             }
             break;
         case "flyto":
@@ -2632,7 +2633,7 @@ function processCommand(message, username, plainMessage) {
                 poss = playerToFly.position
                 tp(poss.x, poss.z, 20, 6)
             } else {
-                sendFeedback('Не вижу цель.')
+                // sendFeedback('Не вижу цель.')
             }
             break;
         case "teleport":
@@ -2733,11 +2734,11 @@ function processCommand(message, username, plainMessage) {
         case "stop":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
                 console.log(`${username} не в списке уполномоченных на остановку`)
-                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 // bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
             }
-            // sendFeedback(`Останавливаюсь.`)
+            // // sendFeedback(`Останавливаюсь.`)
             console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
             bot.pvp.stop();
             bot.swordpvp.stop();
@@ -2753,14 +2754,14 @@ function processCommand(message, username, plainMessage) {
             break;
         case "stop-music":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 return;
             }
             SOUND = null;
             playing = false;
             break;
         case "status":
-            replyFeedback(username, `health: ${bot.health}, food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
+            // replyFeedback(username, `health: ${bot.health}, food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
             break;
         default:
             break;
@@ -2786,7 +2787,7 @@ bot.on('entitySwingArm', (entity) => {
 })
 
 bot.on('spawn', () => {
-    sendFeedback(`плюх!`);
+    // sendFeedback(`плюх!`);
     // console.log("Событие 'spawn' получено.");
     
     initializeBotState();
