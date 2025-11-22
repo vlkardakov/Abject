@@ -2796,12 +2796,14 @@ bot.on('message', (jsonMsg, position) => {
     }
 })
 
-bot.once('login', () => {
-    // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
-    bot.chat(`/l ${PASSWORD}`);
-    console.log('logged')
+
+bot.once('windowOpen', (window) => {
+    bot.closeWindow(window)
+    bot.once('login', () => {
+        bot.chat(`/l ${PASSWORD}`);
+        console.log('logged')
+    });
 });
-bot.once('windowOpen', (window) => {bot.closeWindow(window)});
 
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
