@@ -2738,7 +2738,7 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
             // sendFeedback(`Останавливаюсь.`)
-            // console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
+            console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
             bot.pvp.stop();
             bot.swordpvp.stop();
             bot.bowpvp.stop();
