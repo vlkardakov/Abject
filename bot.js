@@ -2396,7 +2396,7 @@ function processCommand(message, username, plainMessage) {
             }
             if (parts.length > 1) power_1 = parseFloat(parts[1])
             else power_1 = 1.0
-            replyFeedback(username, `Прыгаю с силой ${power_1}!`);
+            // replyFeedback(username, `Прыгаю с силой ${power_1}!`);
             boostBot(power_1, bot.players[username].entity)
             break
 
@@ -2923,7 +2923,7 @@ rl.on('line', (line) => {
 
 bot.on('chat', (username, message) => {
     // console.log(`I have got a message from ${username}: ${message}`);
-    
+
     // processCommand(message, username, message)
 })
 
