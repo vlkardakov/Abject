@@ -111,8 +111,7 @@ console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     // host: '212.80.7.178', //or
-    // host: 'sleepcraft.ru', //or
-    host: 'serenity.outbreak.su', //or
+    host: 'sleepcraft.ru', //or
     // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
@@ -173,12 +172,12 @@ function hasRichItems() {
 async function stealItems(itemName, user_name) {
     const containers = containerMemory;
     if (containers.length === 0) {
-        // replyFeedback(username, "память пустая.");
+        replyFeedback(username, "память пустая.");
         return;
         return;
     }
 
-    // replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
+    replyFeedback(username, `вижу ${containers.length} контейнеров, ща чекну чё в них`);
 
     for (const container of containers) {
         const { name, x, y, z, items } = container;
@@ -226,7 +225,7 @@ async function stealItems(itemName, user_name) {
 
     const target = bot.players[user_name]?.entity;
     if (!target) {
-        // replyFeedback(username,  `лут при мне 😏`);
+        replyFeedback(username,  `лут при мне 😏`);
         return;
     }
 
@@ -243,54 +242,54 @@ async function stealItems(itemName, user_name) {
         }
     }
 
-    // replyFeedback(username, "всё скинул, чекни!");
+    replyFeedback(username, "всё скинул, чекни!");
 }
 async function sborItems(user_name) {
     const containers = musorMemory;
     if (containers.length === 0) {
-        // replyFeedback(username, "память пустая.");
+        replyFeedback(username, "память пустая.");
         return;
         return;
     }
 
-    // replyFeedback(username, `вижу ${containers.length} мусорок, ща чекну чё в них`);
+    replyFeedback(username, `вижу ${containers.length} мусорок, ща чекну чё в них`);
 
     for (const container of containers) {
         //пример: { name: 'barrel', x: 7, y: 92, z: 7 }
         const { name, x, y, z} = container;
 //            bot.chat(`Нашел подходящие предметы в контейнере ${name} (${x}, ${y}, ${z}), иду забирать!`);
 
-            try {
-                await bot.pathfinder.goto(new GoalNear(Math.floor(x), Math.floor(y), Math.floor(z), 3));
+        try {
+            await bot.pathfinder.goto(new GoalNear(Math.floor(x), Math.floor(y), Math.floor(z), 3));
 //                await new Promise(res => setTimeout(res, 50));
 
-                const block = bot.blockAt(new vec3(Math.floor(x), Math.floor(y), Math.floor(z)));
-                if (!block) continue;
+            const block = bot.blockAt(new vec3(Math.floor(x), Math.floor(y), Math.floor(z)));
+            if (!block) continue;
 
-                const chest = await bot.openContainer(block);
+            const chest = await bot.openContainer(block);
 
-                for (const item of chest.containerItems()) {
-                        try {
-                            await chest.withdraw(item.type, null, item.count);
-                            console.log(`украл ${item.name} x${item.count}`);
-                            removedItems.push(item);
-                        } catch (err) {
-                            console.log(`не смог забрать ${item.name}:`, err.message);
-                        }
+            for (const item of chest.containerItems()) {
+                try {
+                    await chest.withdraw(item.type, null, item.count);
+                    console.log(`украл ${item.name} x${item.count}`);
+                    removedItems.push(item);
+                } catch (err) {
+                    console.log(`не смог забрать ${item.name}:`, err.message);
                 }
-
-                chest.close();
-
-                container.items = container.items.filter(item => !removedItems.includes(item));
-//                bot.chat(`Удалил ${removedItems.length} предметов из контейнера ${name}`);
-            } catch (err) {
-                console.log(`ошибка у ${name} в позиции (${x}, ${y}, ${z}):`, err.message);
             }
+
+            chest.close();
+
+            container.items = container.items.filter(item => !removedItems.includes(item));
+//                bot.chat(`Удалил ${removedItems.length} предметов из контейнера ${name}`);
+        } catch (err) {
+            console.log(`ошибка у ${name} в позиции (${x}, ${y}, ${z}):`, err.message);
+        }
     }
 
     await depositItems()
 
-    // replyFeedback(username, "Ну типа, весь мусор в 1 месте!)");
+    replyFeedback(username, "Ну типа, весь мусор в 1 месте!)");
 }
 async function autoEat() {
     if (isEating || !mcData) return;
@@ -315,7 +314,7 @@ async function autoEat() {
             }
         } else {
             console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}, но еды в инвентаре нет.`);
-            // //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Дайте едыыы..`)
+            // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Дайте едыыы..`)
         }
     }
 }
@@ -456,21 +455,20 @@ async function breakBlockManually(block) {
 async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
-    // bot.chat('/server sleepcraft');
-    bot.chat('/server serenity');
+    bot.chat('/server sleepcraft');
 }
-// async function // sendFeedback(text) {
-//     for (const player of WATCHED_PLAYERS) {
-//         if (bot.players[player]) {
-//             await new Promise(resolve => setTimeout(resolve, 50));
-//             //bot.chat(`/msg ${player} ${text}`);
-//         }
-//     }
-// }
-// async function // replyFeedback(username, text) {
-//     if (username === 'console') {console.log(text)} else {
-//     //bot.chat(`/msg ${username} ${text}`)}
-// }
+async function sendFeedback(text) {
+    for (const player of WATCHED_PLAYERS) {
+        if (bot.players[player]) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+            bot.chat(`/msg ${player} ${text}`);
+        }
+    }
+}
+async function replyFeedback(username, text) {
+    if (username === 'console') {console.log(text)} else {
+        bot.chat(`/msg ${username} ${text}`)}
+}
 function equipItem(name) {
     const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
     if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
@@ -499,7 +497,7 @@ async function collectBlockType(blockName, count) {
     miningSand = true;
     async function mineNext() {
         if (collected >= count) {
-            // sendFeedback(`Завершаю.`);
+            sendFeedback(`Завершаю.`);
             miningSand = false;
             task = null
             return;
@@ -528,12 +526,12 @@ async function collectBlockType(blockName, count) {
                 console.log(`Добыто ${collected}/${count} ${blockName}.`);
                 setTimeout(mineNext, 100);
             } catch (err) {
-                // sendFeedback(`Ошибка: ${err.message}`);
+                sendFeedback(`Ошибка: ${err.message}`);
                 console.error(`Ошибка collectBlock:`, err);
                 miningSand = false;
             }
         } else {
-            // sendFeedback(`Нет.`);
+            sendFeedback(`Нет.`);
             miningSand = false;
         }
     }
@@ -696,7 +694,7 @@ async function depositItems() {
     }
 
     if (!chest) {
-        // replyFeedback(username, `не удалось найти доступную мусорку 😓`);
+        replyFeedback(username, `не удалось найти доступную мусорку 😓`);
         return;
     }
 
@@ -760,7 +758,7 @@ async function downloadMusic(username, songName, fileName) {
 
     const video = res.videos[0]
     console.log(`Нашел ${video.title}, сохраняю как ${fileName}`)
-    // replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
+    replyFeedback(username, `Нашел ${video.title}, сохраняю как ${fileName}`)
     console.log('Качаю..')
 
     const command = `yt-dlp -x --audio-format mp3 -o "/rusvan-bots/music/${fileName}.mp3" "${video.url}"`
@@ -770,7 +768,7 @@ async function downloadMusic(username, songName, fileName) {
             console.error(`ошибка: ${error.message}`)
         } else {
             console.log(`сохранено как ${fileName}`)
-            // replyFeedback(username, 'Закончил скачивать.')
+            replyFeedback(username, 'Закончил скачивать.')
         }
         rl.close()
     })
@@ -818,8 +816,8 @@ function findNearestItem(searchName = '') {
 function findNearestItemWithLore() {
     return bot.nearestEntity(entity => {
         loreItem = getLore(entity);
-            // console.log(`Подпись предмета: ${loreItem}`)
-            return entity.name === 'item' && loreItem === BOT_USERNAME;
+        // console.log(`Подпись предмета: ${loreItem}`)
+        return entity.name === 'item' && loreItem === BOT_USERNAME;
     });
 }
 function getDest(item) {
@@ -876,13 +874,13 @@ function findNearestEnemy() {
         const username = entity.username
         const isHostile = (
             (
-            name.includes('zombie') ||
-            name.includes('skeleton') ||
-            name.includes('spider') ||
-            name.includes('creeper') ||
-            name.includes('piglin') ||
-            name.includes('enderm') ||
-            name.includes('drowned') || BAD_PLAYERS.includes(username)
+                name.includes('zombie') ||
+                name.includes('skeleton') ||
+                name.includes('spider') ||
+                name.includes('creeper') ||
+                name.includes('piglin') ||
+                name.includes('enderm') ||
+                name.includes('drowned') || BAD_PLAYERS.includes(username)
             ) && (!name.includes('horse'))//||
             // name.includes('phantom')
         );
@@ -928,7 +926,7 @@ async function infoGemini(prompt) {
 }
 async function takeItem(blockPos, itemName, count = 1) {
     const block = bot.blockAt(blockPos)
-    if (!block) return // sendFeedback('Блок не найден по координатам')
+    if (!block) return sendFeedback('Блок не найден по координатам')
 
     try {
         await bot.lookAt(blockPos, true)
@@ -937,7 +935,7 @@ async function takeItem(blockPos, itemName, count = 1) {
 
         if (!items.length) {
             chest.close()
-            return // sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
+            return sendFeedback(`Предмет "${itemName}" не найден в контейнере`)
         }
 
         for (const item of items) {
@@ -945,7 +943,7 @@ async function takeItem(blockPos, itemName, count = 1) {
             if (takeCount <= 0) break
 
             await chest.withdraw(item.type, item.metadata, takeCount)
-            // sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
+            sendFeedback(`Забрал ${takeCount} x ${itemName} из контейнера`)
             count -= takeCount
 
             if (count <= 0) break
@@ -953,13 +951,13 @@ async function takeItem(blockPos, itemName, count = 1) {
 
         chest.close()
     } catch (err) {
-        // sendFeedback(`Не получилось взять предмет: ${err.message}`)
+        sendFeedback(`Не получилось взять предмет: ${err.message}`)
     }
 }
 
 async function craftItem(itemName, count = 1) {
     const item = bot.registry.itemsByName[itemName]
-    if (!item) return // sendFeedback(`Неизвестный предмет: ${itemName}`)
+    if (!item) return sendFeedback(`Неизвестный предмет: ${itemName}`)
 
     let recipes = bot.recipesFor(item.id, null, count, null)
 
@@ -970,19 +968,19 @@ async function craftItem(itemName, count = 1) {
             maxDistance: 10
         })
 
-        if (!craftingTable) return // sendFeedback('Верстак не найден поблизости')
+        if (!craftingTable) return sendFeedback('Верстак не найден поблизости')
 
         recipes = bot.recipesFor(item.id, null, count, craftingTable)
-        if (recipes.length === 0) return // sendFeedback(`Нет рецептов даже с верстаком для: ${itemName}`)
+        if (recipes.length === 0) return sendFeedback(`Нет рецептов даже с верстаком для: ${itemName}`)
     }
 
     const recipe = recipes[0]
 
     try {
         await bot.craft(recipe, count, craftingTable)
-        // // sendFeedback(`Скрафтил ${count} x ${itemName}`)
+        // sendFeedback(`Скрафтил ${count} x ${itemName}`)
     } catch (err) {
-        // // sendFeedback(`Ошибка при крафте: ${err.message}`)
+        // sendFeedback(`Ошибка при крафте: ${err.message}`)
     }
 }
 async function craftSet(count = 1) {
@@ -1023,8 +1021,7 @@ function getHeightAboveGround() {
 function getY(height, speed = 20, tasked=true) {
     return new Promise(resolve => {
         if (tasked && task) {
-            // sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
-        }
+            sendFeedback(`Я уже занят заданием ${task}`); return} else if (tasked) {task = 'getY'}
 
         const onTick = () => {
             if (bot.entity.position.y > height && task === "getY") {
@@ -1129,7 +1126,7 @@ async function tp(targetX, targetZ, speedFactor, jumpPower = 6) {
     await slowBrake()
 
     if (WATCHED_PLAYERS && WATCHED_PLAYERS.length > 0) {
-        // replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
+        replyFeedback(WATCHED_PLAYERS[0], 'Прилетели.');
     }
 
     task = null;
@@ -1151,13 +1148,13 @@ function digPacket(block) {
             face: 1,
             sequence: bot._client.sequence ?? 0
         })
-    bot._client.write('arm_animation', {}) // чтоб махнул рукой
-    bot._client.write('block_dig', {
-        status: 0, // START_DESTROY_BLOCK
-        location: block.position,
-        face: 1,
-        sequence: bot._client.sequence ?? 0
-    })
+        bot._client.write('arm_animation', {}) // чтоб махнул рукой
+        bot._client.write('block_dig', {
+            status: 0, // START_DESTROY_BLOCK
+            location: block.position,
+            face: 1,
+            sequence: bot._client.sequence ?? 0
+        })
 
     }, 1000)
 }
@@ -1234,7 +1231,7 @@ function processCommand(message, username, plainMessage) {
     // console.log(`username: '${username}', command: '${command}'`);
 
     // if ( !WATCHED_PLAYERS.includes(username)) {
-    //     // // replyFeedback(username, 'Отстань.')
+    //     // replyFeedback(username, 'Отстань.')
     //     return;
     // }
 
@@ -1243,14 +1240,14 @@ function processCommand(message, username, plainMessage) {
             const result = parseCoordinates(message);
             if (result) {
                 const {x, z} = result;
-                // sendFeedback(`${username} телепортирует на ${x} ${z}`)
+                sendFeedback(`${username} телепортирует на ${x} ${z}`)
                 tp(x,z,16,20)
-            } else // replyFeedback(username, 'Неверный синтаксис')
+            } else replyFeedback(username, 'Неверный синтаксис')
             return;
         case "exec":
             if (!WATCHED_PLAYERS.includes(username)) {
-                // sendFeedback(`${username} хочет выполнить ${plainMessage}`)
-                // replyFeedback(username, `Я не буду этого делать!!!`)
+                sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                replyFeedback(username, `Я не буду этого делать!!!`)
                 return;
             }
             eval(message.split('exec ')[1]);
@@ -1258,7 +1255,7 @@ function processCommand(message, username, plainMessage) {
             return;
         case "say":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                // sendFeedback(`${username} хочет ${plainMessage}`)
+                sendFeedback(`${username} хочет ${plainMessage}`)
             }
             bot.chat(message.includes('/') ? message.split('say ')[1] : `!${message.split('say ')[1]}`);
             return;
@@ -1270,8 +1267,8 @@ function processCommand(message, username, plainMessage) {
             }
             let targetname = args[0];
 
-            // sendFeedback(`Ищу цель для пкм: ${targetname}`);
-            // replyFeedback(username, `Ищу цель: ${targetname}`);
+            sendFeedback(`Ищу цель для пкм: ${targetname}`);
+            replyFeedback(username, `Ищу цель: ${targetname}`);
 
             const entityToActivate = findEntityWithName(bot, targetname);
             if (entityToActivate) {
@@ -1310,7 +1307,7 @@ function processCommand(message, username, plainMessage) {
                 bot.pathfinder.setGoal(new goals.GoalBlock(blockToCome.position.x, blockToCome.position.y, blockToCome.position.z, 2))
                 console.log('Иду к блоку')
             } else {
-                // replyFeedback(username, `Блок не найден 😢`)
+                replyFeedback(username, `Блок не найден 😢`)
             }
             break;
         case 'reload':
@@ -1331,8 +1328,8 @@ function processCommand(message, username, plainMessage) {
 
         case "drop":
             if (!WATCHED_PLAYERS.includes(username)) {
-                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                // // replyFeedback(username,`Я не буду этого делать!!!`)
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                replyFeedback(username,`Я не буду этого делать!!!`)
                 return;
             }
 
@@ -1345,16 +1342,16 @@ function processCommand(message, username, plainMessage) {
                         await bot.equip(item, 'hand')
                         await bot.unequip('hand')
                     } catch (err) {
-                        //bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог снять ${item.name}: ${err.message}`)
                         return
                     }
                 }
 
                 bot.toss(item.type, null, Math.min(item.count, amount), err => {
                     if (!err) {
-                        // //bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} выбросил ${Math.min(item.count, amount)} ${item.name}`)
                     } else {
-                        // //bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
+                        // bot.chat(`/msg ${WATCHED_PLAYERS[0]} не смог выкинуть ${item.name}: ${err.message}`)
                     }
                 })
             }
@@ -1379,34 +1376,34 @@ function processCommand(message, username, plainMessage) {
                         await safeToss(item, amount)
                     }
                 } else {
-                    //bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
-                    // replyFeedback(username, `у меня нет ничего типа '${itemName}'`)
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} у меня нет ничего типа '${itemName}'`)
+                    replyFeedback(username, `у меня нет ничего типа '${itemName}'`)
                 }
             }
 
         })()
             return;
         case "dropall":
-            async function expunge() {
-                await unequipAll()
-                var inventoryItemCount = bot.inventory.items().length;
-                if (inventoryItemCount === 0) return;
+        async function expunge() {
+            await unequipAll()
+            var inventoryItemCount = bot.inventory.items().length;
+            if (inventoryItemCount === 0) return;
 
-                while (inventoryItemCount > 0) {
-                    const item = bot.inventory.items()[0];
-                    // bot.chat(`Throwed ${item.name}`);
-                    await bot.tossStack(item);
-                    inventoryItemCount = bot.inventory.items().length;
-                }
+            while (inventoryItemCount > 0) {
+                const item = bot.inventory.items()[0];
+                // bot.chat(`Throwed ${item.name}`);
+                await bot.tossStack(item);
+                inventoryItemCount = bot.inventory.items().length;
             }
+        }
 
             expunge();
             return;
 
         case "collect":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                // replyFeedback(username, `Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                replyFeedback(username, `Я уже занят заданием ${task}`);
                 return;
             }
 
@@ -1511,18 +1508,18 @@ function processCommand(message, username, plainMessage) {
                     console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
                     // console.log(JSON.stringify(targetItem.metadata, null, 2));
                     justCheckedBarrel = false;
-                    //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
                     bot.pathfinder.setMovements(defaultMove);
                     bot.pathfinder.setGoal(null)
                     bot.pathfinder.setGoal(new GoalFollow(targetItem, 0));
                 } else {
                     if (isFarFromCenter() && !targetItem && !bot.pathfinder.goal) {
-                        //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Возвращаюсь на базу..`)
                         chestPos = vec3(-289, 91, 403);
                         await bot.pathfinder.goto(new goals.GoalNear(chestPos.x, chestPos.y, chestPos.z, 2));
                     } else if (!justCheckedBarrel && !bot.pathfinder.goal) {
                         await depositItems();
-                        //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
+                        bot.chat(`/msg ${WATCHED_PLAYERS[0]} Мусор собран!`)
                         // blockToLookAfterDeposit = bot.findBlock({
                         //     matching: block => {
                         //         const nameMatches = block.name.toLowerCase().includes('calcite')
@@ -1540,7 +1537,7 @@ function processCommand(message, username, plainMessage) {
                 }
 
                 if (!collecting) {
-                    //bot.chat(`/msg ${WATCHED_PLAYERS[0]} прекращаю!`);
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} прекращаю!`);
                     if (collectInterval) clearInterval(collectInterval);
                     bot.pathfinder.setGoal(null);
                     return;
@@ -1556,51 +1553,51 @@ function processCommand(message, username, plainMessage) {
             break;
         case "protect":
             if (task) {
-                // //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
                 return;
             }
 
             let protectInterval = null;
 
-            function startProtecting() {
-                if (protectInterval) clearInterval(protectInterval);
+        function startProtecting() {
+            if (protectInterval) clearInterval(protectInterval);
 
-                task = 'protecting';
+            task = 'protecting';
 
 
-                let oldTargetEnemy = null
+            let oldTargetEnemy = null
 
-                protectInterval = setInterval(async () => {
-                    // if (collecting_paused) {
-                    //     console.log('Сбор приостановлен, жду 5 секунд...');
-                    //     await new Promise(resolve => setTimeout(resolve, 5000));
-                    //     return;
-                    // }
-                    if (task !== 'protecting') {
-                        clearInterval(protectInterval)
-                        return;
-                    }
-                    const targetEnemy = findNearestEnemy();
+            protectInterval = setInterval(async () => {
+                // if (collecting_paused) {
+                //     console.log('Сбор приостановлен, жду 5 секунд...');
+                //     await new Promise(resolve => setTimeout(resolve, 5000));
+                //     return;
+                // }
+                if (task !== 'protecting') {
+                    clearInterval(protectInterval)
+                    return;
+                }
+                const targetEnemy = findNearestEnemy();
 
-                    // console.log('targetItem ', targetItem);
-                    // console.log(bot.pathfinder.goal);
+                // console.log('targetItem ', targetItem);
+                // console.log(bot.pathfinder.goal);
 
-                    my_item = findNearestItemWithLore();
-                    if (my_item) {
-                        bot.pathfinder.setMovements(defaultMove);
-                        id = my_item?.metadata?.[8]?.itemId
-                        count = my_item?.metadata?.[8]?.itemCount
-                        console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
-                        // console.log(JSON.stringify(targetItem.metadata, null, 2));
-                        justCheckedBarrel = false;
-                        //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
-                        bot.pathfinder.setMovements(defaultMove);
-                        bot.pathfinder.setGoal(null)
-                        mp = my_item.position
-                        bot.pathfinder.setGoal(new GoalNear(mp.x, mp.y, mp.z, 0));
-                    } else if (targetEnemy) {
-                        if (targetEnemy !== oldTargetEnemy) {
+                my_item = findNearestItemWithLore();
+                if (my_item) {
+                    bot.pathfinder.setMovements(defaultMove);
+                    id = my_item?.metadata?.[8]?.itemId
+                    count = my_item?.metadata?.[8]?.itemCount
+                    console.log(`ID: ${id}, тип: ${itemProtocolIdMap[id]}, количество ${count}`);
+                    // console.log(JSON.stringify(targetItem.metadata, null, 2));
+                    justCheckedBarrel = false;
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Иду!`)
+                    bot.pathfinder.setMovements(defaultMove);
+                    bot.pathfinder.setGoal(null)
+                    mp = my_item.position
+                    bot.pathfinder.setGoal(new GoalNear(mp.x, mp.y, mp.z, 0));
+                } else if (targetEnemy) {
+                    if (targetEnemy !== oldTargetEnemy) {
                         oldTargetEnemy = targetEnemy;// console.log('Нормальный предмет detetcted!')
                         bot.pathfinder.setMovements(defaultMove);
                         name = targetEnemy.name
@@ -1612,49 +1609,49 @@ function processCommand(message, username, plainMessage) {
                         equipItem('sword')
                         // equipItem('wheat')
                         bot.pvp.attack(targetEnemy)
-                        }
-                    } else {
-                        if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target) {
-                            pofikPos = vec3(10 - NUMBER, 104, -12);
-                            bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
-                        } else if (!bot.pathfinder.goal) {
-                            // // sendFeedback('Я на базе.')
-                            // blockToLookAfterDeposit = bot.findBlock({
-                            //     matching: block => {
-                            //         const nameMatches = block.name.toLowerCase().includes('calcite')
-                            //         const isVisible = bot.canSeeBlock(block)
-                            //         return nameMatches && isVisible
-                            //     },
-                            //     maxDistance: 5,
-                            //     useExtraInfo: true
-                            // })
-                            // if (blockToLookAfterDeposit) {
-                            //     bot.lookAt(blockToLookAfterDeposit.position, true );
-                            // }
-                            // bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
-                        }
                     }
+                } else {
+                    if (distanceToPofikBase(bot.entity) > 6 && !targetEnemy && !bot.pvp.target) {
+                        pofikPos = vec3(10 - NUMBER, 104, -12);
+                        bot.pathfinder.setGoal(new goals.GoalNear(pofikPos.x, pofikPos.y, pofikPos.z, 4));
+                    } else if (!bot.pathfinder.goal) {
+                        // sendFeedback('Я на базе.')
+                        // blockToLookAfterDeposit = bot.findBlock({
+                        //     matching: block => {
+                        //         const nameMatches = block.name.toLowerCase().includes('calcite')
+                        //         const isVisible = bot.canSeeBlock(block)
+                        //         return nameMatches && isVisible
+                        //     },
+                        //     maxDistance: 5,
+                        //     useExtraInfo: true
+                        // })
+                        // if (blockToLookAfterDeposit) {
+                        //     bot.lookAt(blockToLookAfterDeposit.position, true );
+                        // }
+                        // bot.pathfinder.setGoal(new goals.GoalNear(7, 87, 6, 2 ));
+                    }
+                }
 
-                }, 1000);
-            }
+            }, 1000);
+        }
 
             startProtecting();
             break;
 
         case "camp":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
 
             if (args.length < 1) {
-                //bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
                 return;
             }
             if (MODE === "мирный") {
-                //bot.chat(`/msg ${username} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
             let camptargetUsername = args[0];
@@ -1662,8 +1659,8 @@ function processCommand(message, username, plainMessage) {
                 // bot.chat(Нет идите нафиг')
                 return;
             }
-            //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ищу цель: ${camptargetUsername}`);
-            //bot.chat(`/msg ${username} Ищу цель: ${camptargetUsername}`);
+            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ищу цель: ${camptargetUsername}`);
+            bot.chat(`/msg ${username} Ищу цель: ${camptargetUsername}`);
             task = 'camp'
 
         function findNewTarget() {
@@ -1672,7 +1669,7 @@ function processCommand(message, username, plainMessage) {
 
         function startCampAttack(targetEntity) {
             if (!targetEntity) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдена сущность: ${camptargetUsername}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдена сущность: ${camptargetUsername}.`);
                 task = null
                 return;
             }
@@ -1690,7 +1687,7 @@ function processCommand(message, username, plainMessage) {
 
             function campattackLoop() {
                 if (!targetEntity || !targetEntity.isValid || campattackAttempts >= campMAX_ATTEMPTS) {
-                    //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Хахаха ничтожество /s`);
+                    bot.chat(`/msg ${WATCHED_PLAYERS[0]} Хахаха ничтожество /s`);
                     bot.pathfinder.setGoal(null);
                     bot.pvp.stop();
                     if (campattackInterval) clearInterval(campattackInterval);
@@ -1734,73 +1731,73 @@ function processCommand(message, username, plainMessage) {
             break;
         case "attack":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
             if (args.length < 1) {
-                //bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: camp <ник_игрока | тип_моба>`);
                 return;
             }
             let inputName = parts[1].toLowerCase()
             let targetUsernameh = Object.keys(bot.players).find(name => name.toLowerCase() === inputName)
 
             if (!targetUsernameh) {
-                // sendFeedback("я не вижу такого чела")
+                sendFeedback("я не вижу такого чела")
                 return
             }
 
             task = 'attack'
-            async function attackPlayer() {
-                // try {
-                console.log(`try attacking '${targetUsernameh}'`)
-                badEntity = bot.players[targetUsernameh].entity;
-                bot.pathfinder.setGoal(null)
-                attackInterval1 = setInterval(() => {
-                    if (!badEntity || badEntity.isValid === false || task !== 'attack') {
-                        task = null
-                        clearInterval(attackInterval1)
-                        return
-                    }
-                    if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 2));
-                    bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
-                    // if (bot.entity.attackCooldown > 0.9)
-                    bot.attack(badEntity)
-                }, 1000)
-                // } catch(e) {}
-            }
+        async function attackPlayer() {
+            // try {
+            console.log(`try attacking '${targetUsernameh}'`)
+            badEntity = bot.players[targetUsernameh].entity;
+            bot.pathfinder.setGoal(null)
+            attackInterval1 = setInterval(() => {
+                if (!badEntity || badEntity.isValid === false || task !== 'attack') {
+                    task = null
+                    clearInterval(attackInterval1)
+                    return
+                }
+                if (!bot.pathfinder.Goal) bot.pathfinder.setGoal(new GoalFollow(badEntity, 2));
+                bot.lookAt(badEntity.position.offset(0, 1.6, 0), true)
+                // if (bot.entity.attackCooldown > 0.9)
+                bot.attack(badEntity)
+            }, 1000)
+            // } catch(e) {}
+        }
             attackPlayer()
             break;
         case "kill":
             if (task) {
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
                 return;
             }
 
             if (MODE === "мирный") {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                //bot.chat(`/msg ${username} Я сегодня добрый!`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
             if (args.length < 1) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                //bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
                 return;
             }
             let targetUsername = args[0];
             if (targetUsername === 'enemy') targetUsername = 'zombie';
 
             if (targetUsername === 'vlkardakov') {
-                //bot.chat(`/msg ${username} Нет идите нафиг`)
+                bot.chat(`/msg ${username} Нет идите нафиг`)
                 return;}
 
             targetEntity = findEntityWithName(bot, targetUsername);
 
             if (!targetEntity) {
-                //bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsername}.`);
                 return;
             }
             bot.pathfinder.setGoal(null);
@@ -1810,34 +1807,34 @@ function processCommand(message, username, plainMessage) {
             break;
         case "custom-kill":
             if (task) {
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
                 return;
             }
 
             if (MODE === "мирный") {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                //bot.chat(`/msg ${username} Я сегодня добрый!`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
 
             if (args.length < 1) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                //bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
                 return;
             }
             let targetUsernamecustom = args[0];
             if (targetUsernamecustom === 'enemy') targetUsernamecustom = 'zombie';
 
             if (targetUsernamecustom === 'vlkardakov') {
-                //bot.chat(`/msg ${username} Нет идите нафиг`)
+                bot.chat(`/msg ${username} Нет идите нафиг`)
                 return;}
 
             targetEntitycustom = findEntityWithName(bot, targetUsernamecustom);
 
             if (!targetEntitycustom) {
-                //bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernamecustom}.`);
                 return;
             }
             bot.pathfinder.setGoal(null);
@@ -1847,34 +1844,34 @@ function processCommand(message, username, plainMessage) {
             break;
         case "shot":
             if (task) {
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
                 return;
             }
 
             if (MODE === "мирный") {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                //bot.chat(`/msg ${username} Я сегодня добрый!`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
 
             if (args.length < 1) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: shot <ник_игрока | тип_моба>`);
-                //bot.chat(`/msg ${username} Укажи цель: shot <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: shot <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: shot <ник_игрока | тип_моба>`);
                 return;
             }
             let targetUsernameshot = args[0];
             if (targetUsernameshot === 'enemy') targetUsernameshot = 'zombie';
 
             if (targetUsernameshot === 'vlkardakov') {
-                //bot.chat(`/msg ${username} Нет идите нафиг`)
+                bot.chat(`/msg ${username} Нет идите нафиг`)
                 return;}
 
             targetEntityshot = findEntityWithName(bot, targetUsernameshot);
 
             if (!targetEntityshot) {
-                //bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
+                bot.chat(`/msg ${username} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не ${command === 'kill' ? 'вижу' : 'найдена'} сущность: ${targetUsernameshot}.`);
                 return;
             }
             bot.pathfinder.setGoal(null);
@@ -1884,8 +1881,8 @@ function processCommand(message, username, plainMessage) {
             break;
         case "remember":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -1982,8 +1979,8 @@ function processCommand(message, username, plainMessage) {
                     }
                 })
 
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Запомнил ${memoryData.length} контейнеров с предметами!`)
-                //bot.chat(`/msg ${username} Запомнил ${memoryData.length} контейнеров с предметами!`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Запомнил ${memoryData.length} контейнеров с предметами!`)
+                bot.chat(`/msg ${username} Запомнил ${memoryData.length} контейнеров с предметами!`)
                 task = null
             }
 
@@ -1992,33 +1989,33 @@ function processCommand(message, username, plainMessage) {
         case "steal":
             const itemName = parts[1]
             if (!itemName) {
-                // replyFeedback(username, "че воровать-то? введи чёт типа: steal diamond")
+                replyFeedback(username, "че воровать-то? введи чёт типа: steal diamond")
                 return
             }
 
             stealItems(itemName, username)
             break
         case "sbor":
-            // replyFeedback(
-            //     username,
-            //     "Начинаю собирать мусор из мусорок"
-            // )
+            replyFeedback(
+                username,
+                "Начинаю собирать мусор из мусорок"
+            )
             sborItems(username)
             break
         case "addspawnpos":
             const pos = bot.players[username].entity.position.floored();
             SPAWN_POSITIONS.push(pos);
-            //bot.chat(`/msg ${username} Добавил позицию: ${pos.x}, ${pos.y}, ${pos.z}`);
+            bot.chat(`/msg ${username} Добавил позицию: ${pos.x}, ${pos.y}, ${pos.z}`);
             break;
         case "addpofikpos":
             const pofikpos = bot.players[username].entity.position.floored();
             POFIK_POSITIONS.push(pofikpos);
-            //bot.chat(`/msg ${username} Добавил позицию: ${pofikpos.x}, ${pofikpos.y}, ${pofikpos.z}`);
+            bot.chat(`/msg ${username} Добавил позицию: ${pofikpos.x}, ${pofikpos.y}, ${pofikpos.z}`);
             break;
         case "logspawnpos":
             console.log('Спавна позици щапрошены')
             if (SPAWN_POSITIONS.length === 0) {
-                //bot.chat(`/msg ${username} Спаунов нет 😢`);
+                bot.chat(`/msg ${username} Спаунов нет 😢`);
             } else {
                 console.log("const SPAWN_POSITIONS = [");
                 SPAWN_POSITIONS.forEach((pos) => {
@@ -2026,13 +2023,13 @@ function processCommand(message, username, plainMessage) {
                 });
                 console.log("];");
 
-                //bot.chat(`/msg ${username} Смотри консоль`);
+                bot.chat(`/msg ${username} Смотри консоль`);
             }
             break;
         case "logpofikpos":
             console.log('pofik позици щапрошены')
             if (POFIK_POSITIONS.length === 0) {
-                //bot.chat(`/msg ${username} позиций нет 😢`);
+                bot.chat(`/msg ${username} позиций нет 😢`);
             } else {
                 console.log("const POFIK_POSITIONS = [");
                 POFIK_POSITIONS.forEach((pos) => {
@@ -2040,14 +2037,14 @@ function processCommand(message, username, plainMessage) {
                 });
                 console.log("];");
 
-                //bot.chat(`/msg ${username} Смотри консоль`);
+                bot.chat(`/msg ${username} Смотри консоль`);
             }
             break;
         case "play":
             if (!VOICED) {break}
             // console.log('Произведение музыки запрошено');
             if (SOUND || playing) {
-                //bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
+                bot.chat(`/msg ${username} Я уже играю ${SOUND}`);
                 return;
             }
 
@@ -2064,7 +2061,7 @@ function processCommand(message, username, plainMessage) {
                 audioFile = path.join('/rusvan-bots/music', `${SOUND}.mp3`);
                 if (!fs.existsSync(audioFile)) {
                     console.error('Файл не найден:', audioFile);
-                    //bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
+                    bot.chat(`/msg ${username} ты просишь несуществующую музыку!!`)
                     SOUND = null;
                     playing = false;
                     return;
@@ -2111,8 +2108,8 @@ function processCommand(message, username, plainMessage) {
         function sendSegmentsSequentially(index, total, tempDir) {
             if (index >= total || !playing) {
                 // console.log('Все сегменты отправлены');
-                // //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
-                // sendFeedback('Я закончил играть!')
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я закончил играть!`)
+                sendFeedback('Я закончил играть!')
                 SOUND = null;
                 playing = false;
 
@@ -2142,15 +2139,15 @@ function processCommand(message, username, plainMessage) {
         }
             break;
         case "hi":
-            //bot.chat(`/msg ${username} Привета!`);
+            bot.chat(`/msg ${username} Привета!`);
             break
         case "antifall":
-                if (ANTIFALL) ANTIFALL = false
-                else ANTIFALL = true
+            if (ANTIFALL) ANTIFALL = false
+            else ANTIFALL = true
             break
         case "restart":
             console.error("Ашипка! 😭")
-            // replyFeedback(username, "Ашипка! 😭")
+            replyFeedback(username, "Ашипка! 😭")
             process.exit(1)
             break
         case "attacknotme":
@@ -2186,7 +2183,7 @@ function processCommand(message, username, plainMessage) {
         //     break
         case "arrow":
             const targetArrowLever1 = new vec3(36, 14, -9)
-                activateBlock(targetArrowLever1)
+            activateBlock(targetArrowLever1)
             break
         case "arrows":
             const targetArrowLever = new vec3(36, 14, -9)
@@ -2220,7 +2217,7 @@ function processCommand(message, username, plainMessage) {
         case "enderchest":
         {
             if (!WATCHED_PLAYERS.includes(username)) {
-                // replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
                 return
             }
             const namePart = parts[1]?.toLowerCase()
@@ -2229,14 +2226,14 @@ function processCommand(message, username, plainMessage) {
                 maxDistance: 4
             })
             if (!chestBlock) {
-                // replyFeedback(username, 'Не нашёл эндер-сундук поблизости')
+                replyFeedback(username, 'Не нашёл эндер-сундук поблизости')
                 break
             }
             bot.openChest(chestBlock).then(chest => {
                 if (namePart === "all") {
                     const items = bot.inventory.items()
                     if (items.length === 0) {
-                        // replyFeedback(username, 'У меня вообще пусто в инвентаре')
+                        replyFeedback(username, 'У меня вообще пусто в инвентаре')
                         chest.close()
                         return
                     }
@@ -2245,11 +2242,11 @@ function processCommand(message, username, plainMessage) {
                         const item = items.shift()
                         if (!item) {
                             chest.close()
-                            // replyFeedback(username, 'Сложил всё в эндер-сундук')
+                            replyFeedback(username, 'Сложил всё в эндер-сундук')
                             return
                         }
                         chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
-                            // replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                            replyFeedback(username, `Ошибка при складывании: ${err.message}`)
                             chest.close()
                         })
                     }
@@ -2260,7 +2257,7 @@ function processCommand(message, username, plainMessage) {
 
                 const items = bot.inventory.items().filter(i => i.name.includes(namePart))
                 if (items.length === 0) {
-                    // replyFeedback(username, `У меня нет предметов с "${namePart}"`)
+                    replyFeedback(username, `У меня нет предметов с "${namePart}"`)
                     chest.close()
                     return
                 }
@@ -2269,25 +2266,25 @@ function processCommand(message, username, plainMessage) {
                     const item = items.shift()
                     if (!item) {
                         chest.close()
-                        // replyFeedback(username, `Сложил все предметы с "${namePart}" в эндер-сундук ✅`)
+                        replyFeedback(username, `Сложил все предметы с "${namePart}" в эндер-сундук ✅`)
                         return
                     }
                     chest.deposit(item.type, null, item.count).then(depositNext).catch(err => {
-                        // replyFeedback(username, `Ошибка при складывании: ${err.message}`)
+                        replyFeedback(username, `Ошибка при складывании: ${err.message}`)
                         chest.close()
                     })
                 }
                 depositNext()
 
             }).catch(err => {
-                // replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
         }
             break
         case "unenderchest":
         {
             if (!WATCHED_PLAYERS.includes(username)) {
-                // replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
+                replyFeedback(username, 'Я не буду открывать эндерчест для тебя.')
                 return
             }
             const namePart = parts[1]?.toLowerCase()
@@ -2296,14 +2293,14 @@ function processCommand(message, username, plainMessage) {
                 maxDistance: 4
             })
             if (!chestBlock) {
-                // replyFeedback(username, 'Где сундук?')
+                replyFeedback(username, 'Где сундук?')
                 break
             }
             bot.openChest(chestBlock).then(chest => {
                 if (namePart === "all") {
                     const items = chest.containerItems()
                     if (items.length === 0) {
-                        // replyFeedback(username, 'Эндер-сундук пуст 👀')
+                        replyFeedback(username, 'Эндер-сундук пуст 👀')
                         chest.close()
                         return
                     }
@@ -2312,11 +2309,11 @@ function processCommand(message, username, plainMessage) {
                         const item = items.shift()
                         if (!item) {
                             chest.close()
-                            // replyFeedback(username, 'Забрал все предметы из эндер-сундука!')
+                            replyFeedback(username, 'Забрал все предметы из эндер-сундука!')
                             return
                         }
                         chest.withdraw(item.type, null, item.count).then(takeNext).catch(err => {
-                            // replyFeedback(username, `Ошибка: ${err.message}`)
+                            replyFeedback(username, `Ошибка: ${err.message}`)
                             chest.close()
                         })
                     }
@@ -2326,7 +2323,7 @@ function processCommand(message, username, plainMessage) {
                 }
                 const items = chest.containerItems().filter(i => i.name.includes(namePart))
                 if (items.length === 0) {
-                    // replyFeedback(username, `Нет предметов с "${namePart}" в эндер-сундуке`)
+                    replyFeedback(username, `Нет предметов с "${namePart}" в эндер-сундуке`)
                     chest.close()
                     return
                 }
@@ -2335,18 +2332,18 @@ function processCommand(message, username, plainMessage) {
                     const item = items.shift()
                     if (!item) {
                         chest.close()
-                        // replyFeedback(username, `Достал все предметы с "${namePart}" из эндер-сундука 👜`)
+                        replyFeedback(username, `Достал все предметы с "${namePart}" из эндер-сундука 👜`)
                         return
                     }
                     chest.withdraw(item.type, null, item.count).then(withdrawNext).catch(err => {
-                        // replyFeedback(username, `Ошибка при доставании: ${err.message}`)
+                        replyFeedback(username, `Ошибка при доставании: ${err.message}`)
                         chest.close()
                     })
                 }
                 withdrawNext()
 
             }).catch(err => {
-                // replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
+                replyFeedback(username, `Не смог открыть эндер-сундук: ${err.message}`)
             })
         }
             break
@@ -2358,7 +2355,7 @@ function processCommand(message, username, plainMessage) {
                 return
             }
 
-            // replyFeedback(username, 'ждать!')
+            replyFeedback(username, 'ждать!')
 
             blocks = bot.findBlocks({
                 matching: block => {
@@ -2372,11 +2369,11 @@ function processCommand(message, username, plainMessage) {
             })
 
             if (blocks.length === 0) {
-                // replyFeedback(username, "не нашёл ничё :(")
+                replyFeedback(username, "не нашёл ничё :(")
                 return
             }
 
-            // replyFeedback(username, `готово.`)
+            replyFeedback(username, `готово.`)
             console.log("НАЙДЕННЫЕ БЛОКИ:")
             blocks.forEach((pos, i) => {
                 const block = bot.blockAt(pos)
@@ -2384,21 +2381,21 @@ function processCommand(message, username, plainMessage) {
             })
             break
         case "health":
-            //bot.chat(`/msg ${username} ${bot.health}`);
+            bot.chat(`/msg ${username} ${bot.health}`);
             break
         case "bounce":
             if (parts.length > 1) BOUNCE_POWER = parseFloat(parts[1])
             else BOUNCE_POWER = 0
-            // replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
+            replyFeedback(username, `Теперь отскакиваю с силой ${BOUNCE_POWER}!`);
             break
         case "jump":
             if (!WATCHED_PLAYERS.includes(username)) {
-                // sendFeedback(`${username} хочет выполнить ${plainMessage}`)
+                sendFeedback(`${username} хочет выполнить ${plainMessage}`)
                 return;
             }
             if (parts.length > 1) power_1 = parseFloat(parts[1])
             else power_1 = 1.0
-            // // replyFeedback(username, `Прыгаю с силой ${power_1}!`);
+            replyFeedback(username, `Прыгаю с силой ${power_1}!`);
             boostBot(power_1, bot.players[username].entity)
             break
 
@@ -2410,25 +2407,25 @@ function processCommand(message, username, plainMessage) {
                 const nameToFind = parts[1];
                 // console.log('[CORDS DEBUG] Цель — по аргументу');
                 entityThatIHaveToFind = bot.nearestEntity(entity => {
-                        if ((entity.name && entity.name.toLowerCase().includes(nameToFind)) || (entity.username && entity.username.toLowerCase().includes(nameToFind)) ) {
-                            return true;
-                        }
+                    if ((entity.name && entity.name.toLowerCase().includes(nameToFind)) || (entity.username && entity.username.toLowerCase().includes(nameToFind)) ) {
+                        return true;
+                    }
                 });
             }
             if (entityThatIHaveToFind) {
                 if (username === 'console') {
                     console.log(`${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`)} else {
-                bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`) }
+                    bot.chat(`/r ${parseInt(entityThatIHaveToFind.position.x)} ${parseInt(entityThatIHaveToFind.position.y)} ${parseInt(entityThatIHaveToFind.position.z)}`) }
             } else {
                 bot.chat(`/r не нашел`)
             }
             break
         case "quit":
             if (!WATCHED_PLAYERS.includes(username)) {
-                // replyFeedback(username, 'Отстань!')
+                replyFeedback(username, 'Отстань!')
                 return
             }
-            //bot.chat(`/msg ${username} Самоуничтожение...`);
+            bot.chat(`/msg ${username} Самоуничтожение...`);
             bot.quit()
             break
         case "chosecolor":
@@ -2438,7 +2435,7 @@ function processCommand(message, username, plainMessage) {
             })
 
             if (!targetBlock) {
-                //bot.chat(`/msg ${username} Блок не найден`)
+                bot.chat(`/msg ${username} Блок не найден`)
                 break
             }
 
@@ -2449,7 +2446,7 @@ function processCommand(message, username, plainMessage) {
             bot.once('windowOpen', async (window) => {
                 const wanted = args[0]?.toLowerCase()
                 if (!wanted) {
-                    //bot.chat(`/msg ${username} цвет не задан`)
+                    bot.chat(`/msg ${username} цвет не задан`)
                     bot.closeWindow(window)
                     bot.setControlState('sneak', false)
                     return
@@ -2472,15 +2469,15 @@ function processCommand(message, username, plainMessage) {
             })
             break
         case "drawto":
-        console.log(`Буду искать все кроме ${args[0]}`)
-            async function drawLoop() {
+            console.log(`Буду искать все кроме ${args[0]}`)
+        async function drawLoop() {
             const block = bot.findBlock({
                 matching: (b) => b?.name?.includes('wool') && !b.name.includes(args[0]),
                 maxDistance: 32
             })
 
             if (!block) {
-                //bot.chat(`/msg ${username} блок не найден`)
+                bot.chat(`/msg ${username} блок не найден`)
                 return
             }
 
@@ -2506,20 +2503,19 @@ function processCommand(message, username, plainMessage) {
             query = parseInt(query)
             bot.setQuickBarSlot(query)
             equipItem()
-            // //bot.chat(`/msg ${username} Привета!`);
+            // bot.chat(`/msg ${username} Привета!`);
             break
         case "сосал?":
             bot.chat(`!Да.`);
             return;
         case "server":
-            // bot.chat("/server sleepcraft");
-            connectToServer()
+            bot.chat("/server sleepcraft");
             return;
 
         case "break":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
             if (args.length < 2) {
@@ -2537,8 +2533,8 @@ function processCommand(message, username, plainMessage) {
             break;
         case "nearest":
             if (args.length < 1) {
-                //bot.chat(`/msg ${username} Укажи тип сущности: nearest <тип>`);
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи тип сущности: nearest <тип>`);
+                bot.chat(`/msg ${username} Укажи тип сущности: nearest <тип>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи тип сущности: nearest <тип>`);
                 return;
             }
             let entityType = args[0];
@@ -2548,11 +2544,11 @@ function processCommand(message, username, plainMessage) {
                 const neName = nearestEntity.username || nearestEntity.displayName || nearestEntity.name || 'Неизвестная сущность';
                 const nePos = nearestEntity.position.floored();
                 const dist = bot.entity.position.distanceTo(nearestEntity.position).toFixed(1);
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
-                //bot.chat(`/msg ${username} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
+                bot.chat(`/msg ${username} Ближайший ${entityType}: ${neName} в [${nePos.x}, ${nePos.y}, ${nePos.z}] (${dist}м)`);
             } else {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдено сущностей типа ${entityType} поблизости.`);
-                //bot.chat(`/msg ${username} Не найдено сущностей типа ${entityType} поблизости.`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Не найдено сущностей типа ${entityType} поблизости.`);
+                bot.chat(`/msg ${username} Не найдено сущностей типа ${entityType} поблизости.`);
             }
             break;
         case 'spam':
@@ -2577,8 +2573,8 @@ function processCommand(message, username, plainMessage) {
             break
         case "come":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -2590,7 +2586,6 @@ function processCommand(message, username, plainMessage) {
             } else {
                 let targetname = args[0];
                 console.log('Аргументы ест')
-
                 playerToCome = findEntityWithName(bot, targetname);
             }
 
@@ -2607,13 +2602,13 @@ function processCommand(message, username, plainMessage) {
 
                 comePlayer();
             } else {
-                // sendFeedback(`Не вижу цель ${username}`)
+                sendFeedback('Не вижу цель.')
             }
             break;
         case "flyto":
             if (task) {
-                //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                //bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -2634,12 +2629,12 @@ function processCommand(message, username, plainMessage) {
                 poss = playerToFly.position
                 tp(poss.x, poss.z, 20, 6)
             } else {
-                // sendFeedback('Не вижу цель.')
+                sendFeedback('Не вижу цель.')
             }
             break;
         case "teleport":
             if (task) {
-                //bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
+                bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
                 return;
             }
 
@@ -2657,13 +2652,13 @@ function processCommand(message, username, plainMessage) {
             }
 
             if (!playerToTeleport) {
-                //bot.chat(`/msg ${username} Я не вижу цель для тп 😢`);
+                bot.chat(`/msg ${username} Я не вижу цель для тп 😢`);
                 return;
             }
 
             const enderPearlItem = bot.inventory.items().find(item => item.name === 'ender_pearl');
             if (!enderPearlItem) {
-                //bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
+                bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
                 return;
             }
 
@@ -2671,14 +2666,14 @@ function processCommand(message, username, plainMessage) {
             try {
                 const shot = planner.shotToEntity(target);
                 if (!shot || !shot.shotInfo?.intersectPos) {
-                    //bot.chat(`/msg ${username} Не могу точно прицелиться... 😕`);
+                    bot.chat(`/msg ${username} Не могу точно прицелиться... 😕`);
                     return;
                 }
 
                 await bot.equip(enderPearlItem, 'hand');
                 await bot.look(shot.yaw, shot.pitch, true);
                 await bot.waitForTicks(10)
-                //bot.chat(`/msg ${username} Бросаю пёрл в ${target.username || 'цель'} ✨`);
+                bot.chat(`/msg ${username} Бросаю пёрл в ${target.username || 'цель'} ✨`);
 
                 bot.activateItem();
                 await bot.waitForTicks(5); // подожди, пока "зарядится"
@@ -2686,7 +2681,7 @@ function processCommand(message, username, plainMessage) {
                 equipItem('sword')
             } catch (err) {
                 console.log('[TP ERROR]', err);
-                //bot.chat(`/msg ${username} Не получилось тпшнуться, сорри 🥲`);
+                bot.chat(`/msg ${username} Не получилось тпшнуться, сорри 🥲`);
             }
         }
 
@@ -2729,18 +2724,16 @@ function processCommand(message, username, plainMessage) {
             } else {
                 MODE = 'мирный'
             }
-            //bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
-            //bot.chat(`/msg ${username} Задан режим '${MODE}'`)
+            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
+            bot.chat(`/msg ${username} Задан режим '${MODE}'`)
             return
         case "stop":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                console.log(`${username} не в списке уполномоченных на остановку`)
-                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
-                // //bot.chat(`/msg ${username} Я не буду этого делать!!!`)
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                bot.chat(`/msg ${username} Я не буду этого делать!!!`)
                 return;
             }
-            // // sendFeedback(`Останавливаюсь.`)
-            console.log(`Останавливаюсь. Причина: ${plainMessage}; ${username}`)
+            sendFeedback(`Останавливаюсь.`)
             bot.pvp.stop();
             bot.swordpvp.stop();
             bot.bowpvp.stop();
@@ -2755,14 +2748,14 @@ function processCommand(message, username, plainMessage) {
             break;
         case "stop-music":
             if (!WATCHED_PLAYERS.includes(username) && username !== 'Вы') {
-                // // sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
+                sendFeedback(`${username} хочет чтобы я ${plainMessage}`)
                 return;
             }
             SOUND = null;
             playing = false;
             break;
         case "status":
-            // replyFeedback(username, `health: ${bot.health}, food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
+            replyFeedback(username, `health: ${bot.health}, food: ${bot.food}, cords: "${parseInt(bot.entity.position.x)} ${parseInt(bot.entity.position.y)} ${parseInt(bot.entity.position.z)}", task: ${task}, music: ${SOUND}`)
             break;
         default:
             break;
@@ -2788,9 +2781,8 @@ bot.on('entitySwingArm', (entity) => {
 })
 
 bot.on('spawn', () => {
-    // sendFeedback(`плюх!`);
+    sendFeedback(`плюх!`);
     // console.log("Событие 'spawn' получено.");
-
     initializeBotState();
 });
 
@@ -2800,17 +2792,14 @@ bot.on('message', (jsonMsg, position) => {
     }
 })
 
+bot.once('login', () => {
+    // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
+    bot.chat(`/l ${PASSWORD}`);
+    // console.log("Событие 'spawn' получено.");
+    // initializeBotState();
+//    bot.chat('/server sleepcraft');
 
-bot.once('windowOpen', (window) => {
-    bot.closeWindow(window)
-    console.log('closed')
-    bot.once('login', () => {
-        bot.chat(`/login ${PASSWORD}`);
-        console.log('logged')
-        connectToServer()
-    });
 });
-
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
         try {
@@ -2884,7 +2873,7 @@ bot.on('playerCollect', (player, item) => {
 
     // if (WATCHED_PLAYERS.includes(loreItem)) {
     // if (loreItem) {
-    //     //bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
+    //     bot.chat(`/msg ${WATCHED_PLAYERS[0]} ${player.username} <- ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ}, подпись: ${loreItem}`)
     // } else {
     if (id) console.log(`${player.username} <= ${name} x${count} в ${roundedX} ${roundedY} ${roundedZ} с подписью ${loreItem}`)
     else console.log(`${player.username} <= ${name} в ${roundedX} ${roundedY} ${roundedZ}`)
@@ -2916,7 +2905,7 @@ bot.on('blockUpdate', (oldBlock, newBlock) => {
         console.log(`${username} [+] ${newBlockName} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)}`)
     }
 
-    })
+})
 
 
 rl.on('line', (line) => {
@@ -2931,26 +2920,52 @@ rl.on('line', (line) => {
     rl.prompt();
 });
 
-// bot.on('chat', (username, message) => {
-//     username = username.split()
-//     console.log(`${username}: ${message}`);
-//
-//     processCommand(message, username, message)
-// })
+bot.on('chat', (username, message) => {
+    console.log(`I have got a message from ${username}: ${message}`);
+
+    processCommand(message, username, message)
+})
 
 bot.on('message', (jsonMsg, position) => {
-    // console.log(jsonMsg.toAnsi());
+    console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
-    console.log(plainMessage)
-    if (plainMessage.includes(' » ')) {
+
+    if (plainMessage === "Your login session has been continued." || plainMessage === "Your connection to sleepcraft encountered a problem." || plainMessage === "You have successfully logged.") {
+        connectToServer()
+    }
+
+    if (plainMessage.includes(' › ') || plainMessage.startsWith('������ [ДС] ')) {
         let typeOfMessage = null
-        if (plainMessage.includes(`${BOT_USERNAME}]: `)) {
-            // ⌀ [vlkardakov » Abject12]: come
-            message = plainMessage.split(`${BOT_USERNAME}]: `)[1]
-            username = plainMessage.split('[')[1].split(' »')[0]
+        if (plainMessage.includes('Вам] › ')) {
+            // [vlkardakov -> Вам] › come
+            message = plainMessage.split('Вам] › ')[1]
+            username = plainMessage.split('[')[1].split(' ->')[0]
             typeOfMessage = 'direct message'
 
-        } else
+        } else if (plainMessage.startsWith('������ [ДС] ')) {
+            //������ [ДС] vlkardakov: сообщение из дискорда
+            plainMessage = plainMessage.replace('������ [ДС] ', '')
+            // vlkardakov: сообщение из дискорда
+            message = plainMessage.split(': ')[1]
+            // сообщение из дискорда
+            username = plainMessage.split(': ')[0]
+            // vlkardakov
+            typeOfMessage = 'global chat'
+
+
+        } else if (plainMessage.includes(' › ')) {
+            // vlkardakov › come
+            message = plainMessage.split(' › ')[1]
+            username = plainMessage.split(' › ')[0]
+
+            player = Object.values(bot.entities).find(
+                (e) => e.type === 'player' && e.username === username
+            );
+
+            if (player) typeOfMessage = 'local chat'
+            else typeOfMessage = 'global chat'
+        }
+
         if (BOT_USERNAME === 'Abject12' && username !== BOT_USERNAME) {
             askGemini(plainMessage, typeOfMessage)
         } else if (username === BOT_USERNAME && BOT_USERNAME === 'Abject12') {

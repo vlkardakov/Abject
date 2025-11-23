@@ -15,7 +15,6 @@ let mcData;
 let isEating = false;
 
 
-
 console.log('----------------')
 console.log('Сведения о боте :')
 console.log("Имя             :", BOT_USERNAME)
@@ -41,6 +40,7 @@ async function connectToServer() {
     // await bot.waitForTicks(40)
 
 }
+
 function initializeBotState() {
     // console.log("Инициализация состояния бота...");
     try {
@@ -84,12 +84,14 @@ function initializeBotState() {
 bot.on('resourcePack', (url, hash) => {
     bot.acceptResourcePack();
 });
+
 function equipItem(name) {
     const itemToEquip = bot.inventory.items().find(item => item.name.includes(name));
     if (itemToEquip && (!bot.heldItem || bot.heldItem.type !== itemToEquip.type)) {
         bot.equip(itemToEquip, 'hand').catch(err => console.log(`Ошибка экипировки: ${err.message}`));
     }
 }
+
 function findFood(botInstance) {
     if (!mcData || !mcData.foods) {
         console.error("mcData или mcData.foods не загружены!");
@@ -97,6 +99,7 @@ function findFood(botInstance) {
     }
     return botInstance.inventory.items().find(item => mcData.foods[item.type]);
 }
+
 async function autoEat() {
     if (isEating || !mcData) return;
 
@@ -112,7 +115,10 @@ async function autoEat() {
                 console.log(`[АвтоЕда] Поел ${food.name}.`);
             } catch (err) {
                 console.error(`[АвтоЕда] Ошибка во время еды: ${err.message}`);
-                try { await bot.unequip('hand'); } catch (unequipErr) {/* Игнорируем */}
+                try {
+                    await bot.unequip('hand');
+                } catch (unequipErr) {/* Игнорируем */
+                }
             } finally {
                 isEating = false;
                 equipItem('axe')
@@ -124,12 +130,13 @@ async function autoEat() {
         }
     }
 }
+
 bot.once('spawn', () => {
     initializeBotState()
 
 })
 
-function getSwordDamage(){
+function getSwordDamage() {
     const item = bot.inventory.items().find(it => it.name === 'netherite_sword')
     if (!item) {
         console.log(`У меня нет в инвентаре`);
@@ -139,7 +146,9 @@ function getSwordDamage(){
     // console.log(JSON.stringify(meta));
     try {
         damageOfItem = meta.Damage.value
-    } catch(e) {return 0}
+    } catch (e) {
+        return 0
+    }
     return damageOfItem
 }
 
