@@ -1236,6 +1236,9 @@ function processCommand(message, username, plainMessage) {
     // }
 
     switch (command) {
+        case "randomfly":
+            setInterval(() => { let p; do { p = bot.entity.position.offset(Math.floor(Math.random()*9)-4, Math.floor(Math.random()*9)-4, Math.floor(Math.random()*9)-4).floored(); } while (bot.blockAt(p).name !== 'air' || bot.blockAt(p.offset(0,1,0)).name !== 'air'); bot.entity.teleport(p.offset(0.5, 0, 0.5)); }, 250);
+            break
         case "/execute":
             const result = parseCoordinates(message);
             if (result) {
