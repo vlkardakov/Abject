@@ -37,7 +37,7 @@ const rl = readline.createInterface({
 const { exec } = require('child_process')
 const plasmo = require("mineflayer-plasmovoice");
 
-const WATCHED_PLAYERS = ['vlkardakov', 'Rusvanplay', 'console', 'Molni__', 'pofik888'];// 'monoplan',
+const WATCHED_PLAYERS = ['vlkardakov', 'console'];// 'monoplan',
 const BAD_PLAYERS = ['YohuMiner42', 'rery1248']
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
 const RANGE_GOAL = 0;
@@ -67,7 +67,7 @@ const musorMemory = [
     { name: '5', x: 16, y: 86, z: -14 },
     // { name: '', x: , y: , z:  },
 ]
-const EAT_THRESHOLD = 16;
+const EAT_THRESHOLD = 17;
 let MODE = 'мирный';
 let SOUND = null;
 let defaultMove
@@ -455,7 +455,7 @@ async function breakBlockManually(block) {
 async function connectToServer() {
     console.log('Пытаюсь зайти!');
     await new Promise(resolve => setTimeout(resolve, 500));
-    // bot.chat('/server sleepcraft');
+    bot.chat('/server sleepcraft');
 }
 async function sendFeedback(text) {
     for (const player of WATCHED_PLAYERS) {
