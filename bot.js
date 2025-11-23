@@ -912,7 +912,7 @@ async function askGemini(prompt, type) {
         eval(response1)
         return response1
     } catch (err) {
-        console.error("Чёт пошло не так. ", err.message);
+        // console.error("Чёт пошло не так. ", err.message);
     }
 }
 async function infoGemini(prompt) {
@@ -2922,9 +2922,9 @@ rl.on('line', (line) => {
 });
 
 bot.on('chat', (username, message) => {
-    console.log(`I have got a message from ${username}: ${message}`);
-
-    processCommand(message, username, message)
+    // console.log(`I have got a message from ${username}: ${message}`);
+    
+    // processCommand(message, username, message)
 })
 
 bot.on('message', (jsonMsg, position) => {
