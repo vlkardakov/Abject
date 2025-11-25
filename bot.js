@@ -319,6 +319,7 @@ async function autoEat() {
     }
 }
 function initializeBotState() {
+    console.log('попытка инит')
     // console.log("Инициализация состояния бота...");
     try {
         mcData = require('minecraft-data')(bot.version);
