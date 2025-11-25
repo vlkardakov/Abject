@@ -2798,9 +2798,8 @@ bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
     bot.chat(`/l ${PASSWORD}`);
     // console.log("Событие 'spawn' получено.");
-    // initializeBotState();
-//    bot.chat('/server sleepcraft');
-
+    initializeBotState();
+    bot.chat('/server sleepcraft');
 });
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
