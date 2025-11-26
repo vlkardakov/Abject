@@ -199,6 +199,7 @@ function sortByOptimalRoute(containers, startIndex = 0) {
     visited.add(current.name);
     route.push(current);
     console.log(route.length)
+    console.log(containers.length)
     while (route.length < containers.length) {
         console.log(route)
         let nearest = null;
