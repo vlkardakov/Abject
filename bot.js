@@ -120,6 +120,21 @@ const bot = mineflayer.createBot({
 
 console.log("Запуск бота...");
 
+bot.on('resourcePack', (url, hash) => {
+    // console.log('Сервер предложил пакет ресурсов. Принимаю.');
+    bot.acceptResourcePack();
+});
+bot._client.on('resource_pack_send', (packet) => {
+    console.log('Сервер прислал ресурс-пак:', packet);
+
+    bot._client.write('resource_pack_receive', {
+        result: 2,
+        hash: packet.hash
+    });
+
+    console.log('Пакет ресурсов принят.');
+});
+
 //console.log(MineflayerEmoteCraft)
 //const EmoteBot = new MineflayerEmoteCraft(bot);
 
@@ -2770,20 +2785,7 @@ function getRussianName(itemId) {
 
 let justSentLogin = false;
 
-bot.on('resourcePack', (url, hash) => {
-    // console.log('Сервер предложил пакет ресурсов. Принимаю.');
-    bot.acceptResourcePack();
-});
-bot._client.on('resource_pack_send', (packet) => {
-    console.log('Сервер прислал ресурс-пак:', packet);
 
-    bot._client.write('resource_pack_receive', {
-        result: 2,
-        hash: packet.hash
-    });
-
-    console.log('Пакет ресурсов принят.');
-});
 let lastAttackTime = 0
 
 bot.on('entitySwingArm', (entity) => {
