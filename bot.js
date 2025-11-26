@@ -1245,7 +1245,7 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function lift(cord=1000, v=30) {
-    const maxTimeLifting = 4
+    const maxTimeLifting = 2
     const startingCord = bot.entity.position.y
     const distance = cord - startingCord
     const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
@@ -1258,9 +1258,9 @@ async function lift(cord=1000, v=30) {
     for (let i = 0; i < cyclesInt; i++) {
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
+        bot.removeListener('physicsTick', setVelocityY)
         bot.entity.velocity.y = 0
         await new Promise(resolve => setTimeout(resolve, 500));
-        bot.removeListener('physicsTick', setVelocityY)
     }
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
