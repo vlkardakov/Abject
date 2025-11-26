@@ -190,35 +190,55 @@ function distance(a, b) {
     const dz = a.z - b.z;
     return Math.sqrt(dx*dx + dy*dy + dz*dz);
 }
+function distance(a, b) {
+    return Math.sqrt(
+        (a.x - b.x) ** 2 +
+        (a.y - b.y) ** 2 +
+        (a.z - b.z) ** 2
+    );
+}
+
 function sortByOptimalRoute(containers, startIndex = 0) {
-    console.log('начало')
     const visited = new Set();
     const route = [];
 
     let current = containers[startIndex];
-    visited.add(current.name);
+    visited.add(startIndex);
     route.push(current);
+
     while (route.length < containers.length) {
-        console.log('в цикле')
         let nearest = null;
         let nearestDist = Infinity;
+        let nearestIndex = -1;
 
-        for (const c of containers) {
-            if (visited.has(c.name)) continue;
+        for (let i = 0; i < containers.length; i++) {
+            if (visited.has(i)) continue;      // отметка по индексу — 100% уникально
+
+            const c = containers[i];
+            if (!c) continue;                  // пропускаем null
 
             const d = distance(current, c);
+
             if (d < nearestDist) {
                 nearestDist = d;
                 nearest = c;
+                nearestIndex = i;
             }
         }
 
-        visited.add(nearest.name);
+        if (nearestIndex === -1) {
+            console.error("Не удалось найти следующий контейнер!");
+            break;
+        }
+
+        visited.add(nearestIndex);
         route.push(nearest);
         current = nearest;
     }
+
     return route;
 }
+
 async function stealItems(itemName, user_name) {
     const containers = sortByOptimalRoute(containerMemory);
     if (containers.length === 0) {
