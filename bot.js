@@ -184,8 +184,43 @@ function hasRichItems() {
         RICH_ITEMS.some(keyword => item.name.toLowerCase().includes(keyword))
     );
 }
+function distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const dz = a.z - b.z;
+    return Math.sqrt(dx*dx + dy*dy + dz*dz);
+}
+function sortByOptimalRoute(containers, startIndex = 0) {
+    const visited = new Set();
+    const route = [];
+
+    let current = containers[startIndex];
+    visited.add(current.name);
+    route.push(current);
+
+    while (route.length < containers.length) {
+        let nearest = null;
+        let nearestDist = Infinity;
+
+        for (const c of containers) {
+            if (visited.has(c.name)) continue;
+
+            const d = distance(current, c);
+            if (d < nearestDist) {
+                nearestDist = d;
+                nearest = c;
+            }
+        }
+
+        visited.add(nearest.name);
+        route.push(nearest);
+        current = nearest;
+    }
+
+    return route;
+}
 async function stealItems(itemName, user_name) {
-    const containers = containerMemory;
+    const containers = sortByOptimalRoute(containerMemory);
     if (containers.length === 0) {
         replyFeedback(username, "память пустая.");
         return;
@@ -1931,7 +1966,7 @@ function processCommand(message, username, plainMessage) {
                 let currentBlock = blocks[0]
                 let remainingBlocks = blocks.slice(1)
 
-                remainingBlocks.sort((a, b) => getDistance(bot.entity, a) - getDistance(bot.entity, b))
+                remainingBlocks = sortByOptimalRoute(remainingBlocks)
 
                 blocks = [currentBlock]
                 while (remainingBlocks.length > 0 && (task === 'remembering')) {
