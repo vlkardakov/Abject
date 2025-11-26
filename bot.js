@@ -1247,7 +1247,7 @@ function getSwordDamage(){
 async function lift(cord=1000, v=30) {
     // if (task) {console.log('отмена взлёта'); return}
     // task = 'lifting'
-    const maxTimeLifting = 2
+    const maxTimeLifting = 3.5
     const startingCord = bot.entity.position.y
     const distance = cord - startingCord
     const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
