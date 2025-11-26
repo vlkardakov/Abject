@@ -191,6 +191,7 @@ function distance(a, b) {
     return Math.sqrt(dx*dx + dy*dy + dz*dz);
 }
 function sortByOptimalRoute(containers, startIndex = 0) {
+    console.log('начало')
     const visited = new Set();
     const route = [];
 
