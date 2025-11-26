@@ -1245,23 +1245,22 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function lift(cord=1000, v=30) {
-    if (task) {console.log('отмена взлёта'); return}
-    task = 'lifting'
+    // if (task) {console.log('отмена взлёта'); return}
+    // task = 'lifting'
     const maxTimeLifting = 3.5
     const startingCord = bot.entity.position.y
     const distance = cord - startingCord
     const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
-    const distanceMod = distance / v / 20 - parseInt(distance / v / 20)
+    const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
     const LAST_ANTIFALL = ANTIFALL
     ANTIFALL = true
     bot.entity.velocity.y = 0
     console.log(`distance: ${distance}`)
-    // if (distance < 0) {v = v * -1}
+    if (distance < 0) {v = v * -1}
     function setVelocityY() {bot.entity.velocity.y = v}
 
     for (let i = 0; i < cyclesInt; i++) {
-        console.log(`task: ${task}`)
-        // if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); break}
+        // if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; break}
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
         bot.removeListener('physicsTick', setVelocityY)
@@ -1270,7 +1269,7 @@ async function lift(cord=1000, v=30) {
             await new Promise(resolve => setTimeout(resolve, 500));
         // }
     }
-    if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); return}
+    if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
     bot.removeListener('physicsTick', setVelocityY)
