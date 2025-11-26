@@ -1965,7 +1965,7 @@ function processCommand(message, username, plainMessage) {
 
                 let currentBlock = blocks[0]
                 let remainingBlocks = blocks.slice(1)
-                replyFeedback(username, 'Начинаю сортировку')
+                replyFeedback(username, `Начинаю сортировку, количество: ${remainingBlocks.length}`)
                 remainingBlocks = sortByOptimalRoute(remainingBlocks)
                 replyFeedback(username, 'Закончил сортировку')
 
