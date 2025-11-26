@@ -111,11 +111,11 @@ console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     // host: '212.80.7.178', //or
-    host: 'sleepcraft.ru', //or
-    // host: '87.120.187.6', //or
+    // host: 'sleepcraft.ru', //or
+    host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
-    version: '1.20.4'
+    version: '1.19'
 });
 
 console.log("Запуск бота...");
