@@ -1255,6 +1255,8 @@ async function lift(cord=1000, v=30) {
     const LAST_ANTIFALL = ANTIFALL
     ANTIFALL = true
     bot.entity.velocity.y = 0
+    console.log(`distance: ${distance}`)
+
     function setVelocityY() {bot.entity.velocity.y = v}
 
     for (let i = 0; i < cyclesInt; i++) {
