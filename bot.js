@@ -1,7 +1,7 @@
 //Это коментарий
-// console.warn = () => {}
-// console.error = () => {}
-// //не засоряя консоль
+console.warn = () => {}
+console.error = () => {}
+//не засоряя консоль
 
 require('dotenv').config()
 
@@ -2697,10 +2697,10 @@ function processCommand(message, username, plainMessage) {
 
             if (args.length < 1) {
                 playerToFly = bot.players[username]?.entity;
-                console.log('Аргументов нет')
+                // console.log('Аргументов нет')
             } else {
                 let targetname = args[0];
-                console.log('Аргументы ест')
+                // console.log('Аргументы ест')
                 playerToFly = findEntityWithName(bot, targetname, false);
             }
 
@@ -2713,62 +2713,6 @@ function processCommand(message, username, plainMessage) {
                 sendFeedback('Не вижу цель.')
             }
             break;
-        case "teleport":
-            if (task) {
-                bot.chat(`/msg ${username} Бро, я занят другим заданием: ${task}`);
-                return;
-            }
-
-            const planner = new ShotPlanner(bot);
-
-            let playerToTeleport;
-
-            if (args.length < 1) {
-                playerToTeleport = bot.players[username]?.entity;
-                console.log('[TP DEBUG] Цель — вызывающий');
-            } else {
-                const targetName = args[0];
-                playerToTeleport = findEntityWithName(bot, targetName);
-                console.log('[TP DEBUG] Цель — по аргументу');
-            }
-
-            if (!playerToTeleport) {
-                bot.chat(`/msg ${username} Я не вижу цель для тп 😢`);
-                return;
-            }
-
-            const enderPearlItem = bot.inventory.items().find(item => item.name === 'ender_pearl');
-            if (!enderPearlItem) {
-                bot.chat(`/msg ${username} У меня закончились жемчужки 😭`);
-                return;
-            }
-
-        async function teleportToPlayerWithPlanner(target) {
-            try {
-                const shot = planner.shotToEntity(target);
-                if (!shot || !shot.shotInfo?.intersectPos) {
-                    bot.chat(`/msg ${username} Не могу точно прицелиться... 😕`);
-                    return;
-                }
-
-                await bot.equip(enderPearlItem, 'hand');
-                await bot.look(shot.yaw, shot.pitch, true);
-                await bot.waitForTicks(10)
-                bot.chat(`/msg ${username} Бросаю пёрл в ${target.username || 'цель'} ✨`);
-
-                bot.activateItem();
-                await bot.waitForTicks(5); // подожди, пока "зарядится"
-                bot.deactivateItem();
-                equipItem('sword')
-            } catch (err) {
-                console.log('[TP ERROR]', err);
-                bot.chat(`/msg ${username} Не получилось тпшнуться, сорри 🥲`);
-            }
-        }
-
-            teleportToPlayerWithPlanner(playerToTeleport);
-
-            break;
         case "cometo":
             const player = bot.players[username]?.entity
 
@@ -2776,23 +2720,23 @@ function processCommand(message, username, plainMessage) {
                 const block = bot.blockAtEntityCursor(player, 100) // 6 — макс. дистанция (можно больше)
 
                 if (block) {
-                    console.log(`юзер смотрит на блок: ${block.name} (${block.position})`)
+                    // console.log(`юзер смотрит на блок: ${block.name} (${block.position})`)
                     async function comePos() {
                         bot.pathfinder.setMovements(defaultMove);
-                        console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
+                        // console.log(`[DEBUG] Перед setGoa: canDig=${bot.pathfinder.movements.canDig}, canPlaceBlocks=${bot.pathfinder.movements.canPlaceBlocks}, allow1by1towers=${bot.pathfinder.movements.allow1by1towers}`);
                         //await bot.pathfinder.(new GoalNear(vec3(, , ), 0));
                         await bot.pathfinder.goto(new GoalNear(Math.floor(block.position.x), Math.floor(block.position.y + 1), Math.floor(block.position.z), 2));
                         task = null;
-                        console.log("Готово!");
+                        // console.log("Готово!");
                     }
 
                     comePos()
 
                 } else {
-                    console.log('Он смотрит в пустоту или слишком далеко...')
+                    // console.log('Он смотрит в пустоту или слишком далеко...')
                 }
             } else {
-                console.log('юзер не найден или оффлайн')
+                // console.log('юзер не найден или оффлайн')
             }
 
 
@@ -2805,7 +2749,7 @@ function processCommand(message, username, plainMessage) {
             } else {
                 MODE = 'мирный'
             }
-            bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
+            // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Задан режим '${MODE}'`)
             bot.chat(`/msg ${username} Задан режим '${MODE}'`)
             return
         case "stop":
@@ -2918,7 +2862,7 @@ bot.on('entitySpawn', (entity) => {
         maybe_latest_block = [new vec3(Math.round(x), Math.round(y), Math.round(z)), itemProtocolIdMap?.[id]]
         if (latestBrokenBlock !== maybe_latest_block) {
             console.log(maybe_latest_block)
-            console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
+            // console.log(`${nearest.username} => ${name} x${count} в ${Math.round(x)} ${Math.round(y)} ${Math.round(z)} подпись ${loreItem}`)
         }
     }, 200)
 })
@@ -2963,7 +2907,7 @@ bot.on('blockUpdate', (oldBlock, newBlock) => {
     if (!oldBlock || !newBlock || oldBlock.type === newBlock.type) {
         return
     }
-
+    return
     const { x, y, z } = oldBlock.position
     const nearestPlayer = Object.values(bot.players)
         .map(p => p.entity)
