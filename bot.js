@@ -198,7 +198,7 @@ function sortByOptimalRoute(containers, startIndex = 0) {
     let current = containers[startIndex];
     visited.add(current.name);
     route.push(current);
-
+    console.log(route.length)
     while (route.length < containers.length) {
         console.log(route)
         let nearest = null;
@@ -218,7 +218,6 @@ function sortByOptimalRoute(containers, startIndex = 0) {
         route.push(nearest);
         current = nearest;
     }
-
     return route;
 }
 async function stealItems(itemName, user_name) {
