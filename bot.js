@@ -201,7 +201,7 @@ function sortByOptimalRoute(containers, startIndex = 0) {
     console.log(route.length)
     console.log(containers.length)
     while (route.length < containers.length) {
-        console.log(route)
+        console.log('в цикле')
         let nearest = null;
         let nearestDist = Infinity;
 
