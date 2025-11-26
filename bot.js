@@ -1385,7 +1385,7 @@ function processCommand(message, username, plainMessage) {
                 bot.removeListener('physicsTick', setVelocityY)
                 bot.entity.position.y = cord
             }
-            lift(args[0], args[1])
+            lift(args[0] || 1000, args[1] || 30)
             break
         case "comeblock":
             const blockToCome = bot.findBlock({
