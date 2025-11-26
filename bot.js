@@ -1402,7 +1402,7 @@ function processCommand(message, username, plainMessage) {
             if (args.length < 1 ) {return;}
             console.log('Начали')
             const songName = args[0];
-            const fileName = args[1] || songName.toLowerCase().replace(/ /g, '_') + '.mp3';
+            const fileName = args[1] || songName.toLowerCase().replace(/ /g, '_');
             downloadMusic(username, songName, fileName);
             return;
 
