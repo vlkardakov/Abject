@@ -1245,7 +1245,7 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function lift(cord=1000, v=30) {
-    if (task) {return}
+    if (task) {console.log('отмена взлёта'); return}
     task = 'lifting'
     const maxTimeLifting = 2
     const startingCord = bot.entity.position.y
