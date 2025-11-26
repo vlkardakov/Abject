@@ -1267,8 +1267,10 @@ async function lift(cord=1000, v=30) {
             await new Promise(resolve => setTimeout(resolve, 500));
         // }
     }
-    distance = cord - bot.entity.position.y
+    distance = cord - bot.entity.position.y + v
+
     const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+    console.log(`distanceMod: ${distanceMod}`)
     if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
