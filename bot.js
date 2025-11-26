@@ -40,7 +40,7 @@ const plasmo = require("mineflayer-plasmovoice");
 const WATCHED_PLAYERS = ['vlkardakov', 'console'];// 'monoplan',
 const BAD_PLAYERS = ['YohuMiner42', 'rery1248']
 const RICH_ITEMS = ["diamond", "gold", "emerald", "netherite", "enchant", "elytr", "_block", "fire", "sword", "totem", "bow", "golden_", "mace", "ore", "music"];
-const RANGE_GOAL = 0;
+let AFK = false
 let BOUNCE_POWER = 0
 let MAX_SPEED = 0
 let ANTIFALL = false
@@ -376,15 +376,15 @@ async function autoEat() {
     if (bot.food <= EAT_THRESHOLD) {
         const food = findFood(bot);
         if (food) {
-            console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}. Найдена еда: ${food.name}. Начинаю есть.`);
+            // console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}. Найдена еда: ${food.name}. Начинаю есть.`);
             isEating = true;
             try {
                 await bot.equip(food, 'hand');
-                console.log(`[АвтоЕда] Взял ${food.name} в руку.`);
+                // console.log(`[АвтоЕда] Взял ${food.name} в руку.`);
                 await bot.consume();
                 console.log(`[АвтоЕда] Поел ${food.name}.`);
             } catch (err) {
-                console.error(`[АвтоЕда] Ошибка во время еды: ${err.message}`);
+                // console.error(`[АвтоЕда] Ошибка во время еды: ${err.message}`);
                 try { await bot.unequip('hand'); } catch (unequipErr) {/* Игнорируем */}
             } finally {
                 isEating = false;
@@ -392,7 +392,7 @@ async function autoEat() {
                 equipItem('sword')
             }
         } else {
-            console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}, но еды в инвентаре нет.`);
+            console.log(`[АвтоЕда] Голод ${bot.food}/${bot.foodSaturation}, нужна еда.`);
             // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Дайте едыыы..`)
         }
     }
@@ -401,18 +401,12 @@ function initializeBotState() {
     // console.log("Инициализация состояния бота...");
     try {
         mcData = require('minecraft-data')(bot.version);
-        if (!mcData) {
-            console.error("Не удалось загрузить mcData для версии:", bot.version);
-            return;
-        }
 
-        // console.log(`[mcData] Загружены данные для Minecraft ${bot.version}. Генерирую карту Protocol ID -> Item Name...`);
         itemProtocolIdMap = {};
 
         const itemsById = mcData.items;
 
         if (!itemsById) {
-            // console.error("[mcData] Ошибка: Свойство 'items' отсутствует в mcData. Не могу создать карту ID.");
         } else {
             for (const protocolIdStr in itemsById) {
                 if (Object.prototype.hasOwnProperty.call(itemsById, protocolIdStr)) {
@@ -1372,6 +1366,27 @@ function processCommand(message, username, plainMessage) {
                 bot.activateBlock(blockToActivate);
             }
             return;
+        case "lift":
+            async function lift(cord=1000, v=30) {
+                const maxTimeLifting = 4
+                const startingCord = bot.entity.position.y
+                const distance = cord - startingCord
+                const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
+                const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+                bot.entity.velocity.y = 0
+                function setVelocityY() {bot.entity.velocity.y = v}
+                for (let i = 0; i < cyclesInt; i++) {
+                    bot.on('physicsTick', setVelocityY);
+                    await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
+                    bot.removeListener('physicsTick', setVelocityY)
+                }
+                bot.on('physicsTick', setVelocityY);
+                await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
+                bot.removeListener('physicsTick', setVelocityY)
+                bot.entity.position.y = cord
+            }
+            lift(args[0], args[1])
+            break
         case "comeblock":
             const blockToCome = bot.findBlock({
                 matching: block => {
@@ -2948,8 +2963,9 @@ bot.on('chat', (username, message) => {
 })
 
 bot.on('message', (jsonMsg, position) => {
-    console.log(jsonMsg.toAnsi());
     let plainMessage = jsonMsg.toString();
+    if (plainMessage == 'Вы в афк') {}
+    console.log(jsonMsg.toAnsi());
 
     if (plainMessage === "Your login session has been continued." || plainMessage === "Your connection to sleepcraft encountered a problem." || plainMessage === "You have successfully logged.") {
         connectToServer()
