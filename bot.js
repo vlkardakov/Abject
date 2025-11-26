@@ -1251,7 +1251,7 @@ async function lift(cord=1000, v=30) {
     const startingCord = bot.entity.position.y
     const distance = cord - startingCord
     const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
-    const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+    const distanceMod = distance / v / 20 - parseInt(distance / v / 20)
     const LAST_ANTIFALL = ANTIFALL
     ANTIFALL = true
     bot.entity.velocity.y = 0
