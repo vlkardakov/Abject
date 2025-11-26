@@ -125,7 +125,7 @@ bot.on('resourcePack', (url, hash) => {
     bot.acceptResourcePack();
 });
 bot._client.on('resource_pack_send', (packet) => {
-    console.log('Сервер прислал ресурс-пак:', packet);
+    // console.log('Сервер прислал ресурс-пак:', packet);
 
     bot._client.write('resource_pack_receive', {
         result: 2,
