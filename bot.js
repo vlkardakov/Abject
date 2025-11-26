@@ -1256,8 +1256,8 @@ async function lift(cord=1000, v=30) {
     ANTIFALL = true
     bot.entity.velocity.y = 0
     console.log(`distance: ${distance}`)
-    if (distance < 0) {v = v * -1}
-    function setVelocityY() {bot.entity.velocity.y = v}
+    // if (distance < 0) {v = v * -1}
+    function setVelocityY() {bo t.entity.velocity.y = v}
 
     for (let i = 0; i < cyclesInt; i++) {
         // if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; break}
