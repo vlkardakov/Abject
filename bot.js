@@ -111,8 +111,7 @@ console.log('----------------')
 //ЭТО КОММЕНТАРИЙ ДОЛЖЕН ПОЯВИТЬСЯ!
 const bot = mineflayer.createBot({
     // host: '212.80.7.178', //or
-    // host: 'sleepcraft.ru', //or
-    host: 'serenity.su', //or
+    host: 'sleepcraft.ru', //or
     // host: '87.120.187.6', //or
     port: 25565,
     username: BOT_USERNAME,
@@ -320,7 +319,6 @@ async function autoEat() {
     }
 }
 function initializeBotState() {
-    console.log('попытка инит')
     // console.log("Инициализация состояния бота...");
     try {
         mcData = require('minecraft-data')(bot.version);
@@ -2776,7 +2774,16 @@ bot.on('resourcePack', (url, hash) => {
     // console.log('Сервер предложил пакет ресурсов. Принимаю.');
     bot.acceptResourcePack();
 });
+bot._client.on('resource_pack_send', (packet) => {
+    console.log('Сервер прислал ресурс-пак:', packet);
 
+    bot._client.write('resource_pack_receive', {
+        result: 2,
+        hash: packet.hash
+    });
+
+    console.log('Пакет ресурсов принят.');
+});
 let lastAttackTime = 0
 
 bot.on('entitySwingArm', (entity) => {
@@ -2799,8 +2806,9 @@ bot.once('login', () => {
     // bot.chat(`/msg ${WATCHED_PLAYERS[0]} плюх`);
     bot.chat(`/l ${PASSWORD}`);
     // console.log("Событие 'spawn' получено.");
-    initializeBotState();
-    bot.chat('/server sleepcraft');
+    // initializeBotState();
+//    bot.chat('/server sleepcraft');
+
 });
 if (VOICED) {
     bot.on("plasmovoice_audio_end", () => {
