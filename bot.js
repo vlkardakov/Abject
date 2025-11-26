@@ -1261,7 +1261,7 @@ async function lift(cord=1000, v=30) {
 
     for (let i = 0; i < cyclesInt; i++) {
         console.log(`task: ${task}`)
-        if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); break}
+        // if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); break}
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
         bot.removeListener('physicsTick', setVelocityY)
