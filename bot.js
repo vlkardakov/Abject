@@ -1245,6 +1245,8 @@ function getSwordDamage(){
     return damageOfItem
 }
 async function lift(cord=1000, v=30) {
+    if (task) {return}
+    task = 'lifting'
     const maxTimeLifting = 2
     const startingCord = bot.entity.position.y
     const distance = cord - startingCord
@@ -1256,12 +1258,14 @@ async function lift(cord=1000, v=30) {
     function setVelocityY() {bot.entity.velocity.y = v}
 
     for (let i = 0; i < cyclesInt; i++) {
+        if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; break}
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
         bot.removeListener('physicsTick', setVelocityY)
         bot.entity.velocity.y = 0
         await new Promise(resolve => setTimeout(resolve, 500));
     }
+    if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
     bot.removeListener('physicsTick', setVelocityY)
