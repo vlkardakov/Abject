@@ -1250,17 +1250,23 @@ async function lift(cord=1000, v=30) {
     const distance = cord - startingCord
     const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
     const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+    const LAST_ANTIFALL = ANTIFALL
+    ANTIFALL = true
     bot.entity.velocity.y = 0
     function setVelocityY() {bot.entity.velocity.y = v}
+
     for (let i = 0; i < cyclesInt; i++) {
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
+        bot.entity.velocity.y = 0
+        await new Promise(resolve => setTimeout(resolve, 500));
         bot.removeListener('physicsTick', setVelocityY)
     }
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
     bot.removeListener('physicsTick', setVelocityY)
     bot.entity.position.y = cord
+    ANTIFALL = LAST_ANTIFALL
 }
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
