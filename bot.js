@@ -1269,7 +1269,7 @@ async function lift(cord=1000, v=30) {
     }
     if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
     bot.on('physicsTick', setVelocityY);
-    await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
+    await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
     bot.removeListener('physicsTick', setVelocityY)
     bot.entity.position.y = cord
     ANTIFALL = LAST_ANTIFALL
