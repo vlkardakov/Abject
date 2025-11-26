@@ -1269,7 +1269,7 @@ async function lift(cord=1000, v=30) {
             await new Promise(resolve => setTimeout(resolve, 500));
         // }
     }
-    if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); break}
+    if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; console.log('отмена взлёта'); return}
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
     bot.removeListener('physicsTick', setVelocityY)
