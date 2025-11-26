@@ -1248,10 +1248,8 @@ async function lift(cord=1000, v=30) {
     // if (task) {console.log('отмена взлёта'); return}
     // task = 'lifting'
     const maxTimeLifting = 3.5
-    const startingCord = bot.entity.position.y
-    const distance = cord - startingCord
-    const cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
-    const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+    let distance = cord - bot.entity.position.y
+    let cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
     const LAST_ANTIFALL = ANTIFALL
     ANTIFALL = true
     bot.entity.velocity.y = 0
@@ -1260,7 +1258,7 @@ async function lift(cord=1000, v=30) {
     function setVelocityY() {bot.entity.velocity.y = v}
 
     for (let i = 0; i < cyclesInt; i++) {
-        // if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; break}
+        if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; break}
         bot.on('physicsTick', setVelocityY);
         await new Promise(resolve => setTimeout(resolve, maxTimeLifting * 1000));
         bot.removeListener('physicsTick', setVelocityY)
@@ -1269,13 +1267,15 @@ async function lift(cord=1000, v=30) {
             await new Promise(resolve => setTimeout(resolve, 500));
         // }
     }
-    if (task === 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
+    distance = cord - bot.entity.position.y
+    const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
+    if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
     bot.on('physicsTick', setVelocityY);
     await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
     bot.removeListener('physicsTick', setVelocityY)
     bot.entity.position.y = cord
     ANTIFALL = LAST_ANTIFALL
-    // task = null
+    task = null
 }
 async function boostBot(speed, targetEntity) {
     await bot.waitForTicks(1);
