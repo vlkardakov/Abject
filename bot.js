@@ -212,24 +212,33 @@ function sortByOptimalRoute(containers, startIndex = 0) {
         let nearestIndex = -1;
 
         for (let i = 0; i < containers.length; i++) {
-            if (visited.has(i)) continue;      // отметка по индексу — 100% уникально
+            if (visited.has(i)) continue;
 
             const c = containers[i];
-            if (!c) continue;                  // пропускаем null
+            if (!c) continue;
 
             const d = distance(current, c);
 
+            // Если нашли контейнер ближе — просто берем его
             if (d < nearestDist) {
-                nearestDist = d;
                 nearest = c;
+                nearestDist = d;
                 nearestIndex = i;
+            }
+            // Если расстояние одинаковое — включаем приоритет вертикали
+            else if (Math.abs(d - nearestDist) < 0.000001) {
+                const dzCurr = Math.abs(c.z - current.z);
+                const dzPrev = Math.abs(nearest.z - current.z);
+
+                // Вертикаль важнее: выбираем тот, у которого dz больше
+                if (dzCurr > dzPrev) {
+                    nearest = c;
+                    nearestIndex = i;
+                }
             }
         }
 
-        if (nearestIndex === -1) {
-            console.error("Не удалось найти следующий контейнер!");
-            break;
-        }
+        if (nearestIndex === -1) break;
 
         visited.add(nearestIndex);
         route.push(nearest);
