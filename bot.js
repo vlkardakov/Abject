@@ -1248,7 +1248,7 @@ async function lift(cord=1000, v=30) {
     if (task) {console.log('отмена взлёта'); return}
     task = 'lifting'
     const maxTimeLifting = 3.5
-    let distance = (cord - bot.entity.position.y ) + v
+    let distance = (cord - bot.entity.position.y )
     let cyclesInt = parseInt(distance / v / 20 / maxTimeLifting)
     const LAST_ANTIFALL = ANTIFALL
     ANTIFALL = true
@@ -1267,14 +1267,6 @@ async function lift(cord=1000, v=30) {
             await new Promise(resolve => setTimeout(resolve, 500));
         // }
     }
-    distance = cord - bot.entity.position.y + v
-    const distanceMod = distance / v / 20 - cyclesInt * maxTimeLifting
-    console.log(`distanceMod: ${distanceMod }`)
-    if (task !== 'lifting') {ANTIFALL = LAST_ANTIFALL; return}
-    // bot.on('physicsTick', setVelocityY);
-    // await new Promise(resolve => setTimeout(resolve, distanceMod * 1000));
-    // bot.removeListener('physicsTick', setVelocityY)
-    bot.entity.position.y = cord
     ANTIFALL = LAST_ANTIFALL
     task = null
 }
