@@ -1756,7 +1756,7 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
             if (MODE === "мирный") {
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                // bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
             let camptargetUsername = args[0];
@@ -1882,8 +1882,8 @@ function processCommand(message, username, plainMessage) {
             }
 
             if (MODE === "мирный") {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                // bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
             if (args.length < 1) {
@@ -1918,8 +1918,8 @@ function processCommand(message, username, plainMessage) {
             }
 
             if (MODE === "мирный") {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                // bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
 
@@ -1955,8 +1955,8 @@ function processCommand(message, username, plainMessage) {
             }
 
             if (MODE === "мирный") {
-                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
-                bot.chat(`/msg ${username} Я сегодня добрый!`)
+                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я сегодня добрый!`)
+                // bot.chat(`/msg ${username} Я сегодня добрый!`)
                 return;
             }
 
