@@ -531,6 +531,7 @@ async function connectToServer() {
     bot.chat('/server sleepcraft');
 }
 async function sendFeedback(text) {
+    return // заглушка
     for (const player of WATCHED_PLAYERS) {
         if (bot.players[player]) {
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -539,6 +540,7 @@ async function sendFeedback(text) {
     }
 }
 async function replyFeedback(username, text) {
+    if (!WATCHED_PLAYERS.includes(username)) {return} //заглушка
     if (username === 'console') {console.log(text)} else {
         bot.chat(`/msg ${username} ${text}`)}
 }
