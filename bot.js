@@ -1507,7 +1507,7 @@ function processCommand(message, username, plainMessage) {
 
         case "collect":
             if (task) {
-                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
                 replyFeedback(username, `Я уже занят заданием ${task}`);
                 return;
             }
@@ -1659,7 +1659,7 @@ function processCommand(message, username, plainMessage) {
         case "protect":
             if (task) {
                 // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`);
-                // bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`);
                 return;
             }
 
@@ -1745,8 +1745,8 @@ function processCommand(message, username, plainMessage) {
 
         case "camp":
             if (task) {
-                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                // bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -1836,8 +1836,8 @@ function processCommand(message, username, plainMessage) {
             break;
         case "attack":
             if (task) {
-                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
-                // bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -1876,8 +1876,8 @@ function processCommand(message, username, plainMessage) {
             break;
         case "kill":
             if (task) {
-                // bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
-                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${username} Я уже занят заданием ${task}`)
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Я уже занят заданием ${task}`)
                 return;
             }
 
@@ -1887,8 +1887,8 @@ function processCommand(message, username, plainMessage) {
                 return;
             }
             if (args.length < 1) {
-                // bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
-                // bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${WATCHED_PLAYERS[0]} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
+                bot.chat(`/msg ${username} Укажи цель: attack/kill <ник_игрока | тип_моба>`);
                 return;
             }
             let targetUsername = args[0];
